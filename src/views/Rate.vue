@@ -2,140 +2,61 @@
   <h2>Review #1</h2>
   <div>Information about this tasting is hidden until the host reveals.</div>
   <form>
-    <label>Color</label>
-    <colors :color="review.color" @update:color="review.color = $event" />
-    <div>
-      <notes v-model="review.palate" label="Palate" />
-    </div>
-    <div>
-      <notes v-model="review.finish" label="Finish" />
-    </div>
-    <div>
-      <label for="">Value</label>
+    <rating-form-row
+      label="Color"
+      description="Select the color that most closely matches the appearance of the liquid."
+    >
+      <colors :color="review.color" @update:color="review.color = $event" />
+    </rating-form-row>
+
+    <rating-form-row label="Nose">
+      <notes v-model="review.nose" />
+    </rating-form-row>
+
+    <rating-form-row label="Palate">
+      <notes v-model="review.palate" />
+    </rating-form-row>
+
+    <rating-form-row label="Finish">
+      <notes v-model="review.finish" />
+    </rating-form-row>
+
+    <rating-form-row label="Value">
       <span>$</span>
-      <input
-        type="range"
-        min="1.00"
-        step="1.00"
-        max="2500"
-        v-model="review.value"
-      />
-    </div>
-    <div>
-      <label for="">Rating</label>
-      <input
-        type="radio"
-        id="rating-1"
-        name="rating"
-        value="1"
-        v-model="review.rating"
-      />
-      <label for="rating-1">1</label>
+      <input type="text" v-model="review.value" />
+    </rating-form-row>
 
-      <input
-        type="radio"
-        id="rating-2"
-        name="rating"
-        value="2"
-        v-model="review.rating"
-      />
-      <label for="rating-2">2</label>
+    <rating-form-row label="Rating">
+      <select name="" id="" v-model="review.rating">
+        <option v-for="i in 100" :key="i.index" :value="i">{{ i }}</option>
+      </select>
+    </rating-form-row>
 
-      <input
-        type="radio"
-        id="rating-3"
-        name="rating"
-        value="3"
-        v-model="review.rating"
-      />
-      <label for="rating-3">3</label>
+    <rating-form-row label="Conclusion">
+      <notes v-model="review.conclusion" :showSuggestions="false" />
+    </rating-form-row>
 
-      <input
-        type="radio"
-        id="rating-4"
-        name="rating"
-        value="4"
-        v-model="review.rating"
-      />
-      <label for="rating-4">4</label>
-
-      <input
-        type="radio"
-        id="rating-5"
-        name="rating"
-        value="5"
-        v-model="review.rating"
-      />
-      <label for="rating-5">5</label>
-
-      <input
-        type="radio"
-        id="rating-6"
-        name="rating"
-        value="6"
-        v-model="review.rating"
-      />
-      <label for="rating-6">6</label>
-
-      <input
-        type="radio"
-        id="rating-7"
-        name="rating"
-        value="7"
-        v-model="review.rating"
-      />
-      <label for="rating-7">7</label>
-
-      <input
-        type="radio"
-        id="rating-8"
-        name="rating"
-        value="8"
-        v-model.lazy="review.rating"
-      />
-      <label for="rating-8">8</label>
-
-      <input
-        type="radio"
-        id="rating-9"
-        name="rating"
-        value="9"
-        v-model="review.rating"
-      />
-      <label for="rating-9">9</label>
-
-      <input
-        type="radio"
-        id="rating-10"
-        name="rating"
-        value="10"
-        v-model="review.rating"
-      />
-      <label for="rating-10">10</label>
-    </div>
-    <div>
-      <notes v-model="review.conclusion" label="Conclusion" />
-    </div>
-    <div>
-      Overall Flavor
+    <rating-form-row label="Overall Flavor">
       <flavor-wheel />
-      <notes v-model="review.nose" label="Nose" />
-    </div>
-    <div>
+    </rating-form-row>
+
+    <rating-form-row>
       <button type="submit" @click.prevent="submitReview">Done</button>
-    </div>
+    </rating-form-row>
   </form>
 </template>
 <script lang="ts">
-import colors from '@/components/colors.vue'
-import notes from '@/components/notes.vue'
-import flavorWheel from '@/components/flavor-wheel.vue'
+import colors from '@/components/form/inputs/colors.vue'
+import notes from '@/components/form/inputs/flavor-notes.vue'
+import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
+import ratingFormRow from '@/components/form/rating-form-row.vue'
 import { defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'
 
 export default defineComponent({
   name: 'Rate',
   components: {
+    ratingFormRow,
     notes,
     colors,
     flavorWheel

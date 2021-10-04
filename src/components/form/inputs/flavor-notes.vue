@@ -1,33 +1,26 @@
 <template>
-  <label for="">{{ label }}</label>
-  <br />
-  <button
-    class="suggest-btn"
-    @click.prevent="showSuggestions = !showSuggestions"
-  >
-    Get Suggestions
-  </button>
-  <suggest-notes
-    v-if="showSuggestions"
-    @insert-selections="addSuggestions($event)"
-  />
-  <textarea
-    class="s-notes"
-    ref="notes"
-    v-model="proxyValue"
-    name=""
-    id=""
-    cols="30"
-    rows="8"
-  />
+  <div class="notes">
+    <suggest-notes @insert-selections="addSuggestions($event)" />
+    <textarea
+      class="s-notes"
+      ref="notes"
+      v-model="proxyValue"
+      name=""
+      id=""
+      cols="30"
+      rows="8"
+    />
+  </div>
 </template>
 <script lang="ts">
-import suggestNotes from '@/components/suggest-notes.vue'
+import suggestNotes from '@/components/form/suggest-notes.vue'
 import { computed, defineComponent, ref } from 'vue'
 
 export default defineComponent({
   name: 'notes',
-  props: ['modelValue', 'label'],
+  props: {
+    modelValue: String
+  },
   emits: ['update:modelValue'],
   components: {
     suggestNotes
@@ -40,14 +33,11 @@ export default defineComponent({
       }
     })
 
-    const showSuggestions = ref(false)
-
     const addSuggestions = (selections: string[]) => {
       proxyValue.value = `${props.modelValue} ${selections.join(', ')}`
     }
 
     return {
-      showSuggestions,
       addSuggestions,
       proxyValue
     }
@@ -55,6 +45,9 @@ export default defineComponent({
 })
 </script>
 <style lang="scss">
+.notes {
+  position: relative;
+}
 .s-notes {
   border: 1px solid gray;
   border-radius: 5px;
@@ -67,12 +60,5 @@ export default defineComponent({
   font-size: 16px;
   box-sizing: border-box;
   font-family: Avenir, Helvetica, Arial, sans-serif;
-}
-.suggest-btn {
-  border: none;
-  color: #42b983;
-  background: none;
-  display: inline-block;
-
 }
 </style>
