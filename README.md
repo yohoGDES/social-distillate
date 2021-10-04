@@ -1,4 +1,4 @@
-# the-society
+# Social Distillate
 
 ## Project setup
 ```
