@@ -47,7 +47,7 @@
 </template>
 <script lang="ts">
 import colors from '@/components/form/inputs/colors.vue'
-import notes from '@/components/form/inputs/flavor-notes.vue'
+import notes from '@/components/form/inputs/notes.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
 import ratingFormRow from '@/components/form/rating-form-row.vue'
 import { defineComponent, reactive } from 'vue'

@@ -13,8 +13,8 @@
   </div>
 </template>
 <script lang="ts">
-import suggestNotes from '@/components/form/suggest-notes.vue'
-import { computed, defineComponent, ref } from 'vue'
+import suggestNotes from '@/components/suggestions/suggest-notes.vue'
+import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'notes',
@@ -50,7 +50,7 @@ export default defineComponent({
 }
 .s-notes {
   border: 1px solid gray;
-  border-radius: 5px;
+  border-radius: 3px;
   padding: 8px 12px;
   display: block;
   min-height: 120px;
