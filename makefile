@@ -1,6 +1,6 @@
 .PHONY: deploy
 
-create-dir:
+init:
 	mkdir -p ./deploy/{public,cloud}
 
 clean:
