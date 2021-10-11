@@ -54,11 +54,14 @@ export default defineComponent({
         : context.emit('update:drawer-cancel')
       toggleBodyClass(false, 'modal-open')
     }
+
     watch(
       () => props.active,
       (value) => {
         if (value) toggleBodyClass(value, 'modal-open')
-    })
+      }
+    )
+
     return {
       toggleDrawer
     }
