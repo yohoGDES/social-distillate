@@ -41,5 +41,5 @@ Be sure you have run through the `b4a Setup` section.
 Run the following to deploy:
 
 ```bash
-$> make deploy
+$> npm run deploy
 ```
