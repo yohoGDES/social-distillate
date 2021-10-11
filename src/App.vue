@@ -7,6 +7,11 @@
 </template>
 
 <style lang="scss">
+body {
+  &.modal-open {
+    overflow-y: hidden;
+  }
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
