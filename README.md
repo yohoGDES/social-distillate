@@ -33,3 +33,13 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
 Follow steps 1 - 2.4 as outlined [here](https://www.back4app.com/docs/platform/parse-cli)
 
 Follow step 4 and use `deploy` as the Directory Name
+
+## Deploy
+
+Be sure you have run through the `b4a Setup` section.
+
+Run the following to deploy:
+
+```bash
+$> make deploy
+```
