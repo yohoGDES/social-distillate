@@ -160,8 +160,8 @@ export default defineComponent({
   &:checked + .suggestions__item-label {
     color: #fff;
     &:after {
-      background: #e06429;
-      border: 1px solid darken(#e06429, 15%);
+      background: $auburn;
+      border: 1px solid darken($auburn, 15%);
       z-index: -1;
     }
   }

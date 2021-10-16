@@ -81,7 +81,7 @@ export default defineComponent({
   padding: 12px 20px;
   transform: translateX(110%);
   transition: 320ms cubic-bezier(0.39, 0.575, 0.565, 1);
-  background-color: #2c3e50;
+  background-color: $charcoal;
   color: white;
   &--active {
     transform: translateX(0%);
@@ -101,16 +101,16 @@ export default defineComponent({
   display: inline-block;
   width: 48%;
   background: none;
-  border: 1px solid #2c3e50;
-  color: #2c3e50;
+  border: 1px solid $charcoal;
+  color: $charcoal;
   padding: 12px 6px;
   font-size: 16px;
   &:first-child {
     margin-right: 2%;
   }
   &--primary {
-    color: #e06429;
-    border-color: #e06429;
+    color: $auburn;
+    border-color: $auburn;
   }
 }
 </style>

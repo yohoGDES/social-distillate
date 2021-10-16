@@ -1,5 +1,6 @@
 <template>
-  <div class="suggest-notes__button">
+  <div class="suggest-notes__header">
+    <slot name="label"></slot>
     <button class="suggest-notes__button" @click.prevent="toggleSelections()">
       Get Suggestions
     </button>
@@ -40,10 +41,16 @@ export default defineComponent({
     drawerModal,
     suggestNotesSubgroup
   },
+  props: {
+    hideSuggestions: {
+      type: Boolean
+    }
+  },
   setup(props, context) {
     const uuid = computed(() => {
       return makeId()
     })
+
     const showSuggestions = ref(false)
     const toggleSelections = () => {
       showSuggestions.value = !showSuggestions.value
@@ -73,11 +80,15 @@ export default defineComponent({
 </script>
 
 <style lang="scss">
-$dark: #2c3e50;
+$dark: $charcoal;
 
+.suggest-notes__header {
+  display: flex;
+  justify-content: space-between;
+}
 .suggest-notes__button {
   border: none;
-  color: #42b983;
+  color: $auburn;
   background: none;
   display: inline-block;
 }

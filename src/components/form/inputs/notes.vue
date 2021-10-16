@@ -1,6 +1,18 @@
 <template>
   <div class="notes">
-    <suggest-notes @insert-selections="addSuggestions($event)" />
+    <suggest-notes
+      v-if="!hideSuggestions"
+      @insert-selections="addSuggestions($event)"
+    >
+      <template v-slot:label>
+        <rating-form-label :label="label" />
+      </template>
+    </suggest-notes>
+
+    <rating-form-description>
+      {{ description }}
+    </rating-form-description>
+
     <textarea
       class="s-notes"
       ref="notes"
@@ -15,15 +27,25 @@
 <script lang="ts">
 import suggestNotes from '@/components/suggestions/suggest-notes.vue'
 import { computed, defineComponent } from 'vue'
+import RatingFormLabel from '../rating-form-label.vue'
+import RatingFormDescription from '../rating-form-description.vue'
 
 export default defineComponent({
   name: 'notes',
   props: {
-    modelValue: String
+    modelValue: String,
+    label: String,
+    description: String,
+    hideSuggestions: {
+      type: Boolean,
+      default: false
+    }
   },
   emits: ['update:modelValue'],
   components: {
-    suggestNotes
+    suggestNotes,
+    RatingFormLabel,
+    RatingFormDescription
   },
   setup(props, context) {
     const proxyValue = computed({
