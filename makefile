@@ -11,6 +11,7 @@ build: clean
 	npm run build
 	cp -Rv ./dist/ ./deploy/public/
 	cd ./cloud ; npx tsc
+	cp package.json ./deploy/cloud
 
 deploy: build
 	cd ./deploy; b4a deploy
