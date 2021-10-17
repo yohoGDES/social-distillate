@@ -3,12 +3,13 @@ import Beverage from './beverage'
 describe('model/beverage', () => {
     it('can be created', () => {
         const beverage = new Beverage()
-        beverage.name = 'foo'
+        expect(beverage).toBeDefined()
+    })
 
-        expect(beverage.test()).toEqual('test')
-        expect(beverage.name).toEqual('foo')
-        expect(beverage.toJSON()).toEqual({
-            name: 'foo'
+    describe('test', () => {
+        it('works', () => {
+            const beverage = new Beverage()
+            expect(beverage.test()).toEqual('test')
         })
     })
 })

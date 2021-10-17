@@ -1,8 +1,8 @@
-export interface Model<T, P> {
+interface ModelConstructor<T, P> {
     new (props: Partial<P>, ...args: any[]): T
 }
 
-export default class Base<P> {
+export default abstract class Base<P> {
     protected __modelName: undefined | string
     protected __properties: Partial<P>
 
@@ -26,6 +26,10 @@ export default class Base<P> {
                 return Reflect.get(target, prop, receiver)
             }
         })
+    }
+
+    getModelName() {
+        return this.__modelName
     }
 
     toJSON() {
