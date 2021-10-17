@@ -1,5 +1,11 @@
-interface ModelConstructor<T, P> {
+export interface ModelConstructor<T, P> {
     new (props: Partial<P>, ...args: any[]): T
+}
+
+export const createModel = <T, P>(klass: ModelConstructor<T, P>) => {
+    type Model = T & P
+    const impl = klass as new (props?: Partial<P>, ...args: any[]) => Model
+    return impl
 }
 
 export default abstract class Base<P> {

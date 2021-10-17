@@ -1,16 +1,14 @@
-import Base from './base'
+import Base, { ModelConstructor, createModel } from './base'
 
 export interface Properties {
     name: string
     date: Date
 }
 
-class BeverageModel extends Base<Properties> {
+class Beverage extends Base<Properties> {
     protected __modelName = 'Beverage'
     test() { return 'test' }
 }
 
-interface Beverage extends BeverageModel, Properties {}
+export default createModel<Beverage, Properties>(Beverage)
 
-const impl = BeverageModel as new () => Beverage
-export default impl

@@ -1,4 +1,4 @@
-import Base from './base'
+import Base, {createModel} from './base'
 
 describe('model/base', () => {
     interface Properties {
@@ -15,8 +15,7 @@ describe('model/base', () => {
             return 'I Ran'
         }
     }
-    interface Model extends TestModel, Properties {}
-    const UnderTest = TestModel as new (props?: Properties) => Model
+    const UnderTest = createModel<TestModel, Properties>(TestModel)
 
     describe('getModelName', () => {
         it('returns the model name', () => {
