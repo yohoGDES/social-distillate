@@ -114,6 +114,7 @@ export default defineComponent({
   .flavor-scale {
     width: 46%;
     padding: 0 2%;
+    margin-bottom: 8px;
   }
 }
 .flavor-wheel-bars {

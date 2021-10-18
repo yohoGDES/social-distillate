@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 95%; margin: 0 auto 30px">
+  <div style="width: 100%; margin: 0 auto 30px">
     <PolarAreaChart :options="newOptions" :chartData="testData" />
   </div>
 </template>
@@ -89,7 +89,7 @@ export default defineComponent({
         if (firstOffset) chart.update()
       },
       layout: {
-        padding: 20
+        padding: 40
       },
       scales: {
         r: {
