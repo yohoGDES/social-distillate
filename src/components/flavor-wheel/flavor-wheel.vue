@@ -18,7 +18,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import flavorWheelChart from './flavor-wheel-chart.vue'
+import flavorWheelChart from '../flavor-wheel/flavor-wheel-chart.vue'
 import { Flavor } from '@/types'
 export default defineComponent({
   components: { flavorWheelChart },
@@ -116,8 +116,10 @@ export default defineComponent({
 .flavor-scales {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-evenly;
   div {
-    width: 50%;
+    width: 46%;
+    padding: 0 2%;
   }
 }
 .flavor-wheel-bars {
