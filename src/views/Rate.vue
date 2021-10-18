@@ -48,9 +48,10 @@
       <rating-form-description>
         From 0 to 100 how would you rate this bottle?
       </rating-form-description>
-      <select name="" id="" v-model="review.rating">
+      <dropdown v-model="review.rating" :options="ratingScale" />
+      <!-- <select name="" id="" v-model="review.rating">
         <option v-for="i in ratingScale" :key="i" :value="i">{{ i }}</option>
-      </select>
+      </select> -->
     </rating-form-row>
 
     <rating-form-row>
@@ -75,6 +76,7 @@
 <script lang="ts">
 import colors from '@/components/form/inputs/colors.vue'
 import notes from '@/components/form/inputs/notes.vue'
+import dropdown from '@/components/form/inputs/dropdown.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
 import ratingFormRow from '@/components/form/rating-form-row.vue'
 import ratingFormLabel from '@/components/form/rating-form-label.vue'
@@ -89,6 +91,7 @@ export default defineComponent({
     ratingFormDescription,
     ratingFormLabel,
     notes,
+    dropdown,
     colors,
     flavorWheel
   },

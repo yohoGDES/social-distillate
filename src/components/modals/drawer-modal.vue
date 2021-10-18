@@ -79,7 +79,7 @@ export default defineComponent({
   height: 100vh;
   z-index: 9999;
   overflow: hidden;
-  padding: 12px 20px;
+  padding: 12px 0;
   transform: translateX(110%);
   transition: 320ms cubic-bezier(0.39, 0.575, 0.565, 1);
   background-color: $charcoal;
@@ -91,7 +91,7 @@ export default defineComponent({
 .drawer-modal__content {
   overflow-y: auto;
   height: 100vh;
-  padding-bottom: 100px;
+  padding: 0 20px 100px;
 }
 .drawer-modal__actions {
   position: fixed;

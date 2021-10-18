@@ -16,6 +16,6 @@ export default defineComponent({
 <style lang="scss" scoped>
 .rating-form-row {
   display: block;
-  margin-bottom: 20px;
+  margin-bottom: 30px;
 }
 </style>

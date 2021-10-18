@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 95%; margin: 0 auto 30px;">
+  <div style="width: 95%; margin: 0 auto 30px">
     <PolarAreaChart :options="newOptions" :chartData="testData" />
   </div>
 </template>
@@ -9,10 +9,11 @@ import { computed, defineComponent, PropType, ref } from 'vue'
 import { Flavor } from '@/types'
 import { PolarAreaChart } from 'vue-chart-3'
 import { Chart, ChartData, registerables } from 'chart.js'
+import ChartDataLabels from 'chartjs-plugin-datalabels'
 import { getRelativePosition } from 'chart.js/helpers'
 
 Chart.register(...registerables)
-
+Chart.register(ChartDataLabels)
 export default defineComponent({
   name: 'flavorWheelChart',
   components: { PolarAreaChart },
@@ -36,11 +37,17 @@ export default defineComponent({
         {
           data: values.value,
           backgroundColor: [
-            '#77CEFF',
-            '#0079AF',
-            '#123E6B',
-            '#97B0C4',
-            '#A5C8ED'
+            '#f5bd33',
+            '#e89e13',
+            '#dc7217',
+            '#cc502f',
+            '#9f241d'
+            // '#712b1e'
+            // '#77CEFF',
+            // '#0079AF',
+            // '#123E6B',
+            // '#97B0C4',
+            // '#A5C8ED'
           ]
         }
       ]
@@ -63,12 +70,31 @@ export default defineComponent({
       plugins: {
         legend: {
           display: false
+        },
+        datalabels: {
+          formatter: (value: any, context: any) =>
+            context.chart.data.labels[context.dataIndex].replace(' ', '\n'),
+          anchor: 'start',
+          align: 'end',
+          textAlign: 'center',
+          offset: 0 // Gets updated in onResize based on size of chart
         }
+      },
+      onResize(chart: any, size: any) {
+        if (!chart) return
+        const firstOffset = !chart.options.plugins.datalabels.offset
+        const padding = chart.options.layout.padding
+        const minSize = Math.min(size.width, size.height)
+        chart.options.plugins.datalabels.offset = minSize / 2 - padding
+        if (firstOffset) chart.update()
+      },
+      layout: {
+        padding: 20
       },
       scales: {
         r: {
           pointLabels: {
-            display: true
+            display: false
           },
           angleLines: {
             display: true
