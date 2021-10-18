@@ -33,7 +33,7 @@ body {
     color: $charcoal;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: $tawny;
     }
   }
 }

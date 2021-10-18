@@ -1,6 +1,13 @@
 <template>
+  <!-- TODO: Add controls and state of the tasting -->
+  <!--
+    TODO:
+      Should the Rate view contain tasting info?
+      Or should it be an embedded component? -->
   <h2>Review #1</h2>
+  <!-- TODO: actually put some shit here. model out what should be on this page -->
   <div>Information about this tasting is hidden until the host reveals.</div>
+  <hr />
   <form>
     <rating-form-row>
       <rating-form-label label="Color" />
