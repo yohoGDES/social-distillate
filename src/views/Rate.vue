@@ -39,8 +39,13 @@
       <rating-form-description>
         How much would you pay for this bottle?
       </rating-form-description>
-      <span>$</span>
-      <input type="text" v-model="review.value" />
+      <currency
+        v-model="review.value"
+        :options="{
+          currency: 'USD',
+          useGrouping: true
+        }"
+      />
     </rating-form-row>
 
     <rating-form-row>
@@ -77,12 +82,14 @@
 import colors from '@/components/form/inputs/colors.vue'
 import notes from '@/components/form/inputs/notes.vue'
 import dropdown from '@/components/form/inputs/dropdown.vue'
+import currency from '@/components/form/inputs/currency.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
 import ratingFormRow from '@/components/form/rating-form-row.vue'
 import ratingFormLabel from '@/components/form/rating-form-label.vue'
 import ratingFormDescription from '@/components/form/rating-form-description.vue'
 import { computed, defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'
+import Currency from '@/components/form/inputs/currency.vue'
 
 export default defineComponent({
   name: 'Rate',
@@ -92,8 +99,10 @@ export default defineComponent({
     ratingFormLabel,
     notes,
     dropdown,
+    currency,
     colors,
-    flavorWheel
+    flavorWheel,
+    Currency
   },
   setup() {
     const ratingScale = computed(() => [...Array(101).keys()].slice().reverse())
