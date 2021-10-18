@@ -1,7 +1,9 @@
 <template>
   <div class="drawer-modal" :class="{ 'drawer-modal--active': active }">
-    <h3>{{ title }}</h3>
-    <slot></slot>
+    <div class="drawer-modal__content">
+      <h3>{{ title }}</h3>
+      <slot></slot>
+    </div>
 
     <div class="drawer-modal__actions">
       <button
@@ -76,8 +78,7 @@ export default defineComponent({
   width: 100%;
   height: 100vh;
   z-index: 9999;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden;
   padding: 12px 20px;
   transform: translateX(110%);
   transition: 320ms cubic-bezier(0.39, 0.575, 0.565, 1);
@@ -87,15 +88,22 @@ export default defineComponent({
     transform: translateX(0%);
   }
 }
+.drawer-modal__content {
+  overflow-y: auto;
+  height: 100vh;
+  padding-bottom: 100px;
+}
 .drawer-modal__actions {
-  position: sticky;
-  bottom: -12px;
-  padding: 5% 3%;
+  position: fixed;
+  min-height: 50px;
+  bottom: 0px;
+  padding: 20px 3%;
   background: white;
-  width: 113%;
-  left: 0px;
-  transform: translateX(-6%);
-  margin-bottom: -5%;
+  width: 100%;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
 }
 .drawer-modal__action {
   display: inline-block;
@@ -105,9 +113,6 @@ export default defineComponent({
   color: $charcoal;
   padding: 12px 6px;
   font-size: 16px;
-  &:first-child {
-    margin-right: 2%;
-  }
   &--primary {
     color: $auburn;
     border-color: $auburn;
