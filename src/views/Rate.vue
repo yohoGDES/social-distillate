@@ -81,13 +81,21 @@
 
 
     <rating-form-row>
-      <button type="submit" @click.prevent="submitReview">Done</button>
+      <form-button
+        rank="primary"
+        width="full"
+        type="button"
+        @clicked="submitReview"
+      >
+        Done
+      </form-button>
     </rating-form-row>
   </form>
 </template>
 <script lang="ts">
 import colors from '@/components/form/inputs/colors.vue'
 import notes from '@/components/form/inputs/notes.vue'
+import formButton from '@/components/form/inputs/button.vue'
 import dropdown from '@/components/form/inputs/dropdown.vue'
 import currency from '@/components/form/inputs/currency.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
@@ -105,6 +113,7 @@ export default defineComponent({
     ratingFormDescription,
     ratingFormLabel,
     notes,
+    formButton,
     dropdown,
     currency,
     colors,
