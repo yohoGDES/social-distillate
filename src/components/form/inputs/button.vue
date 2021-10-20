@@ -13,7 +13,7 @@ import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
   name: 'form-button',
-  emits: ['click'],
+  emits: ['clicked'],
   props: {
     type: {
       type: String,

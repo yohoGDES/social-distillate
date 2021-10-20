@@ -13,6 +13,7 @@
     "chart.js": "^3.5.1",
     "chartjs-plugin-datalabels": "^2.0.0",
     "core-js": "^3.18.2",
+    "parse": "^3.3.1",
     "register-service-worker": "^1.7.1",
     "vue": "^3.2.20",
     "vue-chart-3": "^0.5.8",
@@ -22,7 +23,7 @@
   },
   "devDependencies": {
     "@types/jest": "^24.0.19",
-    "@types/parse": "^2.18.12",
+    "@types/parse": "^2.18.13",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.33.0",
     "@vue/cli-plugin-babel": "~4.5.14",
