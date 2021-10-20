@@ -1,27 +1,21 @@
 <template>
   <flavor-wheel-chart :flavors="flavors" />
   <div class="flavor-scales">
-    <div v-for="(flavor, index) in flavors" :key="index">
+    <div class="flavor-scale" v-for="(flavor, index) in flavors" :key="index">
       <label for="">{{ flavor.name }} ({{ flavor.value }})</label>
       <div class="flavor-scale__input">
-        <input
-          type="range"
-          name=""
-          v-model="flavor.value"
-          id=""
-          min="0"
-          max="5"
-        />
+        <range v-model="flavor.value" :min="0" :max="5" />
       </div>
     </div>
   </div>
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
+import range from '@/components/form/inputs/range.vue'
 import flavorWheelChart from '../flavor-wheel/flavor-wheel-chart.vue'
 import { Flavor } from '@/types'
 export default defineComponent({
-  components: { flavorWheelChart },
+  components: { flavorWheelChart, range },
   name: 'flavor-wheel',
   setup() {
     const flavors: Flavor[] = reactive([
@@ -116,10 +110,11 @@ export default defineComponent({
 .flavor-scales {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-evenly;
-  div {
+  justify-content: space-between;
+  .flavor-scale {
     width: 46%;
     padding: 0 2%;
+    margin-bottom: 8px;
   }
 }
 .flavor-wheel-bars {

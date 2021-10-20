@@ -18,19 +18,22 @@ body {
   -moz-osx-font-smoothing: grayscale;
   color: $charcoal;
   padding: 3%;
+  /* Dark Mode
+    color: #ebebeb;
+    background: #161d24;
+  */
 }
 * {
   box-sizing: border-box;
 }
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
     color: $charcoal;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: $tawny;
     }
   }
 }
