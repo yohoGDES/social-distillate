@@ -67,7 +67,7 @@
     </rating-form-row>
 
     <rating-form-row>
-      <rating-form-label label="Overall Flavor" />
+      <rating-form-label label="Flavor Profile" />
       <flavor-wheel />
     </rating-form-row>
 
