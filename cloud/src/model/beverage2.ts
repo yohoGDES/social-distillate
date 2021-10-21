@@ -8,7 +8,7 @@ export enum BeverageTypes {
 
 export type BeverageType = keyof typeof BeverageTypes
 
-// The main model interface for properties
+// The main model interface for properties 
 export interface BeverageModel {
     id: string
     name: string
@@ -18,6 +18,8 @@ export interface BeverageModel {
     type: BeverageType,
     updatedAt: Date
     createdAt: Date
+
+    oneLiner(): string
 }
 
 // Declaration merging happens so the properties show up on the class
@@ -27,8 +29,8 @@ export class BeverageModel extends Base<BeverageModel> {
         super('Beverage', init)
     }
 
-    nameType() {
-        return `${this.name} = ${this.type}`
+    oneLiner() {
+        return `${this.name} ${this.description}`
     }
 }
 
@@ -45,8 +47,8 @@ export class BeverageModel extends Base<BeverageModel> {
 **/
 interface Beverage extends Omit<BeverageModel, keyof Parse.Object> {}
 class Beverage {
-    constructor() {
-        return new BeverageModel()
+    constructor(init?: Partial<Beverage>) {
+        return new BeverageModel(init)
     }
 }
 export default Beverage

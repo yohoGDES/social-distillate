@@ -1,7 +1,7 @@
 import Parse from 'parse'
 
-export default abstract class Base<T> extends Parse.Object {
-    constructor(modelName: string, init?: Partial<T>) {
+abstract class Base<T> extends Parse.Object {
+    constructor(modelName: string) {
         super(modelName)
 
         return new Proxy(this, {
@@ -18,3 +18,11 @@ export default abstract class Base<T> extends Parse.Object {
         })
     }
 }
+
+export default abstract class BaseModel<T> extends Base<T> {
+    constructor(modelName: string, init?: Partial<T>) {
+        super(modelName)
+
+        Object.assign(this, init)
+    }
+} 
