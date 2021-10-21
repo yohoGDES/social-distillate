@@ -1,5 +1,5 @@
 <template>
-  <div class="home">Social Distillate - a work in progress</div>
+  <div class="home">The Social Cask - a work in progress</div>
 </template>
 
 <script lang="ts">

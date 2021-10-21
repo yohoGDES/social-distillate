@@ -5,13 +5,13 @@
       @insert-selections="addSuggestions($event)"
     >
       <template v-slot:label>
-        <rating-form-label :label="label" />
+        <sc-form-label :label="label" />
       </template>
     </suggest-notes>
 
-    <rating-form-description>
+    <sc-form-description>
       {{ description }}
-    </rating-form-description>
+    </sc-form-description>
 
     <textarea
       class="s-notes"
@@ -27,8 +27,6 @@
 <script lang="ts">
 import suggestNotes from '@/components/suggestions/suggest-notes.vue'
 import { computed, defineComponent } from 'vue'
-import RatingFormLabel from '../rating-form-label.vue'
-import RatingFormDescription from '../rating-form-description.vue'
 
 export default defineComponent({
   name: 'notes',
@@ -43,9 +41,7 @@ export default defineComponent({
   },
   emits: ['update:modelValue'],
   components: {
-    suggestNotes,
-    RatingFormLabel,
-    RatingFormDescription
+    suggestNotes
   },
   setup(props, context) {
     const proxyValue = computed({

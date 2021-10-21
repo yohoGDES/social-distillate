@@ -1,7 +1,9 @@
 <template>
+  <h1>The Social Cask</h1>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/rate">Rate</router-link>
+    <router-link to="/rate">Rate</router-link> |
+    <router-link to="/login">Login</router-link>
   </div>
   <router-view />
 </template>
@@ -27,7 +29,8 @@ body {
   box-sizing: border-box;
 }
 #nav {
-  padding: 30px;
+  // padding: 30px;
+  margin-bottom:15px;
   a {
     font-weight: bold;
     color: $charcoal;

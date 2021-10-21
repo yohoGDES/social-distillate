@@ -9,116 +9,99 @@
   <div>Information about this tasting is hidden until the host reveals.</div>
   <hr />
   <form>
-    <rating-form-row>
-      <rating-form-label label="Color" />
-      <rating-form-description>
+    <sc-form-row>
+      <sc-form-label label="Color" />
+      <sc-form-description>
         Select the color that most closely matches the appearance of the liquid.
-      </rating-form-description>
+      </sc-form-description>
       <colors :color="review.color" @update:color="review.color = $event" />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
+    <sc-form-row>
       <notes
         v-model="review.nose"
         label="Nose"
         description="Why we nose goes here."
       />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
+    <sc-form-row>
       <notes
         v-model="review.palate"
         label="Palate"
         description="What do we mean by palate here."
       />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
+    <sc-form-row>
       <notes
         v-model="review.finish"
         label="Finish"
         description="What is in a finish?"
       />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
-      <rating-form-label label="Value" />
-      <rating-form-description>
+    <sc-form-row>
+      <sc-form-label label="Value" />
+      <sc-form-description>
         How much would you pay for this bottle?
-      </rating-form-description>
-      <currency
+      </sc-form-description>
+      <sc-currency
         v-model="review.value"
         :options="{
           currency: 'USD',
           useGrouping: true
         }"
       />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
-      <rating-form-label label="Rating" />
-      <rating-form-description>
+    <sc-form-row>
+      <sc-form-label label="Rating" />
+      <sc-form-description>
         From 0 to 100 how would you rate this bottle?
-      </rating-form-description>
-      <dropdown v-model="review.rating" :options="ratingScale" />
-      <!-- <select name="" id="" v-model="review.rating">
-        <option v-for="i in ratingScale" :key="i" :value="i">{{ i }}</option>
-      </select> -->
-    </rating-form-row>
+      </sc-form-description>
+      <sc-dropdown v-model="review.rating" :options="ratingScale" />
+    </sc-form-row>
 
-    <rating-form-row>
-      <rating-form-label label="Flavor Profile" />
+    <sc-form-row>
+      <sc-form-label label="Flavor Profile" />
       <flavor-wheel />
-    </rating-form-row>
+    </sc-form-row>
 
-    <rating-form-row>
-      <rating-form-label label="Conclusion" />
-      <rating-form-description>
+    <sc-form-row>
+      <sc-form-label label="Conclusion" />
+      <sc-form-description>
         What did you think about this bottle overall?
-      </rating-form-description>
+      </sc-form-description>
       <notes v-model="review.conclusion" :hideSuggestions="true" />
-    </rating-form-row>
+    </sc-form-row>
 
 
-    <rating-form-row>
-      <form-button
+    <sc-form-row>
+      <sc-button
         rank="primary"
         width="full"
         type="button"
         @clicked="submitReview"
       >
         Done
-      </form-button>
-    </rating-form-row>
+      </sc-button>
+    </sc-form-row>
   </form>
 </template>
 <script lang="ts">
 import colors from '@/components/form/inputs/colors.vue'
 import notes from '@/components/form/inputs/notes.vue'
-import formButton from '@/components/form/inputs/button.vue'
-import dropdown from '@/components/form/inputs/dropdown.vue'
-import currency from '@/components/form/inputs/currency.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
-import ratingFormRow from '@/components/form/rating-form-row.vue'
-import ratingFormLabel from '@/components/form/rating-form-label.vue'
-import ratingFormDescription from '@/components/form/rating-form-description.vue'
 import { computed, defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'
-import Currency from '@/components/form/inputs/currency.vue'
 
 export default defineComponent({
   name: 'Rate',
   components: {
-    ratingFormRow,
-    ratingFormDescription,
-    ratingFormLabel,
     notes,
-    formButton,
-    dropdown,
-    currency,
     colors,
-    flavorWheel,
-    Currency
+    flavorWheel
   },
   setup() {
     const ratingScale = computed(() => [...Array(101).keys()].slice().reverse())

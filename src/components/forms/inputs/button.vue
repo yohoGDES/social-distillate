@@ -1,7 +1,7 @@
 <template>
   <button
-    class="form-button"
-    :class="`form-button--${rank} ${customWidth}`"
+    class="sc-button"
+    :class="`sc-button--${rank} ${customWidth}`"
     :type="type"
     @click="$emit('clicked')"
   >
@@ -12,7 +12,7 @@
 import { computed, defineComponent } from 'vue'
 
 export default defineComponent({
-  name: 'form-button',
+  name: 'sc-button',
   emits: ['clicked'],
   props: {
     type: {
@@ -40,7 +40,7 @@ export default defineComponent({
     const customWidth = computed(() => {
       const width = props.width
       if (!width) return ''
-      return width === 'full' ? 'form-button--full' : 'form-button--half'
+      return width === 'full' ? 'sc-button--full' : 'sc-button--half'
     })
     return {
       customWidth
@@ -49,7 +49,7 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scope>
-.form-button {
+.sc-button {
   display: inline-block;
   background: none;
   border: 1px solid $charcoal;
