@@ -1,68 +1,56 @@
-import Base, {createModel} from './base'
+import Parse from 'parse'
+import Base, {BaseAttributes} from './base'
 
 describe('model/base', () => {
-    interface Properties {
-        foo: string
-    }
-    class TestModel extends Base<Properties> {
-        protected __modelName = 'TestModel'
 
-        constructor(props: Partial<Properties> = {}) {
-            super(props)
+    interface TestModel {
+        foo: string
+        modelMethod(): string
+    }
+
+    class TestModel extends Base<TestModel> {
+        constructor(init?: Partial<TestModel>) {
+            super('TestModel', init)
         }
 
         modelMethod() {
-            return 'I Ran'
+            return `foo is ${this.foo}`
         }
     }
-    const UnderTest = createModel<TestModel, Properties>(TestModel)
 
-    describe('getModelName', () => {
-        it('returns the model name', () => {
-            const model = new UnderTest()
-            expect(model.getModelName()).toEqual('TestModel')
-        })
+    interface UnderTest extends Omit<TestModel, keyof Parse.Object>, BaseAttributes {}
+    class UnderTest {
+        constructor(init?: Partial<UnderTest>) {
+            return new TestModel(init)
+        }
+    }
+
+    it('a class can be created from it', () => {
+        const model = new UnderTest()
+        expect(model).toBeDefined()
     })
 
-    describe('properties', () => {
-        it('can be set when init', () => {
-            const model = new UnderTest({
-                foo: 'BANG'
-            })
-            
-            expect(model.foo)
-        })
+    it('can set and get properties', () => {
+        const model = new UnderTest()
+        model.foo = 'bar'
 
-        it('sets properties that do not pollute the class', () => {
-            const model = new UnderTest()
-            model.foo = 'bar'
-
-            for(let k in model) {
-                expect(k).not.toEqual('foo')
-            }
-        })
-
-        it('gets set properties', () => {
-            const model = new UnderTest()
-            model.foo = 'bar'
-
-            expect(model.foo).toEqual('bar')
-        })
-
-        it('only returns properties when toJSON is involed', () => {
-            const model = new UnderTest()
-            model.foo = 'bar'
-
-            expect(model.toJSON()).toEqual({
-                foo: 'bar'
-            })
-        })
+        expect(model.foo).toEqual('bar')
     })
 
-    describe('model methods', () => {
-        it('can still be called', () => {
-            const model = new UnderTest()
-            expect(model.modelMethod()).toEqual('I Ran')
+    it('can set properties from the constructor', () => {
+        const model = new UnderTest({
+            foo: 'bar'
         })
+        
+        expect(model.foo).toEqual('bar')
     })
+
+    it('can have custom methods', () => {
+        const model = new UnderTest({
+            foo: 'bar'
+        })
+
+        expect(model.modelMethod()).toEqual('foo is bar')
+    })
+
 })

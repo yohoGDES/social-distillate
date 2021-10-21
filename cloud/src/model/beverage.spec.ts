@@ -6,10 +6,13 @@ describe('model/beverage', () => {
         expect(beverage).toBeDefined()
     })
 
-    describe('test', () => {
+    describe('oneLiner', () => {
         it('works', () => {
-            const beverage = new Beverage()
-            expect(beverage.test()).toEqual('test')
+            const beverage = new Beverage({
+                name: 'Skull Splitter',
+                description: 'is yummy'
+            })
+            expect(beverage.oneLiner()).toEqual('Skull Splitter is yummy')
         })
     })
 })

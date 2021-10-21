@@ -1,44 +1,37 @@
-export interface ModelConstructor<T, P> {
-    new (props: Partial<P>, ...args: any[]): T
-}
+import Parse from 'parse'
 
-export const createModel = <T, P>(klass: ModelConstructor<T, P>) => {
-    type Model = T & P
-    const impl = klass as new (props?: Partial<P>, ...args: any[]) => Model
-    return impl
-}
-
-export default abstract class Base<P> {
-    protected __modelName: undefined | string
-    protected __properties: Partial<P>
-
-    constructor(properties: Partial<P> = {}) {
-        this.__properties = properties as P
+abstract class Base<T> extends Parse.Object {
+    constructor(modelName: string) {
+        super(modelName)
 
         return new Proxy(this, {
-            set(target, prop, value) {
-                if(prop.toString().slice(0,2) === '__') {
-                    return Reflect.set(target, prop, value)
-                }
-            
-                const p = prop as keyof P
-                return target.__properties[p] = value
+            set(target: Base<T>, prop: keyof Base<T>, value: any) {
+                return target.set(prop, value) ? true : false
             },
-            get(target, prop, receiver) {
-                const p = prop as keyof P
-                if(target.__properties[p]) {
-                    return target.__properties[p]
+            get(target: Base<T>, prop: keyof Base<T>, receiver) {
+                if(target.has(prop)) {
+                    return target.get(prop)
                 }
-                return Reflect.get(target, prop, receiver)
+                
+                return Reflect.get(target, prop)
             }
         })
     }
-
-    getModelName() {
-        return this.__modelName
-    }
-
-    toJSON() {
-        return this.__properties
-    }
 }
+
+abstract class BaseModel<T> extends Base<T> {
+    constructor(modelName: string, init?: Partial<T>) {
+        super(modelName)
+        if(init) {
+            Object.assign(this, init)
+        }
+    }
+} 
+
+export interface BaseAttributes {
+    id: string
+    updatedAt: Date
+    createdAt: Date
+}
+
+export default BaseModel
