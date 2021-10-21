@@ -10,11 +10,14 @@ export type BeverageType = keyof typeof BeverageTypes
 
 // The main model interface for properties
 export interface BeverageModel {
+    id: string
     name: string
     description: string
     country: string
     region: string
-    type: BeverageType
+    type: BeverageType,
+    updatedAt: Date
+    createdAt: Date
 }
 
 // Declaration merging happens so the properties show up on the class
