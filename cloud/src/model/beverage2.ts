@@ -8,7 +8,7 @@ export enum BeverageTypes {
 
 export type BeverageType = keyof typeof BeverageTypes
 
-// The main model interface for properties 
+// The main model interface to expose to the application
 export interface BeverageModel {
     id: string
     name: string
