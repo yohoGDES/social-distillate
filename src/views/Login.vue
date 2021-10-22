@@ -10,8 +10,8 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref } from 'vue'
-import LoginForm from '@/components/login-form/login-form.vue'
-import RegisterForm from '@/components/login-form/register-form.vue'
+import LoginForm from '@/components/forms/login/login-form.vue'
+import RegisterForm from '@/components/forms/register/register-form.vue'
 export default defineComponent({
   name: 'Login',
   components: {

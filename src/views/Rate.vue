@@ -90,8 +90,8 @@
   </form>
 </template>
 <script lang="ts">
-import colors from '@/components/form/inputs/colors.vue'
-import notes from '@/components/form/inputs/notes.vue'
+import colors from '@/components/forms/inputs/rate/colors.vue'
+import notes from '@/components/forms/inputs/rate/notes.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
 import { computed, defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'

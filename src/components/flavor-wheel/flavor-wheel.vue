@@ -11,7 +11,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, reactive, ref } from 'vue'
-import range from '@/components/form/inputs/range.vue'
+import range from '@/components/forms/inputs/range.vue'
 import flavorWheelChart from '../flavor-wheel/flavor-wheel-chart.vue'
 import { Flavor } from '@/types'
 export default defineComponent({

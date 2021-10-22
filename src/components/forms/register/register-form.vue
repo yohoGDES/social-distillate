@@ -50,7 +50,7 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive, ref } from 'vue'
+import { defineComponent, onBeforeMount, reactive } from 'vue'
 import { initApi, api } from '@/utilities/api'
 
 type UserRegistration = {
@@ -72,15 +72,30 @@ export default defineComponent({
       password: '',
       confirmPassword: ''
     })
+    const checkPasswordValidity = (): boolean => {
+      const pw = userRegistration.password
+      const conf = userRegistration.confirmPassword
+      if (pw === '' || conf === '') return false
+      if (pw !== conf) return false
+
+      return true
+    }
     const register = async () => {
-      const user = new api.User()
-      user.set('username', userRegistration.username)
-      user.set('email', userRegistration.email)
-      user.set('password', userRegistration.password)
+      console.log('hello?')
+      console.log(checkPasswordValidity())
+      if (!checkPasswordValidity()) {
+        console.log('Password is not valid')
+        return
+      }
+
+      // const user = new api.User()
+      // user.set('username', userRegistration.username)
+      // user.set('email', userRegistration.email)
+      // user.set('password', userRegistration.password)
 
       try {
-        let userResult = await user.signUp()
-        console.log('User signed up', userResult)
+        // let userResult = await user.signUp()
+        // console.log('User signed up', userResult)
       } catch (error) {
         console.error('Error while signing up user', error)
       }
