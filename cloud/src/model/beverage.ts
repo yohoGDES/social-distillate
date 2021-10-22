@@ -1,5 +1,5 @@
 import Parse from 'parse'
-import Base, {BaseAttributes} from './base'
+import Base, {expose} from './base'
 
 export enum BeverageTypes {
     beer = 'beer',
@@ -45,13 +45,7 @@ export class BeverageModel extends Base<BeverageModel> {
  *      (beverage as BeverageModel).save() 
  * 
 **/
-interface Beverage extends Omit<BeverageModel, keyof Parse.Object>, BaseAttributes {}
-class Beverage {
-    constructor(init?: Partial<Beverage>) {
-        return new BeverageModel(init)
-    }
-}
-export default Beverage
+export default expose(BeverageModel)
 
 
 // This can go in a service registration file or somewhere else but it informs

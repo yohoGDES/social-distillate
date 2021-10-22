@@ -28,10 +28,20 @@ abstract class BaseModel<T> extends Base<T> {
     }
 } 
 
-export interface BaseAttributes {
+interface BaseAttributes {
     id: string
     updatedAt: Date
     createdAt: Date
+}
+
+export function expose<T extends Base<T>>(modelClass: new (init?: Partial<T>) => T) {
+    type Attributes = BaseAttributes & Omit<T, keyof Parse.Object>
+    class Model {
+        constructor(init?: Partial<T>) {
+            return new modelClass(init)
+        }
+    }
+    return Model as new (init?: Partial<T>) => Attributes
 }
 
 export default BaseModel

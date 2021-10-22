@@ -12,6 +12,7 @@ describe('model/beverage', () => {
                 name: 'Skull Splitter',
                 description: 'is yummy'
             })
+            expect(beverage.name).toEqual('Skull Splitter')
             expect(beverage.oneLiner()).toEqual('Skull Splitter is yummy')
         })
     })

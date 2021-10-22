@@ -1,13 +1,15 @@
 import Parse from 'parse'
-import Base, {BaseAttributes} from './base'
+import Base, {expose} from './base'
 
 describe('model/base', () => {
 
+    /**
+     * Begin Model Impl
+     */
     interface TestModel {
         foo: string
         modelMethod(): string
     }
-
     class TestModel extends Base<TestModel> {
         constructor(init?: Partial<TestModel>) {
             super('TestModel', init)
@@ -17,13 +19,10 @@ describe('model/base', () => {
             return `foo is ${this.foo}`
         }
     }
-
-    interface UnderTest extends Omit<TestModel, keyof Parse.Object>, BaseAttributes {}
-    class UnderTest {
-        constructor(init?: Partial<UnderTest>) {
-            return new TestModel(init)
-        }
-    }
+    const UnderTest = expose(TestModel)
+    /**
+     * End Model Impl
+     */
 
     it('a class can be created from it', () => {
         const model = new UnderTest()
@@ -53,4 +52,11 @@ describe('model/base', () => {
         expect(model.modelMethod()).toEqual('foo is bar')
     })
 
+    it('can still access Parse methods', () => {
+        const model = new UnderTest({
+            foo: 'bar'
+        })
+
+        expect((model as TestModel).save).toBeDefined()
+    })
 })
