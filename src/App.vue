@@ -7,22 +7,33 @@
 </template>
 
 <style lang="scss">
+body {
+  &.modal-open {
+    overflow-y: hidden;
+  }
+}
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
+  color: $charcoal;
+  padding: 3%;
+  /* Dark Mode
+    color: #ebebeb;
+    background: #161d24;
+  */
 }
-
+* {
+  box-sizing: border-box;
+}
 #nav {
   padding: 30px;
-
   a {
     font-weight: bold;
-    color: #2c3e50;
+    color: $charcoal;
 
     &.router-link-exact-active {
-      color: #42b983;
+      color: $tawny;
     }
   }
 }

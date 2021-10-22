@@ -1,0 +1,249 @@
+[
+  {
+    "key": "Fruit",
+    "value": [
+      {
+        "key": "Citrus Fruit",
+        "value": [
+          "Kiwi", "Zest", "Pineapple", "Lemon", "Orange", "Tangerine", "Nectarine", "Love hearts"
+        ]
+      },
+      {
+        "key": "Fresh Fruit",
+        "value": [
+          "Banana", "Pear", "Peach", "Apple", "Apricot", "Fruit Salad", "Berries", "Pear drops"
+        ]
+      },
+      {
+        "key": "Dried Fruit",
+        "value": [
+          "Prunes", "Raisins", "Christmas Pudding", "Mince Pie", " Dried Figs", "Mixed Peel", "Dried Apricots"
+        ]
+      },
+      {
+        "key": "Cooked Fruit",
+        "value": [
+          "Jam", "Rumtopf", "Marmalade", "Barley Sugar", "Candied Fruits", "Stewed Apples", "Peach Cobbler" 
+        ]
+      },
+      {
+        "key": "Solvent",
+        "value": [
+          "Paint", "Bubble Gum", "Turpentine", "Acid Drops", "Nail Polish Remover"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "Feinty",
+    "value": [
+      {
+        "key": "Honey",
+        "value": [
+          "Clover Honey", "Runny Honey", "Heather Honey", "Mead", "Beeswax", "Polish"
+        ]
+      },
+      {
+        "key": "Plastic",
+        "value": [
+          "Plastic Mat", "Plastic Lighter", "Plastic Rope", "Burnt Plastic"
+        ]
+      },
+      {
+        "key": "Sweat",
+        "value": [
+          "Buttermilk", "Cheese", "Yeast", "Shoe Polish"
+        ]
+      },
+      {
+        "key": "Tobacco",
+        "value": [
+          "Dried Tea", "Tobacco", "Green Tobacco", "Tobacco Ash"
+        ]
+      },
+      {
+        "key": "Leather",
+        "value": [
+          "Leather", "Cowhide", "Digestive Biscuit", "Shortbread"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "Floral",
+    "value": [
+      {
+        "key": "Greenhouse",
+        "value": [
+          "Geranium", "Green Tomatoes", "Violets", "Cut Flowers"
+        ]
+      },
+      {
+        "key": "Fragrant",
+        "value": [
+          "Perfume", "Fabric Softener", "Carnation", "Coconut", "Lavender"
+        ]
+      },
+      {
+        "key": "Leaves",
+        "value": [
+          "Green Leaves", "Fresh Mowed Grass", "Flower Stems", "Pea Pods", "Fir Tree", "Pine Nuts"
+        ]
+      },
+      {
+        "key": "Hay",
+        "value": [
+          "Mown Hay", "Dry Hay", "Heather Flowers", "Herbs", "Sage", "Mulch"
+        ]
+      }
+    ]
+  }, {
+    "key": "Peat",
+    "value": [
+      {
+        "key": "Smoke",
+        "value": [
+          "Peat Smoke", "Lapsang Souchong", "Campfire", "Ash", "Incense", "Smoked Bacon", "Extinguished Embers"
+        ]
+      },
+      {
+        "key": "Kippery",
+        "value": [
+          "Mussels", "Seashells", "Dried Shellfish", "Smoked Salmon", "Anchovies", "Smoked Oysters", "Grilled Fish"
+        ]
+      },
+      {
+        "key": "Moss",
+        "value": [
+          "Soil", "Moss Water", "Turf", "Bog Myrtle", "Sheep Wool", "Birch", "Hemp Rope", "Fishing Nets"
+        ]
+      },
+      {
+        "key": "Medicinal",
+        "value": [
+          "Sea Weed", "Eucalyptus", "Tar", "Lint", "Disenfectant", "Phenol", "Iodine", "Diesel Oil"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "Wood",
+    "value": [
+      {
+        "key": "Vanilla",
+        "value": [
+          "Vanilla", "Custard", "Creme Caramel", "Madeira Cake", "Sponge Cake", "Toffee", "Meringues", "Angel Food Cake"
+        ]
+      },
+      {
+        "key": "Old Wood",
+        "value": [
+          "Bung Cloth", "Oak Wood", "Cork", "Pencils", "Cardboard", "Ink", "Metal", "Camphor"
+        ]
+      },
+      {
+        "key": "New Wood",
+        "value": [
+          "Resin", "Freshly Sawn Wood", "Ginger", "Sandalwood", "Pepper", "Allspice", "Nutmeg", "Cigar Box", "Cedar"
+        ]
+      },
+      {
+        "key": "Toasted",
+        "value": [
+          "Rice Pudding", "Burnt Toast", "Coffee Grounds", "Aniseed", "Fennel", "Liquorice"
+        ]
+      }
+    ]
+  }, {
+    "key": "Sulphur",
+    "value": [
+      {
+        "key": "Sand",
+        "value": [
+          "Starch", "Fresh Laundry", "Linen", "Hot Sand", "Sulphur"
+        ]
+      },
+      {
+        "key": "Rubber",
+        "value": [
+          "Pencil Eraser", "Rubber Tire", "Electric Cables", "Burnt Rubber", "Gunpowder"
+        ]
+      },
+      {
+        "key": "Coal Gas",
+        "value": [
+          "Carbide", "Spent Fireworks", "Burnt Matches", "Matchbox"
+        ]
+      },
+      {
+        "key": "Vegetation",
+        "value": [
+          "Cabbage Water", "Turnip", "Stangant Water", "Marsh"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "Cereal",
+    "value": [
+      {
+        "key": "Yeast",
+        "value": [
+          "Boiled Pork", "Pork Sausage", "Fresh Bread", "Meat", "Gravy"
+        ]
+      },
+      {
+        "key": "Vegetables",
+        "value": [
+          "Mashed Potatoes", "Potato Scones", "Sweetcorn", "Cooked Swede"
+        ]
+      },
+      {
+        "key": "Husky",
+        "value": [
+          "Chaff", "Dried Hops", "Iron Tonic", "Ale", "Mouse"
+        ]
+      },
+      {
+        "key": "Cooked Mash",
+        "value": [
+          "Porridge", "Draff", "Cooked Corn"
+        ]
+      }, {
+        "key": "Malt",
+        "value": [
+          "Malted Milk", "Ovaltine", "Bran", "Malt", "Cake"
+        ]
+      }
+    ]
+  },
+  {
+    "key": "Wine",
+    "value": [
+      {
+        "key": "Oil",
+        "value": [
+          "Suntan Oil", "Almond Oil", "Linseed Oil", "Balsamic Vinegar", "Candle Wax", "Wax"
+        ]
+      },
+      {
+        "key": "Nuts",
+        "value": [
+          "Marzipan", "Almond", "Pralines", "Hazelnuts", "Walnuts", "Cashews"
+        ]
+      },
+      {
+        "key": "Chocolate",
+        "value": [
+          "Cream", "Butter", "Cocoa", "Milk Chocolate", "Bitter Chocolate", "Chocolate Brownies", "Chocolate Shake"
+        ]
+      },
+      {
+        "key": "Sherry",
+        "value": [
+          "Chardonnay", "Sauternes", "Fino", "Oloroso", "Armagnac", "Madeira", "Port", "Red Wine"
+        ]
+      }
+    ]
+  }
+]
