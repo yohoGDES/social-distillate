@@ -63,6 +63,7 @@
 import { defineComponent, onBeforeMount, reactive } from 'vue'
 import { setupUser } from '@/components/composables/user'
 import { initApi, api } from '@/utilities/api'
+import User, {UserModel} from '../../../../cloud/src/model/user'
 
 type UserRegistration = {
   username: string
@@ -97,13 +98,12 @@ export default defineComponent({
         return
       }
 
-      const user = new api.User()
-      user.set('username', userRegistration.username)
-      user.set('email', userRegistration.email)
-      user.set('password', userRegistration.password)
+      const user = new User({ ...userRegistration })
 
       try {
-        let userResult = await user.signUp()
+        // This will be moved to somewhere else and referenced as a function
+        // signup(user) or similar because we want to hide backend calls where possible
+        let userResult = await (user as UserModel).signUp()
         console.log('User signed up', userResult)
         setupUser(userResult)
       } catch (error) {
