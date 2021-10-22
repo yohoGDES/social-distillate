@@ -20,6 +20,7 @@
     "vue-chart-3": "^0.5.8",
     "vue-currency-input": "^2.1.1",
     "vue-router": "^4.0.0-0",
+    "vue-uuid": "^2.0.2",
     "vuex": "^4.0.0-0"
   },
   "devDependencies": {
