@@ -9,6 +9,7 @@
           type="text"
           name="username"
           id="username"
+          required
           v-model="userRegistration.username"
         />
       </sc-form-row>
@@ -19,6 +20,7 @@
           type="email"
           name="email"
           id="email"
+          required
           v-model="userRegistration.email"
         />
       </sc-form-row>
@@ -29,6 +31,7 @@
           type="password"
           name="password"
           id="password"
+          required
           v-model="userRegistration.password"
         />
       </sc-form-row>
@@ -39,11 +42,18 @@
           type="password"
           name=""
           id="confirm-password"
+          required
           v-model="userRegistration.confirmPassword"
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-button rank="primary" width="full" @clicked="register()">Register</sc-button>
+        <sc-button
+          type="submit"
+          rank="primary"
+          width="full"
+          @clicked="register()"
+          >Register</sc-button
+        >
         <a href="">Forgot Password</a>
       </sc-form-row>
     </form>
@@ -51,6 +61,7 @@
 </template>
 <script lang="ts">
 import { defineComponent, onBeforeMount, reactive } from 'vue'
+import { setupUser } from '@/components/composables/user'
 import { initApi, api } from '@/utilities/api'
 
 type UserRegistration = {
@@ -81,21 +92,20 @@ export default defineComponent({
       return true
     }
     const register = async () => {
-      console.log('hello?')
-      console.log(checkPasswordValidity())
       if (!checkPasswordValidity()) {
         console.log('Password is not valid')
         return
       }
 
-      // const user = new api.User()
-      // user.set('username', userRegistration.username)
-      // user.set('email', userRegistration.email)
-      // user.set('password', userRegistration.password)
+      const user = new api.User()
+      user.set('username', userRegistration.username)
+      user.set('email', userRegistration.email)
+      user.set('password', userRegistration.password)
 
       try {
-        // let userResult = await user.signUp()
-        // console.log('User signed up', userResult)
+        let userResult = await user.signUp()
+        console.log('User signed up', userResult)
+        setupUser(userResult)
       } catch (error) {
         console.error('Error while signing up user', error)
       }

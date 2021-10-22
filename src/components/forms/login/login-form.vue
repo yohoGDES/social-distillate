@@ -33,6 +33,7 @@
 <script lang="ts">
 import { defineComponent, onBeforeMount, reactive } from 'vue'
 import { initApi, api } from '@/utilities/api'
+import { setupUser } from '@/components/composables/user'
 
 type UserLogin = {
   username: string
@@ -53,6 +54,8 @@ export default defineComponent({
       try {
         let user = await api.User.logIn(userLogin.username, userLogin.password)
         console.log('Logged in user', user.attributes.username)
+        const { currentUser } = setupUser(user)
+        console.log('current user is: ', currentUser.value.attributes)
         return user
       } catch (error) {
         console.error('Error while logging in user', error)
