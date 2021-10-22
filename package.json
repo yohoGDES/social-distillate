@@ -6,6 +6,7 @@
     "serve": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
     "test:unit": "vue-cli-service test:unit",
+    "test:cloud": "npx jest -c cloud/jest.config.js",
     "lint": "vue-cli-service lint",
     "deploy": "make deploy"
   },
