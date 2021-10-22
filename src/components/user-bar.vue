@@ -7,8 +7,6 @@
 import { defineComponent } from 'vue'
 // TODO: Get the current user from our composable area.
 export default defineComponent({
-  setup() {
-    
-  },
+  setup() {}
 })
 </script>

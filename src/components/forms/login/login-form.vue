@@ -23,7 +23,9 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-button rank="primary" width="full" @clicked="login()">Login</sc-button>
+        <sc-button rank="primary" width="full" @clicked="login()"
+          >Login</sc-button
+        >
         <sc-button @clicked="getCurrentUser()">Get User</sc-button>
         <a href="">Forgot Password</a>
       </sc-form-row>

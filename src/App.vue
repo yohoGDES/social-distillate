@@ -30,7 +30,7 @@ body {
 }
 #nav {
   // padding: 30px;
-  margin-bottom:15px;
+  margin-bottom: 15px;
   a {
     font-weight: bold;
     color: $charcoal;

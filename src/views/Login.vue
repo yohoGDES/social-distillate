@@ -1,7 +1,7 @@
 <template>
   <div class="user-login">
     <div class="user-login__tabs">
-      <a href="" @click.prevent="setActiveTab('login')">Login</a> | 
+      <a href="" @click.prevent="setActiveTab('login')">Login</a> |
       <a href="" @click.prevent="setActiveTab('register')">Sign Up</a>
     </div>
     <login-form v-if="activeTab === 'login'" />
@@ -25,8 +25,8 @@ export default defineComponent({
     }
     return {
       activeTab,
-      setActiveTab,
+      setActiveTab
     }
-  },
+  }
 })
 </script>

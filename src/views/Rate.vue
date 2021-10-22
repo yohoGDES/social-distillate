@@ -76,7 +76,6 @@
       <notes v-model="review.conclusion" :hideSuggestions="true" />
     </sc-form-row>
 
-
     <sc-form-row>
       <sc-button
         rank="primary"
