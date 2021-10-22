@@ -1,5 +1,5 @@
 import Parse from 'parse'
-import Base, {expose} from './base'
+import {BaseModel, expose} from './base'
 
 describe('model/base', () => {
 
@@ -10,7 +10,7 @@ describe('model/base', () => {
         foo: string
         modelMethod(): string
     }
-    class TestModel extends Base<TestModel> {
+    class TestModel extends BaseModel<TestModel> {
         constructor(init?: Partial<TestModel>) {
             super('TestModel', init)
         }

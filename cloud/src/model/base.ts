@@ -1,14 +1,20 @@
 import Parse from 'parse'
 
-abstract class Base<T> extends Parse.Object {
+interface BaseAttributes {
+    id: string
+    updatedAt: Date
+    createdAt: Date
+}
+
+export abstract class BaseModel<T> extends Parse.Object {
     constructor(modelName: string, init?: Partial<T>) {
         super(modelName, init)
 
         return new Proxy(this, {
-            set(target: Base<T>, prop: keyof Base<T>, value: any) {
+            set(target: BaseModel<T>, prop: keyof BaseModel<T>, value: any) {
                 return target.set(prop, value) ? true : false
             },
-            get(target: Base<T>, prop: keyof Base<T>, receiver) {
+            get(target: BaseModel<T>, prop: keyof BaseModel<T>, receiver) {
                 if(target.has(prop)) {
                     return target.get(prop)
                 }
@@ -19,13 +25,7 @@ abstract class Base<T> extends Parse.Object {
     }
 }
 
-interface BaseAttributes {
-    id: string
-    updatedAt: Date
-    createdAt: Date
-}
-
-export function expose<T extends Base<T>, P = Parse.Object>(modelClass: new (init?: Partial<T>) => T) {
+export function expose<T extends BaseModel<T>, P = Parse.Object>(modelClass: new (init?: Partial<T>) => T) {
     type Attributes = BaseAttributes & Omit<T, keyof P>
     class Model {
         constructor(init?: Partial<T>) {
@@ -34,5 +34,3 @@ export function expose<T extends Base<T>, P = Parse.Object>(modelClass: new (ini
     }
     return Model as new (init?: Partial<T>) => Attributes
 }
-
-export default Base

@@ -1,5 +1,5 @@
 import Parse from 'parse'
-import Base, {expose} from './base'
+import { BaseModel, expose } from './base'
 
 export enum BeverageTypes {
     beer = 'beer',
@@ -24,7 +24,7 @@ export interface BeverageModel {
 
 // Declaration merging happens so the properties show up on the class
 // Also extending the Base which sets up Parse.Object
-export class BeverageModel extends Base<BeverageModel> {
+export class BeverageModel extends BaseModel<BeverageModel> {
     constructor(init?: Partial<BeverageModel>) {
         super('Beverage', init)
     }
