@@ -1,7 +1,7 @@
 <template>
   <div class="register">
     <h2>Sign Up</h2>
-    <form class="register-form">
+    <form @submit.prevent="register()" class="register-form">
       <sc-form-row>
         <sc-form-label label="Username" />
         <sc-form-description></sc-form-description>
@@ -47,11 +47,7 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-button
-          type="submit"
-          rank="primary"
-          width="full"
-          @clicked="register()"
+        <sc-button type="submit" rank="primary" width="full"
           >Register</sc-button
         >
         <a href="">Forgot Password</a>
@@ -61,9 +57,10 @@
 </template>
 <script lang="ts">
 import { defineComponent, onBeforeMount, reactive } from 'vue'
-import { setupUser } from '@/components/composables/user'
 import { initApi, api } from '@/utilities/api'
-import User, {UserModel} from '../../../../cloud/src/model/user'
+import User from '../../../../cloud/src/model/user'
+
+import { useUserStore } from '@/store/modules/user'
 
 type UserRegistration = {
   username: string
@@ -77,6 +74,8 @@ export default defineComponent({
     onBeforeMount(() => {
       initApi()
     })
+
+    const store = useUserStore()
 
     const userRegistration: UserRegistration = reactive({
       username: '',
@@ -98,17 +97,7 @@ export default defineComponent({
         return
       }
 
-      const user = new User({ ...userRegistration })
-
-      try {
-        // This will be moved to somewhere else and referenced as a function
-        // signup(user) or similar because we want to hide backend calls where possible
-        let userResult = await (user as UserModel).signUp()
-        console.log('User signed up', userResult)
-        setupUser(userResult)
-      } catch (error) {
-        console.error('Error while signing up user', error)
-      }
+      await store.registerUser(new User({ ...userRegistration }))
     }
     return {
       userRegistration,

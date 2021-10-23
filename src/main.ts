@@ -2,11 +2,11 @@ import { createApp } from 'vue'
 import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
-import { store, key } from './store'
+import { createPinia } from 'pinia'
 
 import { registerComponents } from './components/register-components'
 
-const app = createApp(App).use(store, key).use(router)
+const app = createApp(App).use(createPinia()).use(router)
 
 registerComponents(app)
 
