@@ -1,23 +1,34 @@
 import { defineStore } from 'pinia'
-import User, { UserModel } from '../../../cloud/src/model/user'
+import { api } from '@/utilities/api'
+import { UserModel } from '../../../cloud/src/model/user'
 
 // Not sure where to put this but I don't think it's working here
-import Parse from 'parse'
-Parse.Object.registerSubclass('_User', UserModel)
+api.Object.registerSubclass('_User', UserModel)
 
 // Move these types somewhere more universal
 type userRegistration = Pick<UserModel, 'username' | 'email' | 'password'>
-type userLogin = Pick<UserModel, 'username' | 'password'>
 
 // User store will contain specific actions and details about the current user
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
-      currentUser: {}
+      currentUser: api.User.current()
+    }
+  },
+  getters: {
+    userAuthenticated: (state) => {
+      if (state.currentUser === null) {
+        return false
+      }
+
+      if (state.currentUser?.authenticated()) {
+        return true
+      } else {
+        return false
+      }
     }
   },
   actions: {
-    // This one works!
     async registerUser(user: userRegistration) {
       try {
         const result = await (user as UserModel).signUp()
@@ -26,11 +37,22 @@ export const useUserStore = defineStore('user', {
         console.log('Error registering user: ', e)
       }
     },
-    async login(user: userLogin) {
+    async login(username: string, password: string) {
       try {
-        this.$state.currentUser = await UserModel.logIn(user.username, user.password)
+        const newSession = await UserModel.logIn(username, password)
+        console.log('new session', newSession)
+        this.currentUser = api.User.current()
+        return newSession
       } catch (e) {
         console.log('Error logging in user: ', e)
+      }
+    },
+    async logout() {
+      try {
+        await UserModel.logOut()
+        this.currentUser = null
+      } catch (e) {
+        console.log('Error logging out: ', e)
       }
     }
   }

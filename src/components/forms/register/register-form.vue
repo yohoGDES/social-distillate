@@ -75,7 +75,7 @@ export default defineComponent({
       initApi()
     })
 
-    const store = useUserStore()
+    const userStore = useUserStore()
 
     const userRegistration: UserRegistration = reactive({
       username: '',
@@ -96,12 +96,14 @@ export default defineComponent({
         console.log('Password is not valid')
         return
       }
-      const { username, email , password } = userRegistration
-      await store.registerUser(new User({
-        username,
-        email,
-        password
-      }))
+      const { username, email, password } = userRegistration
+      await userStore.registerUser(
+        new User({
+          username,
+          email,
+          password
+        })
+      )
     }
     return {
       userRegistration,

@@ -12,6 +12,7 @@
 import { defineComponent, ref } from 'vue'
 import LoginForm from '@/components/forms/login/login-form.vue'
 import RegisterForm from '@/components/forms/register/register-form.vue'
+import { useUserStore } from '@/store/modules/user'
 export default defineComponent({
   name: 'Login',
   components: {
@@ -23,9 +24,13 @@ export default defineComponent({
     const setActiveTab = (tab: string) => {
       activeTab.value = tab
     }
+    const userStore = useUserStore()
+
+    
     return {
       activeTab,
-      setActiveTab
+      setActiveTab,
+      userStore
     }
   }
 })

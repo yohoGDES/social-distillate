@@ -1,12 +1,22 @@
 <template>
   <h1>The Social Cask</h1>
+  <user-bar></user-bar>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/rate">Rate</router-link> |
-    <router-link to="/login">Login</router-link>
+    <router-link to="/rate">Rate</router-link>
   </div>
   <router-view />
 </template>
+
+<script lang="ts">
+import userBar from '@/components/user-bar.vue'
+export default {
+  components: {
+    userBar
+  }
+}
+</script>
+
 
 <style lang="scss">
 body {

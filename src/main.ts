@@ -3,8 +3,10 @@ import App from './App.vue'
 import './registerServiceWorker'
 import router from './router'
 import { createPinia } from 'pinia'
-
 import { registerComponents } from './components/register-components'
+import { initApi } from './utilities/api'
+
+initApi()
 
 const app = createApp(App).use(createPinia()).use(router)
 
