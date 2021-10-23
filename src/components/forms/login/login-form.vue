@@ -34,7 +34,7 @@
 <script lang="ts">
 import { defineComponent, reactive } from 'vue'
 import { useUserStore } from '@/store/modules/user'
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 type UserLogin = {
   username: string
@@ -45,7 +45,6 @@ export default defineComponent({
   setup() {
     const userStore = useUserStore()
     const router = useRouter()
-    const route = useRoute()
 
     const userLogin: UserLogin = reactive({
       username: '',
