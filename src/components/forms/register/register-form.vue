@@ -47,10 +47,7 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-button type="submit" rank="primary" width="full"
-          >Register</sc-button
-        >
-        <a href="">Forgot Password</a>
+        <sc-button type="submit" rank="primary" width="full">Sign Up</sc-button>
       </sc-form-row>
     </form>
   </div>
