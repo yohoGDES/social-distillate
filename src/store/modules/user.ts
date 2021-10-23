@@ -1,17 +1,13 @@
 import { defineStore } from 'pinia'
 import User, { UserModel } from '../../../cloud/src/model/user'
 
-// Move these types somewhere more universal
-type userRegistration = {
-  username: string
-  email: string
-  password: string
-}
+// Not sure where to put this but I don't think it's working here
+import Parse from 'parse'
+Parse.Object.registerSubclass('_User', UserModel)
 
-type userLogin = {
-  username: string
-  password: string
-}
+// Move these types somewhere more universal
+type userRegistration = Pick<UserModel, 'username' | 'email' | 'password'>
+type userLogin = Pick<UserModel, 'username' | 'password'>
 
 // User store will contain specific actions and details about the current user
 export const useUserStore = defineStore('user', {
@@ -32,9 +28,7 @@ export const useUserStore = defineStore('user', {
     },
     async login(user: userLogin) {
       try {
-        // TODO: Figure out what class to give this, I think it's the same as register
-        // const result = await User.logIn(user.username, user.password)
-        // console.log('registerUser:', result)
+        this.$state.currentUser = await UserModel.logIn(user.username, user.password)
       } catch (e) {
         console.log('Error logging in user: ', e)
       }

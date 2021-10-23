@@ -96,8 +96,12 @@ export default defineComponent({
         console.log('Password is not valid')
         return
       }
-
-      await store.registerUser(new User({ ...userRegistration }))
+      const { username, email , password } = userRegistration
+      await store.registerUser(new User({
+        username,
+        email,
+        password
+      }))
     }
     return {
       userRegistration,
