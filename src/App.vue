@@ -1,10 +1,23 @@
 <template>
+  <h1>The Social Cask</h1>
+  <alerts></alerts>
+  <user-bar></user-bar>
   <div id="nav">
     <router-link to="/">Home</router-link> |
     <router-link to="/rate">Rate</router-link>
   </div>
   <router-view />
 </template>
+
+<script lang="ts">
+import userBar from '@/components/user-bar.vue'
+export default {
+  components: {
+    userBar
+  }
+}
+</script>
+
 
 <style lang="scss">
 body {
@@ -27,7 +40,8 @@ body {
   box-sizing: border-box;
 }
 #nav {
-  padding: 30px;
+  // padding: 30px;
+  margin-bottom: 15px;
   a {
     font-weight: bold;
     color: $charcoal;

@@ -7,7 +7,7 @@
     :min="min"
     :max="max"
     :style="`background-size: ${
-      (modelValue - min) * 100 / (max - min)
+      ((modelValue - min) * 100) / (max - min)
     }% 100%;`"
   />
 </template>

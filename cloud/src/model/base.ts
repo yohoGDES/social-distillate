@@ -1,4 +1,4 @@
-import {Object, User} from 'parse'
+import {Object as ParseObject, User} from 'parse'
 
 export interface BaseModel<T> {
     id: string
@@ -6,7 +6,7 @@ export interface BaseModel<T> {
     createdAt: Date
 }
 
-export abstract class BaseModel<T> extends Object {
+export abstract class BaseModel<T> extends ParseObject {
     constructor(modelName: string, init?: Partial<T>) {
         super(modelName, init)
 
@@ -51,7 +51,7 @@ export abstract class BaseUser<T> extends User {
 }
 
 export function expose<T extends (BaseModel<T> | BaseUser<T>)>(modelClass: new (init?: Partial<T>) => T) {
-    type P = T extends User ? User : Object
+    type P = T extends User ? User : ParseObject
     type Attributes = Omit<T, keyof P>
     class Model {
         constructor(init?: Partial<T>) {
