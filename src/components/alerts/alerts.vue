@@ -1,7 +1,9 @@
 <template>
   <teleport to="body">
-    <div class="alerts" v-if="alerts.length > 0">
-      <alert v-for="alert in alerts" :key="alert" :alert="alert" />
+    <div class="alerts">
+      <transition-group name="alerts">
+        <alert v-for="alert in alerts" :key="alert" :alert="alert" />
+      </transition-group>
     </div>
   </teleport>
 </template>
@@ -36,5 +38,14 @@ export default defineComponent({
   flex-wrap: wrap;
   flex-direction: column;
   align-items: center;
+}
+.alerts-enter-active,
+.alerts-leave-active {
+  transition: all 350ms cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.alerts-enter-from,
+.alerts-leave-to {
+  opacity: 0;
+  transform: translateY(-15px);
 }
 </style>

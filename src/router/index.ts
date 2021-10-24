@@ -4,7 +4,7 @@ import Rate from '../views/Rate.vue'
 import Login from '../views/Login.vue'
 
 import { useUserStore } from '@/store/modules/user'
-import { useAlertStore, AlertType, MessageType } from '@/store/modules/alerts'
+import { useAlertStore } from '@/store/modules/alerts'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -46,14 +46,10 @@ router.beforeEach((to, from) => {
   const alertStore = useAlertStore()
   if (to.meta.authRequired) {
     if (!userStore.userAuthenticated) {
-      console.log('Youre not logged in')
-      alertStore.addAlert({
-        type: AlertType.SNACKBAR,
-        messageType: MessageType.ERROR,
-        message: 'You are not logged in.'
-      })
+      alertStore.alertError("You're not logged in.")
       return false
     }
+    // TODO: Route permissions - check if user has perms to visit route in addition to auth.
   }
 })
 

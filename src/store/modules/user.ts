@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { api } from '@/utilities/api'
 import { UserModel } from '../../../cloud/src/model/user'
+import { useAlertStore } from '@/store/modules/alerts'
 
 // Not sure where to put this but I don't think it's working here
 api.Object.registerSubclass('_User', UserModel)
@@ -30,14 +31,17 @@ export const useUserStore = defineStore('user', {
   },
   actions: {
     async registerUser(user: userRegistration) {
+      const alertStore = useAlertStore()
       try {
         const result = await (user as UserModel).signUp()
         console.log('registerUser:', result)
       } catch (e) {
         console.log('Error registering user: ', e)
+        alertStore.alertError(e as string)
       }
     },
     async login(username: string, password: string) {
+      const alertStore = useAlertStore()
       try {
         const newSession = await UserModel.logIn(username, password)
         console.log('new session', newSession)
@@ -45,6 +49,7 @@ export const useUserStore = defineStore('user', {
         return newSession
       } catch (e) {
         console.log('Error logging in user: ', e)
+        alertStore.alertError(e as string)
       }
     },
     async logout() {

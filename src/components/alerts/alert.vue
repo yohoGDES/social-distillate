@@ -4,8 +4,7 @@
     :class="`alert--${alert.messageType} alert--${alert.type}`"
   >
     {{ alert.message }}
-    <span v-if="alert.type === AlertType.TOAST"
-      >| Toasty! <a href="" @click.prevent="close(alert)">Close</a></span
+    <span v-if="alert.type === AlertType.TOAST">| <a href="" @click.prevent="close(alert)">Close</a></span
     >
   </div>
 </template>
@@ -35,7 +34,7 @@ export default defineComponent({
   transition: all 275ms;
   padding: 8px 10px;
   margin-bottom: 5px;
-  border-radius: 6px;
+  border-radius: 3px;
   &--error {
     background-color: $old-oak;
     color: white;
@@ -49,6 +48,7 @@ export default defineComponent({
     color: $charcoal;
   }
   &--info {
+    color: white;
     background-color: lighten($charcoal, 15%);
   }
 }

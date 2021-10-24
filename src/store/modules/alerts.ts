@@ -33,11 +33,42 @@ export const useAlertStore = defineStore('alerts', {
       if (alert.type === AlertType.SNACKBAR) {
         setTimeout(() => {
           this.removeAlert(alert)
-        }, 5000)
+        }, 4500)
       }
     },
     removeAlert(alert: Alert) {
       this.alerts = this.alerts.filter((a) => a.id !== alert.id)
+    },
+    alertSuccess(message: string, type = AlertType.SNACKBAR) {
+      this.addAlert({
+        message,
+        type: type,
+        messageType: MessageType.SUCCESS
+      })
+    },
+    alertWarning(message: string, type = AlertType.SNACKBAR) {
+      this.addAlert({
+        message,
+        type,
+        messageType: MessageType.WARNING
+      })
+    },
+    alertError(message: string, type = AlertType.SNACKBAR) {
+      this.addAlert({
+        message,
+        type,
+        messageType: MessageType.ERROR
+      })
+    },
+    alertInfo(message: string, type = AlertType.SNACKBAR){
+      this.addAlert({
+        message,
+        type: type,
+        messageType: MessageType.INFO
+      })
+      if (type === AlertType.TOAST) {
+        // TODO: Need to do something here with passing callbacks or a promise so toast actions can trigger other methods for primary (comfirm) / secondary (cancel) actions.
+      }
     }
   }
 })

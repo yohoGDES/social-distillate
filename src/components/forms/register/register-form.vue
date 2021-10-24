@@ -45,6 +45,7 @@
           required
           v-model="userRegistration.confirmPassword"
         />
+        <span v-if="confirmPasswordIsValid">Matches</span>
       </sc-form-row>
       <sc-form-row>
         <sc-button type="submit" rank="primary" width="full">Sign Up</sc-button>
@@ -53,11 +54,11 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, onBeforeMount, reactive } from 'vue'
-import { initApi, api } from '@/utilities/api'
+import { computed, defineComponent, reactive } from 'vue'
 import User from '../../../../cloud/src/model/user'
 
 import { useUserStore } from '@/store/modules/user'
+import { useAlertStore, MessageType, AlertType } from '@/store/modules/alerts'
 
 type UserRegistration = {
   username: string
@@ -68,11 +69,9 @@ type UserRegistration = {
 export default defineComponent({
   name: 'register-form',
   setup() {
-    onBeforeMount(() => {
-      initApi()
-    })
 
     const userStore = useUserStore()
+    const alertStore = useAlertStore()
 
     const userRegistration: UserRegistration = reactive({
       username: '',
@@ -84,13 +83,21 @@ export default defineComponent({
       const pw = userRegistration.password
       const conf = userRegistration.confirmPassword
       if (pw === '' || conf === '') return false
-      if (pw !== conf) return false
+      if (!confirmPasswordIsValid.value) return false
 
       return true
     }
+
+    const confirmPasswordIsValid = computed(() => {
+      return (
+        userRegistration.password === userRegistration.confirmPassword &&
+        userRegistration.confirmPassword !== ''
+      )
+    })
     const register = async () => {
       if (!checkPasswordValidity()) {
         console.log('Password is not valid')
+        alertStore.alertWarning('Your passwords are invalid. Please try again!')
         return
       }
       const { username, email, password } = userRegistration
@@ -104,6 +111,7 @@ export default defineComponent({
     }
     return {
       userRegistration,
+      confirmPasswordIsValid,
       register
     }
   }

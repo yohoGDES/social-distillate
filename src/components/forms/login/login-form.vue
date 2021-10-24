@@ -57,7 +57,7 @@ export default defineComponent({
           userLogin.password
         )
         console.log('Logged in user', user?.attributes.username)
-        // console.log(router)
+        router.back()
         return user
       } catch (error) {
         console.error('Error while logging in user', error)
