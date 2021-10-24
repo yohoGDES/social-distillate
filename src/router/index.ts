@@ -3,6 +3,9 @@ import Home from '../views/Home.vue'
 import Rate from '../views/Rate.vue'
 import Login from '../views/Login.vue'
 
+import { useUserStore } from '@/store/modules/user'
+import { useAlertStore, AlertType, MessageType } from '@/store/modules/alerts'
+
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
@@ -12,7 +15,10 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/rate',
     name: 'Rate',
-    component: Rate
+    component: Rate,
+    meta: {
+      authRequired: true
+    }
   },
   {
     path: '/login',
@@ -33,6 +39,22 @@ const routes: Array<RouteRecordRaw> = [
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
+})
+
+router.beforeEach((to, from) => {
+  const userStore = useUserStore()
+  const alertStore = useAlertStore()
+  if (to.meta.authRequired) {
+    if (!userStore.userAuthenticated) {
+      console.log('Youre not logged in')
+      alertStore.addAlert({
+        type: AlertType.SNACKBAR,
+        messageType: MessageType.ERROR,
+        message: 'You are not logged in.'
+      })
+      return false
+    }
+  }
 })
 
 export default router

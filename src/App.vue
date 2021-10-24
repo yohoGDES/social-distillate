@@ -1,5 +1,6 @@
 <template>
   <h1>The Social Cask</h1>
+  <alerts></alerts>
   <user-bar></user-bar>
   <div id="nav">
     <router-link to="/">Home</router-link> |

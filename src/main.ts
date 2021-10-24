@@ -7,8 +7,8 @@ import { registerComponents } from './components/register-components'
 import { initApi } from './utilities/api'
 
 initApi()
-
-const app = createApp(App).use(createPinia()).use(router)
+const pinia = createPinia()
+const app = createApp(App).use(pinia).use(router)
 
 registerComponents(app)
 

@@ -57,7 +57,6 @@ export default defineComponent({
           userLogin.password
         )
         console.log('Logged in user', user?.attributes.username)
-        router.back()
         // console.log(router)
         return user
       } catch (error) {

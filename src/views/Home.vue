@@ -2,14 +2,29 @@
   <div class="home">The Social Cask - a work in progress</div>
   <h4>Things to make</h4>
   <ul>
-    <li>Groups
+    <li>
+      General UI
+      <ul>
+        <li>Alert component</li>
+      </ul>
+    </li>
+    <li>
+      Users
+      <ul>
+        <li>Route Guard</li>
+        <li>User info / Edit</li>
+      </ul>
+    </li>
+    <li>
+      Groups
       <ul>
         <li>Create group</li>
         <li>Register for group</li>
         <li>Update group</li>
       </ul>
     </li>
-    <li>Tasting
+    <li>
+      Tasting
       <ul>
         <li>Create tasting (bind to group)</li>
         <li>Tasting View (uses the /Rate view)</li>
