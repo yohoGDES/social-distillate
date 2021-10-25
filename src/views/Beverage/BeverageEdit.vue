@@ -1,0 +1,305 @@
+<template>
+  <div>
+    <h2>Edit Beverage</h2>
+    <pre>
+      {{ beverage }}
+    </pre>
+    <form action.prevent="">
+      <sc-form-row>
+        <sc-form-label>Category</sc-form-label>
+        <sc-form-description>
+          What is the category of beverage?
+        </sc-form-description>
+        <sc-dropdown
+          :options="bevCategories"
+          v-model="beverage.category"
+        ></sc-dropdown>
+      </sc-form-row>
+      <sc-form-row>
+        <sc-form-label>Name</sc-form-label>
+        <sc-text v-model="beverage.name" />
+      </sc-form-row>
+      <div class="spirit-values" v-if="beverage.category === 'spirit'">
+        <sc-form-row>
+          <sc-form-label>Type</sc-form-label>
+          <sc-form-description>
+            What is the type of spirit?
+          </sc-form-description>
+          <sc-dropdown
+            :options="spiritTypes"
+            v-model="beverage.type"
+            @change="beverage.subType = null"
+          ></sc-dropdown>
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Style</sc-form-label>
+          <sc-form-description>
+            Style of this {{ beverage.type }}.
+          </sc-form-description>
+          <sc-dropdown
+            :options="activeSubTypes"
+            v-model="beverage.subType"
+          ></sc-dropdown>
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Proof</sc-form-label>
+          <sc-text v-model="beverage.proof" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Region</sc-form-label>
+          <sc-text v-model="beverage.region" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Cask Type</sc-form-label>
+          <sc-form-description
+            >What type of cask was this {{ beverage.type }} aged
+            in?</sc-form-description
+          >
+          <sc-text v-model="beverage.cask" />
+        </sc-form-row>
+      </div>
+      <sc-form-row>
+        <sc-button @click.prevent="save()"> Save </sc-button>
+      </sc-form-row>
+    </form>
+  </div>
+</template>
+<script lang="ts">
+import { computed, defineComponent, reactive } from 'vue'
+import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beverage'
+
+// id: string
+// name: string
+// description: string
+// country: string
+// region: string
+// type: BeverageType,
+// updatedAt: Date
+// createdAt: Date
+export default defineComponent({
+  name: 'beverage-edit',
+  setup(_, context) {
+    const beverage: Partial<BeverageModel> = reactive({
+      category: 'spirit',
+      type: 'whiskey'
+    })
+    const bevCategories = Object.values(BeverageCategories).map((v) => {
+      return {
+        label: v.charAt(0).toUpperCase() + v.slice(1),
+        value: v
+      }
+    })
+
+    const activeSubTypes = computed<any>(() => {
+      let active
+      switch (beverage.type) {
+        case 'gin':
+          active = ginStyles
+          break
+        case 'rum':
+          active = rumStyles
+          break
+        case 'agave':
+          active = agaveStyles
+          break
+        case 'brandy':
+          active = brandyStyles
+          break
+        case 'vodka':
+          active = vodkaStyles
+          break
+        case 'liqueur':
+          active = liqueurStyles
+          break
+        case 'other':
+          active = otherStyles
+          break
+        case 'whiskey':
+          active = whiskeyStyles
+          break
+        default:
+          active = whiskeyStyles
+          break
+      }
+      return active
+    })
+
+    const spiritTypes = [
+      {
+        label: 'Whiskey',
+        value: 'whiskey'
+      },
+      {
+        label: 'Gin',
+        value: 'gin'
+      },
+      {
+        label: 'Agave',
+        value: 'agave'
+      },
+      {
+        label: 'Rum',
+        value: 'rum'
+      },
+      {
+        label: 'Brandy',
+        value: 'brandy'
+      },
+      {
+        label: 'Vodka',
+        value: 'vodka'
+      },
+      {
+        label: 'Liqueur',
+        value: 'liqueur'
+      },
+      {
+        label: 'Other',
+        value: 'other'
+      }
+    ]
+
+    const whiskeyStyles = [
+      'American Single Malt',
+      'Blended',
+      'Blended American Whiskey',
+      'Blended Grain',
+      'Blended Malt',
+      'Bourbon',
+      'Canadian',
+      'Corn',
+      'Flavored Whiskey',
+      'Other Whiskey',
+      'Peated Blend',
+      'Peated Blended Malt',
+      'Peated Single Malt',
+      'Rye',
+      'Single Grain',
+      'Single Malt',
+      'Single Pot Still',
+      'Spirit ',
+      'Tennessee',
+      'Wheat Whiskey',
+      'White'
+    ]
+
+    const agaveStyles = [
+      'Bacanora Añejo',
+      'Bacanora Blanco',
+      'Flavored Tequila',
+      'Mezcal Añejo',
+      'Mezcal Extra Añejo',
+      'Mezcal Gold',
+      'Mezcal Joven',
+      'Mezcal Reposado',
+      'Other Agave',
+      'Raicilla ',
+      'Sotol ',
+      'Tequila Añejo',
+      'Tequila Blanco',
+      'Tequila Extra Añejo',
+      'Tequila Joven',
+      'Tequila Mixto Añejo',
+      'Tequila Mixto Blanco',
+      'Tequila Mixto Extra Añejo',
+      'Tequila Mixto Gold',
+      'Tequila Mixto Reposado',
+      'Tequila Reposado'
+    ]
+
+    const rumStyles = [
+      'Aged Rum',
+      'Aguardiente',
+      'Cachaça ',
+      'Dark Rum',
+      'Flavored Rum',
+      'Gold Rum',
+      'Navy Rum',
+      'Other Sugarcane',
+      'Rhum Agricole Blanc',
+      'Rhum Agricole Éléve Sous Bois',
+      'Rhum Agricole Vieux',
+      'Silver Rum',
+      'Spiced Rum'
+    ]
+
+    const brandyStyles = [
+      'American Brandy',
+      'Arak',
+      'Armagnac',
+      'Blanche Armagnac',
+      'Calvados',
+      'Cognac',
+      'Eau-de-Vie',
+      'Grappa/Marc ',
+      'Other Brandy',
+      'Pisco ',
+      'Spanish'
+    ]
+
+    const ginStyles = [
+      'Barrel-Aged Gin',
+      'Compound Gin',
+      'Distilled Gin',
+      'Flavored Gin',
+      'Fruit Genever',
+      'Genever',
+      'Genever-Style',
+      'Gin de Mahón',
+      'London Dry Gin',
+      'Modern Gin',
+      'Navy-Strength Gin',
+      'Old Tom Gin',
+      'Plymouth Gin'
+    ]
+
+    const vodkaStyles = [
+      'Barrel-Aged Vodka',
+      'Flavored Vodka',
+      'Unflavored Vodka'
+    ]
+
+    const liqueurStyles = [
+      'Amaro',
+      'Anise Liqueurs',
+      'Bitter Liqueurs',
+      'Chocolate Liqueurs',
+      'Coffee Liqueurs',
+      'Dairy/Egg Liqueurs',
+      'Floral Liqueurs',
+      'Fruit Liqueurs',
+      'Herbal/Spice Liqueurs',
+      'Non-Potable Bitters',
+      'Nut Liqueurs',
+      'Other Liqueurs',
+      'Sloe Gin &amp; Variants',
+      'Triple Sec/Curaçao'
+    ]
+
+    const otherStyles = [
+      'Absinthe',
+      'Aquavit',
+      'Baijiu',
+      'Botanical Spirit',
+      'Other Aromatized Wine',
+      'Other Spirits ',
+      'Poitín',
+      'Ready to Drink',
+      'Shochu/Soju',
+      'Vermouth',
+      'Zero Proof'
+    ]
+    const save = () => {
+      const newBeverage = new BeverageModel(beverage)
+      console.log(newBeverage)
+    }
+    return {
+      beverage,
+      bevCategories,
+      spiritTypes,
+      activeSubTypes,
+      save
+    }
+  }
+})
+</script>

@@ -1,5 +1,5 @@
 <template>
-  <label v-if="label" for="">{{ label }}</label>
+  <label for=""><slot></slot></label>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'

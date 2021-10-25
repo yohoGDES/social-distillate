@@ -1,21 +1,34 @@
 <template>
   <select name="" id="" v-model="proxyValue">
-    <option v-for="option in options" :key="option" :value="option">
-      {{ option }}
-    </option>
+    <template v-if="!modelTypeIsObject">
+      <option v-for="option in options" :key="option" :value="option">
+        {{ option }}
+      </option>
+    </template>
+    <template v-else>
+      <option
+        v-for="option in options"
+        :key="option.index"
+        :value="option.value"
+      >
+        {{ option.label }}
+      </option>
+    </template>
   </select>
 </template>
 <script lang="ts">
-import { computed, defineComponent } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 
 export default defineComponent({
   name: 'dropdown',
   props: {
     modelValue: {
-      type: [Array, Number, Object]
+      type: [String, Array, Number, Object]
     },
     options: {
-      type: Array
+      type: Array as PropType<
+        string[] | { label: string; value: string }[] | number[]
+      >
     }
   },
   emits: ['update:modelValue'],
@@ -28,8 +41,15 @@ export default defineComponent({
         emit('update:modelValue', value)
       }
     })
+    const modelTypeIsObject = computed(() => {
+      const type = props.options?.[0]
+      return typeof type === 'object' && !Array.isArray(type)
+    })
+    // const getValue = () => {}
+    // const getLabel = () => {}
     return {
-      proxyValue
+      proxyValue,
+      modelTypeIsObject
     }
   }
 })

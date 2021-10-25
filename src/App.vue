@@ -10,7 +10,7 @@
 </template>
 
 <script lang="ts">
-import userBar from '@/components/user-bar.vue'
+import userBar from '@/components/user-bar/user-bar.vue'
 export default {
   components: {
     userBar

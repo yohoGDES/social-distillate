@@ -1,9 +1,9 @@
 <template>
   <div class="login">
     <h2>Login</h2>
-    <form class="login-form">
+    <form class="login-form" v-if="!userStore.userAuthenticated">
       <sc-form-row>
-        <sc-form-label label="Username" />
+        <sc-form-label>Name</sc-form-label>
         <sc-form-description></sc-form-description>
         <input
           type="text"
@@ -29,6 +29,9 @@
         <a href="">Forgot Password</a>
       </sc-form-row>
     </form>
+    <div v-else>
+      You're all set!
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -57,7 +60,8 @@ export default defineComponent({
           userLogin.password
         )
         console.log('Logged in user', user?.attributes.username)
-        router.back()
+        console.log(router)
+        // router.back()
         return user
       } catch (error) {
         console.error('Error while logging in user', error)

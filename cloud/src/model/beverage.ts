@@ -1,12 +1,12 @@
 import Parse from 'parse'
 import { BaseModel, expose } from './base'
 
-export enum BeverageTypes {
+export enum BeverageCategories {
     beer = 'beer',
     spirit = 'spirit'
 }
 
-export type BeverageType = keyof typeof BeverageTypes
+export type BeverageCategory = keyof typeof BeverageCategories
 
 // The main model interface to expose to the application
 export interface BeverageModel {
@@ -15,9 +15,12 @@ export interface BeverageModel {
     description: string
     country: string
     region: string
-    type: BeverageType,
+    category: BeverageCategory,
+    type: string,
     updatedAt: Date
     createdAt: Date
+    spiritType?: string
+    subType?: string
 
     oneLiner(): string
 }

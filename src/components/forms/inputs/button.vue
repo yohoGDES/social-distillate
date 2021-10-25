@@ -56,6 +56,7 @@ export default defineComponent({
   color: $charcoal;
   padding: 10px 20px;
   font-size: 16px;
+  cursor: pointer;
   &:hover,
   &:active {
     color: white;

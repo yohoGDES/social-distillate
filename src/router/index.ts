@@ -2,6 +2,8 @@ import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
 import Rate from '../views/Rate.vue'
 import Login from '../views/Login.vue'
+import Error from '../views/Error.vue'
+import BeverageEdit from '../views/Beverage/BeverageEdit.vue'
 
 import { useUserStore } from '@/store/modules/user'
 import { useAlertStore } from '@/store/modules/alerts'
@@ -13,6 +15,16 @@ const routes: Array<RouteRecordRaw> = [
     component: Home
   },
   {
+    path: '/login',
+    name: 'Login',
+    component: Login
+  },
+  {
+    path: '/error',
+    name: 'Error',
+    component: Error
+  },
+  {
     path: '/rate',
     name: 'Rate',
     component: Rate,
@@ -21,9 +33,12 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/login',
-    name: 'Login',
-    component: Login
+    path: '/beverage/edit',
+    name: 'BeverageEdit',
+    component: BeverageEdit,
+    meta: {
+      authRequired: true
+    }
   }
   // {
   //   path: '/about',
@@ -46,6 +61,7 @@ router.beforeEach((to, from) => {
   const alertStore = useAlertStore()
   if (to.meta.authRequired) {
     if (!userStore.userAuthenticated) {
+      router.push('/error')
       alertStore.alertError("You're not logged in.")
       return false
     }
