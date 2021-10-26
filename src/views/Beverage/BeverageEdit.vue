@@ -42,8 +42,42 @@
           ></sc-dropdown>
         </sc-form-row>
         <sc-form-row>
+          <sc-form-label>Distillery</sc-form-label>
+          <sc-form-description>Who produced this?</sc-form-description>
+          <sc-text v-model="beverage.distillery" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Brand</sc-form-label>
+          <sc-form-description>What brand is this?</sc-form-description>
+          <sc-text v-model="beverage.brand" />
+        </sc-form-row>
+        <sc-form-row>
           <sc-form-label>Proof</sc-form-label>
           <sc-text v-model="beverage.proof" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Number of Bottles</sc-form-label>
+          <sc-text v-model="beverage.numberOfBottles" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Vintage</sc-form-label>
+          <sc-text v-model="beverage.vintage" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Bottled</sc-form-label>
+          <sc-text v-model="beverage.bottled" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Stated Age</sc-form-label>
+          <sc-text v-model="beverage.bottled" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Cask Number</sc-form-label>
+          <sc-text v-model="beverage.caskNumber" />
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Retail Price</sc-form-label>
+          <sc-text v-model="beverage.retailPrice" />
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Region</sc-form-label>
@@ -57,6 +91,33 @@
           >
           <sc-text v-model="beverage.cask" />
         </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Colored</sc-form-label>
+          <sc-form-description>Was color added?</sc-form-description>
+          Unknown | Colored | Uncolored
+          <!-- <sc-text v-model="beverage.colored" /> -->
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Chill-Filtered</sc-form-label>
+          <sc-form-description>Was this chill-filtered?</sc-form-description>
+          Unknown | Chill-Filtered | Non-Chill Filtered
+          <!-- <sc-text v-model="beverage.colored" /> -->
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Single Cask</sc-form-label>
+          <sc-form-description
+            >Is this a single cask release?</sc-form-description
+          >
+          Unknown | Yes | No
+          <!-- <sc-text v-model="beverage.colored" /> -->
+        </sc-form-row>
+        <sc-form-row>
+          <sc-form-label>Cask Strength</sc-form-label>
+          <sc-form-description>Is this cask strength?</sc-form-description>
+          Unknown | Yes | No
+          <!-- <sc-text v-model="beverage.colored" /> -->
+        </sc-form-row>
+        <!-- TODO: (Enhancement) Add photo upload capability -->
       </div>
       <sc-form-row>
         <sc-button @click.prevent="save()"> Save </sc-button>
