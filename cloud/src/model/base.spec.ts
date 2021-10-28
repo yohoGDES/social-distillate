@@ -1,5 +1,4 @@
-import Parse from 'parse'
-import {BaseModel, expose} from './base'
+import { BaseModel } from './base'
 
 describe('model/base', () => {
 
@@ -19,25 +18,24 @@ describe('model/base', () => {
             return `foo is ${this.foo}`
         }
     }
-    const UnderTest = expose(TestModel)
     /**
      * End Model Impl
      */
 
     it('a class can be created from it', () => {
-        const model = new UnderTest()
+        const model = new TestModel()
         expect(model).toBeDefined()
     })
 
     it('can set and get properties', () => {
-        const model = new UnderTest()
+        const model = new TestModel()
         model.foo = 'bar'
 
         expect(model.foo).toEqual('bar')
     })
 
     it('can set properties from the constructor', () => {
-        const model = new UnderTest({
+        const model = new TestModel({
             foo: 'bar'
         })
         
@@ -45,7 +43,7 @@ describe('model/base', () => {
     })
 
     it('can have custom methods', () => {
-        const model = new UnderTest({
+        const model = new TestModel({
             foo: 'bar'
         })
 
@@ -53,7 +51,7 @@ describe('model/base', () => {
     })
 
     it('can still access Parse methods', () => {
-        const model = new UnderTest({
+        const model = new TestModel({
             foo: 'bar'
         })
 
