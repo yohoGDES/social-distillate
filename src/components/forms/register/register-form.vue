@@ -55,17 +55,15 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive } from 'vue'
-import User from '../../../../cloud/src/model/user'
+import { User } from '../../../../cloud/src/model/user'
 
 import { useUserStore } from '@/store/modules/user'
 import { useAlertStore, MessageType, AlertType } from '@/store/modules/alerts'
 
-type UserRegistration = {
-  username: string
-  email: string
-  password: string
+type UserRegistration = User & {
   confirmPassword: string
 }
+
 export default defineComponent({
   name: 'register-form',
   setup() {
@@ -101,13 +99,11 @@ export default defineComponent({
         return
       }
       const { username, email, password } = userRegistration
-      await userStore.registerUser(
-        new User({
+      await userStore.registerUser({
           username,
           email,
           password
         })
-      )
     }
     return {
       userRegistration,
