@@ -2,8 +2,9 @@
   <div>
     <h2>Edit Beverage</h2>
     <pre>
-      {{ beverage }}
+      {{ beverage.attributes }}
     </pre>
+    <a href="" @click.prevent="getBeverage">Get it</a>
     <form action.prevent="">
       <sc-form-row>
         <sc-form-label>Category</sc-form-label>
@@ -126,9 +127,9 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive } from 'vue'
+import { computed, defineComponent, reactive, ref } from 'vue'
 import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beverage'
-
+import { useBeverageStore } from '@/store/modules/beverage'
 // id: string
 // name: string
 // description: string
@@ -140,10 +141,9 @@ import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beve
 export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
-    const beverage: Partial<BeverageModel> = reactive({
-      category: 'spirit',
-      type: 'whiskey'
-    })
+    const beverageStore = useBeverageStore()
+    const beverage = ref(new BeverageModel())
+    const newBev = ref({})
     const bevCategories = Object.values(BeverageCategories).map((v) => {
       return {
         label: v.charAt(0).toUpperCase() + v.slice(1),
@@ -153,7 +153,7 @@ export default defineComponent({
 
     const activeSubTypes = computed<any>(() => {
       let active
-      switch (beverage.type) {
+      switch (beverage.value.type) {
         case 'gin':
           active = ginStyles
           break
@@ -350,16 +350,30 @@ export default defineComponent({
       'Vermouth',
       'Zero Proof'
     ]
-    const save = () => {
-      const newBeverage = new BeverageModel(beverage)
+    const save = async () => {
+      const newBeverage = new BeverageModel()
+      console.log('newBeverage', newBeverage)
+      newBeverage.attributes = beverage as Partial<BeverageModel>
+      const result = await newBeverage.save()
       console.log(newBeverage)
+    }
+    const getBeverage = async () => {
+      const result = await beverageStore.getBeverage('y01kyz79Ha')
+      console.log(result)
+      const newBev = new BeverageModel({ id: result.get('objectId') })
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      // newBev.attributes = result.attributes
+      beverage.value = newBev
     }
     return {
       beverage,
       bevCategories,
       spiritTypes,
       activeSubTypes,
-      save
+      save,
+      getBeverage,
+      newBev
     }
   }
 })
