@@ -1,19 +1,13 @@
 import { defineStore } from 'pinia'
 import { api } from '@/utilities/api'
-import { UserModel } from '../../../cloud/src/model/user'
+import { User, UserModel } from '../../../cloud/src/model/user'
 import { useAlertStore } from '@/store/modules/alerts'
-
-// Not sure where to put this but I don't think it's working here
-api.Object.registerSubclass('_User', UserModel)
-
-// Move these types somewhere more universal
-type userRegistration = Pick<UserModel, 'username' | 'email' | 'password'>
 
 // User store will contain specific actions and details about the current user
 export const useUserStore = defineStore('user', {
   state: () => {
-    return {
-      currentUser: api.User.current()
+    return <{currentUser: User | undefined}>{
+      currentUser: api.User.current<UserModel>()
     }
   },
   getters: {
@@ -22,7 +16,7 @@ export const useUserStore = defineStore('user', {
         return false
       }
 
-      if (state.currentUser?.authenticated()) {
+      if ((state.currentUser as UserModel)?.authenticated()) {
         return true
       } else {
         return false
@@ -30,10 +24,11 @@ export const useUserStore = defineStore('user', {
     }
   },
   actions: {
-    async registerUser(user: userRegistration) {
+    async registerUser(user: User) {
       const alertStore = useAlertStore()
       try {
-        const result = await (user as UserModel).signUp()
+        const userModel = new UserModel(user)
+        const result = await userModel.signUp()
         console.log('registerUser:', result)
       } catch (e) {
         console.log('Error registering user: ', e)
@@ -43,9 +38,10 @@ export const useUserStore = defineStore('user', {
     async login(username: string, password: string) {
       const alertStore = useAlertStore()
       try {
+        // @TODO abstract sessions best as possible
         const newSession = await UserModel.logIn(username, password)
         console.log('new session', newSession)
-        this.currentUser = api.User.current()
+        this.currentUser = api.User.current<UserModel>()
         return newSession
       } catch (e) {
         console.log('Error logging in user: ', e)
@@ -55,7 +51,7 @@ export const useUserStore = defineStore('user', {
     async logout() {
       try {
         await UserModel.logOut()
-        this.currentUser = null
+        this.currentUser = undefined
       } catch (e) {
         console.log('Error logging out: ', e)
       }

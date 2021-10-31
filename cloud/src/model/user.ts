@@ -1,7 +1,10 @@
-import { BaseUser, expose } from './base'
+import Parse from 'parse'
+import { BaseUser, BaseUserAttributes } from './base'
 
-// TS doesn't like empty interfaces so when we need to add things do so
-// export interface UserModel {}
-export class UserModel extends BaseUser<UserModel> {}
+export interface User extends BaseUserAttributes {}
 
-export default expose(UserModel)
+export interface UserModel extends User {}
+export class UserModel extends BaseUser<User> {}
+
+// Not sure where to put this but I don't think it's working here
+Parse.Object.registerSubclass('_User', UserModel)

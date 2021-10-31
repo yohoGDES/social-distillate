@@ -127,7 +127,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive } from 'vue'
-import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beverage'
+import { BeverageModel, BeverageCategories, Beverage } from '../../../cloud/src/model/beverage'
 
 // id: string
 // name: string
@@ -140,7 +140,7 @@ import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beve
 export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
-    const beverage: Partial<BeverageModel> = reactive({
+    const beverage: Partial<Beverage> = reactive({
       category: 'spirit',
       type: 'whiskey'
     })
@@ -351,6 +351,7 @@ export default defineComponent({
       'Zero Proof'
     ]
     const save = () => {
+      // @FIXME do not use BeverageModel here
       const newBeverage = new BeverageModel(beverage)
       console.log(newBeverage)
     }
