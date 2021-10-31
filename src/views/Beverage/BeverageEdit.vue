@@ -128,8 +128,9 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
-import { BeverageModel, BeverageCategories } from '../../../cloud/src/model/beverage'
 import { useBeverageStore } from '@/store/modules/beverage'
+import { BeverageModel, BeverageCategories, Beverage } from '../../../cloud/src/model/beverage'
+
 // id: string
 // name: string
 // description: string
@@ -142,8 +143,11 @@ export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
     const beverageStore = useBeverageStore()
-    const beverage = ref(new BeverageModel())
-    const newBev = ref({})
+
+    const beverage: Partial<Beverage> = reactive({
+      category: 'spirit',
+      type: 'whiskey'
+    })
     const bevCategories = Object.values(BeverageCategories).map((v) => {
       return {
         label: v.charAt(0).toUpperCase() + v.slice(1),
@@ -153,7 +157,7 @@ export default defineComponent({
 
     const activeSubTypes = computed<any>(() => {
       let active
-      switch (beverage.value.type) {
+      switch (beverage.type) {
         case 'gin':
           active = ginStyles
           break
@@ -350,11 +354,15 @@ export default defineComponent({
       'Vermouth',
       'Zero Proof'
     ]
-    const save = async () => {
-      const newBeverage = new BeverageModel()
-      console.log('newBeverage', newBeverage)
-      newBeverage.attributes = beverage as Partial<BeverageModel>
-      const result = await newBeverage.save()
+    // const save = async () => {
+    //   const newBeverage = new BeverageModel()
+    //   console.log('newBeverage', newBeverage)
+    //   newBeverage.attributes = beverage as Partial<BeverageModel>
+    //   const result = await newBeverage.save()
+    // }
+    const save = () => {
+      // @FIXME do not use BeverageModel here
+      const newBeverage = new BeverageModel(beverage)
       console.log(newBeverage)
     }
     const getBeverage = async () => {
@@ -373,7 +381,7 @@ export default defineComponent({
       activeSubTypes,
       save,
       getBeverage,
-      newBev
+      // newBev
     }
   }
 })

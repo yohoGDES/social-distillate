@@ -1,6 +1,6 @@
 import {Object as ParseObject, User} from 'parse'
 
-export interface BaseModel<T> {
+export interface BaseModelAttributes {
     id: string
     updatedAt: Date
     createdAt: Date
@@ -25,7 +25,7 @@ export abstract class BaseModel<T> extends ParseObject {
     }
 }
 
-export interface BaseUser<T> {
+export interface BaseUserAttributes {
     username: string
     password: string
     email: string
@@ -48,15 +48,4 @@ export abstract class BaseUser<T> extends User {
             }
         })
     }
-}
-
-export function expose<T extends (BaseModel<T> | BaseUser<T>)>(modelClass: new (init?: Partial<T>) => T) {
-    type P = T extends User ? User : ParseObject
-    type Attributes = Omit<T, keyof P>
-    class Model {
-        constructor(init?: Partial<T>) {
-            return new modelClass(init)
-        }
-    }
-    return Model as new (init?: Partial<T>) => Attributes
 }
