@@ -17,9 +17,8 @@ export interface Beverage extends BaseModelAttributes {
   type: string
   spiritType?: string
   subType?: string
-
-  oneLiner(): string
 }
+// oneLiner(): string
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface BeverageModel extends Beverage {}
@@ -28,9 +27,9 @@ export class BeverageModel extends BaseModel<Beverage> {
     super('Beverage', init)
   }
 
-  oneLiner() {
-    return `${this.name} ${this.description}`
-  }
+  // oneLiner() {
+  //   return `${this.name} ${this.description}`
+  // }
 }
 
 // This can go in a service registration file or somewhere else but it informs

@@ -6,7 +6,7 @@ import { useAlertStore } from '@/store/modules/alerts'
 // User store will contain specific actions and details about the current user
 export const useUserStore = defineStore('user', {
   state: () => {
-    return <{currentUser: User | undefined}>{
+    return <{ currentUser: User | undefined }>{
       currentUser: api.User.current<UserModel>()
     }
   },

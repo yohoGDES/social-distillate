@@ -1,11 +1,14 @@
 <template>
   <div>
     <h2>Edit Beverage</h2>
+    hello?
     <pre>
-      {{ beverage.attributes }}
+    beverage:
+      {{ beverage }}
     </pre>
     <a href="" @click.prevent="getBeverage">Get it</a>
     <form action.prevent="">
+      Beverage ID: {{ beverage.id }}
       <sc-form-row>
         <sc-form-label>Category</sc-form-label>
         <sc-form-description>
@@ -121,7 +124,7 @@
         <!-- TODO: (Enhancement) Add photo upload capability -->
       </div>
       <sc-form-row>
-        <sc-button @click.prevent="save()"> Save </sc-button>
+        <sc-button @click.prevent="saveBeverage()"> Save </sc-button>
       </sc-form-row>
     </form>
   </div>
@@ -129,7 +132,12 @@
 <script lang="ts">
 import { computed, defineComponent, reactive, ref } from 'vue'
 import { useBeverageStore } from '@/store/modules/beverage'
-import { BeverageModel, BeverageCategories, Beverage } from '../../../cloud/src/model/beverage'
+import {
+  BeverageModel,
+  BeverageCategories,
+  Beverage,
+  BeverageCategory
+} from '../../../cloud/src/model/beverage'
 
 // id: string
 // name: string
@@ -143,8 +151,8 @@ export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
     const beverageStore = useBeverageStore()
-
-    const beverage: Partial<Beverage> = reactive({
+    const test = ref()
+    const beverage = ref({
       category: 'spirit',
       type: 'whiskey'
     })
@@ -157,7 +165,7 @@ export default defineComponent({
 
     const activeSubTypes = computed<any>(() => {
       let active
-      switch (beverage.type) {
+      switch (beverage.value.type) {
         case 'gin':
           active = ginStyles
           break
@@ -354,33 +362,22 @@ export default defineComponent({
       'Vermouth',
       'Zero Proof'
     ]
-    // const save = async () => {
-    //   const newBeverage = new BeverageModel()
-    //   console.log('newBeverage', newBeverage)
-    //   newBeverage.attributes = beverage as Partial<BeverageModel>
-    //   const result = await newBeverage.save()
-    // }
-    const save = () => {
+    const saveBeverage = async () => {
       // @FIXME do not use BeverageModel here
-      const newBeverage = new BeverageModel(beverage)
-      console.log(newBeverage)
+      await beverageStore.saveBeverage(beverage.value)
     }
     const getBeverage = async () => {
       const result = await beverageStore.getBeverage('y01kyz79Ha')
-      console.log(result)
-      const newBev = new BeverageModel({ id: result.get('objectId') })
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      // newBev.attributes = result.attributes
-      beverage.value = newBev
+      beverage.value = result
     }
     return {
       beverage,
       bevCategories,
       spiritTypes,
       activeSubTypes,
-      save,
-      getBeverage,
+      saveBeverage,
+      test,
+      getBeverage
       // newBev
     }
   }
