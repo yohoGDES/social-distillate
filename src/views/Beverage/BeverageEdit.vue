@@ -153,6 +153,7 @@ export default defineComponent({
     const beverageStore = useBeverageStore()
     const test = ref()
     const beverage = ref({
+      objectId: null,
       category: 'spirit',
       type: 'whiskey'
     })
@@ -364,7 +365,11 @@ export default defineComponent({
     ]
     const saveBeverage = async () => {
       // @FIXME do not use BeverageModel here
-      await beverageStore.saveBeverage(beverage.value)
+      const result = await beverageStore.saveBeverage(beverage.value)
+      if (result) {
+        console.log(result)
+        beverage.value.objectId = result.objectId
+      }
     }
     const getBeverage = async () => {
       const result = await beverageStore.getBeverage('y01kyz79Ha')
