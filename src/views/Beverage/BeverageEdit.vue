@@ -1,14 +1,13 @@
 <template>
   <div>
     <h2>Edit Beverage</h2>
-    hello?
     <pre>
     beverage:
       {{ beverage }}
     </pre>
     <a href="" @click.prevent="getBeverage">Get it</a>
     <form action.prevent="">
-      Beverage ID: {{ beverage.id }}
+      Beverage ID: {{ beverage.objectId }}
       <sc-form-row>
         <sc-form-label>Category</sc-form-label>
         <sc-form-description>
@@ -130,7 +129,7 @@
   </div>
 </template>
 <script lang="ts">
-import { computed, defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
 import { useBeverageStore } from '@/store/modules/beverage'
 import {
   BeverageModel,
@@ -138,6 +137,7 @@ import {
   Beverage,
   BeverageCategory
 } from '../../../cloud/src/model/beverage'
+import { useRoute } from 'vue-router'
 
 // id: string
 // name: string
@@ -151,6 +151,7 @@ export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
     const beverageStore = useBeverageStore()
+    const route = useRoute()
     const test = ref()
     const beverage = ref({
       objectId: null,
@@ -371,10 +372,14 @@ export default defineComponent({
         beverage.value.objectId = result.objectId
       }
     }
-    const getBeverage = async () => {
-      const result = await beverageStore.getBeverage('y01kyz79Ha')
+    const getBeverage = async (id: string) => {
+      const result = await beverageStore.getBeverage(id)
       beverage.value = result
     }
+
+    onMounted(async () => {
+      await getBeverage(route.params.id as string)
+    })
     return {
       beverage,
       bevCategories,

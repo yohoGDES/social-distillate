@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { BeverageModel } from '../../../cloud/src/model/beverage'
+import { api } from '@/utilities/api'
 import { http } from '@/utilities/http'
 export const useBeverageStore = defineStore('beverage', {
   state: () => {
@@ -28,6 +29,10 @@ export const useBeverageStore = defineStore('beverage', {
       } catch (error) {
         console.log('Error saving beverage: ', error)
       }
+    },
+    async getBeverages() {
+      const { data } = await http.get('/Beverage')
+      return data
     }
   }
 })
