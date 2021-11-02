@@ -80,7 +80,14 @@
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Retail Price</sc-form-label>
-          <sc-text v-model="beverage.retailPrice" />
+          <sc-currency
+            v-model="beverage.retailPrice"
+            :options="{
+              currency: 'USD',
+              useGrouping: true
+            }"
+          />
+          <!-- <sc-text v-model="beverage.retailPrice" /> -->
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Region</sc-form-label>

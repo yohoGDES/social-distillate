@@ -95,6 +95,8 @@ import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
 import { computed, defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'
 
+import { useRatingStore } from '@/store/modules/rate'
+
 export default defineComponent({
   name: 'Rate',
   components: {
@@ -103,6 +105,7 @@ export default defineComponent({
     flavorWheel
   },
   setup() {
+    const ratingStore = useRatingStore()
     const ratingScale = computed(() => [...Array(101).keys()].slice().reverse())
     const review: TastingNotes = reactive({
       color: 'Amber',
@@ -114,8 +117,10 @@ export default defineComponent({
       conclusion: ''
     })
 
-    const submitReview = () => {
+    const submitReview = async () => {
       console.log(review)
+      const result = await ratingStore.saveRating(review)
+      console.log('result', result)
     }
     return {
       review,
