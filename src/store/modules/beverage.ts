@@ -33,6 +33,23 @@ export const useBeverageStore = defineStore('beverage', {
     async getBeverages() {
       const { data } = await http.get('/Beverage')
       return data
+    },
+    /**
+     * Retrieve ratings belonging to a beverage
+     * @param id : ID of Beverage to retrieve ratings for
+     * @returns Object with results array of ratings (rating[])
+     * helpful: https://dashboard.back4app.com/apidocs/NgDawUcAizSiYxhLwSYeg0SRhrLeFrgvFt2Zp3hI?shell#queries
+     */
+    async getBeverageRatings(id: string) {
+      try {
+        const query = encodeURI(
+          `where={"beverage":{"__type":"Pointer","className":"Beverage","objectId":"${id}"}}`
+        )
+        const { data } = await http.get(`/Rating?${query}`)
+        return data.results
+      } catch (error) {
+        console.log('Error retrieving beverage ratings: ', error)
+      }
     }
   }
 })
