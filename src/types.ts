@@ -12,4 +12,5 @@ export type TastingNotes = {
   rating?: number
   value?: number
   conclusion?: string
+  flavorProfile?: Flavor[]
 }

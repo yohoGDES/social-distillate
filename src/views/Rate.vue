@@ -65,7 +65,7 @@
 
     <sc-form-row>
       <sc-form-label label="Flavor Profile" />
-      <flavor-wheel />
+      <flavor-wheel v-model="review.flavorProfile" />
     </sc-form-row>
 
     <sc-form-row>
@@ -114,7 +114,79 @@ export default defineComponent({
       finish: '',
       rating: 0,
       value: 0,
-      conclusion: ''
+      conclusion: '',
+      flavorProfile: [
+        {
+          key: 'smoky',
+          name: 'Smoky',
+          value: 0
+        },
+        {
+          key: 'peaty',
+          name: 'Peaty',
+          value: 0
+        },
+        {
+          key: 'herbal',
+          name: 'Herbal',
+          value: 0
+        },
+        {
+          key: 'oily',
+          name: 'Oily',
+          value: 0
+        },
+        {
+          key: 'sweet',
+          name: 'Sweet',
+          value: 0
+        },
+        {
+          key: 'briny',
+          name: 'Briny',
+          value: 0
+        },
+        {
+          key: 'salty',
+          name: 'Salty',
+          value: 0
+        },
+        {
+          key: 'vanilla',
+          name: 'Vanilla',
+          value: 0
+        },
+        {
+          key: 'tart',
+          name: 'Tart',
+          value: 0
+        },
+        {
+          key: 'fruity',
+          name: 'Fruity',
+          value: 0
+        },
+        {
+          key: 'floral',
+          name: 'Floral',
+          value: 0
+        },
+        {
+          key: 'sherried',
+          name: 'Sherried',
+          value: 0
+        },
+        {
+          key: 'chocolate',
+          name: 'Chocolate',
+          value: 0
+        },
+        {
+          key: 'cereal',
+          name: 'Cereal',
+          value: 0
+        }
+      ]
     })
 
     const submitReview = async () => {

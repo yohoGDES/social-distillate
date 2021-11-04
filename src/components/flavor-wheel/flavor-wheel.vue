@@ -1,7 +1,11 @@
 <template>
-  <flavor-wheel-chart :flavors="flavors" />
+  <flavor-wheel-chart :flavors="proxyValue" />
   <div class="flavor-scales">
-    <div class="flavor-scale" v-for="(flavor, index) in flavors" :key="index">
+    <div
+      class="flavor-scale"
+      v-for="(flavor, index) in proxyValue"
+      :key="index"
+    >
       <label for="">{{ flavor.name }} ({{ flavor.value }})</label>
       <div class="flavor-scale__input">
         <range v-model="flavor.value" :min="0" :max="5" />
@@ -10,98 +14,31 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, reactive, ref } from 'vue'
+import { computed, defineComponent, PropType } from 'vue'
 import range from '@/components/forms/inputs/range.vue'
 import flavorWheelChart from '../flavor-wheel/flavor-wheel-chart.vue'
 import { Flavor } from '@/types'
 export default defineComponent({
   components: { flavorWheelChart, range },
+  props: {
+    modelValue: {
+      type: Array as PropType<Array<Flavor>>,
+      required: true
+    }
+  },
+  emits: ['update:modelValue'],
   name: 'flavor-wheel',
-  setup() {
-    const flavors: Flavor[] = reactive([
-      {
-        key: 'smoky',
-        name: 'Smoky',
-        value: 0
+  setup(props, { emit }) {
+    const proxyValue = computed({
+      get: () => {
+        return props.modelValue
       },
-      {
-        key: 'peaty',
-        name: 'Peaty',
-        value: 0
-      },
-      {
-        key: 'herbal',
-        name: 'Herbal',
-        value: 0
-      },
-      {
-        key: 'oily',
-        name: 'Oily',
-        value: 0
-      },
-      // {
-      //   key: 'full',
-      //   name: 'Full',
-      //   value: 0
-      // },
-      // {
-      //   key: 'rich',
-      //   name: 'Rich',
-      //   value: 0
-      // },
-      {
-        key: 'sweet',
-        name: 'Sweet',
-        value: 0
-      },
-      {
-        key: 'briny',
-        name: 'Briny',
-        value: 0
-      },
-      {
-        key: 'salty',
-        name: 'Salty',
-        value: 0
-      },
-      {
-        key: 'vanilla',
-        name: 'Vanilla',
-        value: 0
-      },
-      {
-        key: 'tart',
-        name: 'Tart',
-        value: 0
-      },
-      {
-        key: 'fruity',
-        name: 'Fruity',
-        value: 0
-      },
-      {
-        key: 'floral',
-        name: 'Floral',
-        value: 0
-      },
-      {
-        key: 'sherried',
-        name: 'Sherried',
-        value: 0
-      },
-      {
-        key: 'chocolate',
-        name: 'Chocolate',
-        value: 0
-      },
-      {
-        key: 'cereal',
-        name: 'Cereal',
-        value: 0
+      set: (value) => {
+        emit('update:modelValue', value)
       }
-    ])
+    })
     return {
-      flavors
+      proxyValue
     }
   }
 })
