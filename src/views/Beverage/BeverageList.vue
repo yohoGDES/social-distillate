@@ -12,7 +12,7 @@
         <div class="beverage-list__col">
           <router-link :to="`/beverage/edit/${beverage.objectId}`">
             {{ beverage.name }}
-          </router-link>
+          </router-link> <code-pill :value="beverage.objectId" />
         </div>
       </div>
     </div>
