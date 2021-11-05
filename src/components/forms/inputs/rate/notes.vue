@@ -5,7 +5,7 @@
       @insert-selections="addSuggestions($event)"
     >
       <template v-slot:label>
-        <sc-form-label :label="label" />
+        <sc-form-label>{{ label }}</sc-form-label>
       </template>
     </suggest-notes>
 

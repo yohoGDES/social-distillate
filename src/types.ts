@@ -4,7 +4,7 @@ export type Flavor = {
   value: number
 }
 
-export type TastingNotes = {
+export interface TastingNotes {
   color?: string
   nose?: string
   palate?: string
@@ -12,4 +12,5 @@ export type TastingNotes = {
   rating?: number
   value?: number
   conclusion?: string
+  flavorProfile: Array<Flavor>
 }

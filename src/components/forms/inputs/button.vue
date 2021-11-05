@@ -1,7 +1,7 @@
 <template>
   <button
     class="sc-button"
-    :class="`sc-button--${rank} ${customWidth}`"
+    :class="`sc-button--${rank} ${customWidth} ${buttonSize}`"
     :type="type"
     @click="$emit('clicked')"
   >
@@ -42,8 +42,14 @@ export default defineComponent({
       if (!width) return ''
       return width === 'full' ? 'sc-button--full' : 'sc-button--half'
     })
+    const buttonSize = computed(() => {
+      const size = props.size
+      if (!size) return ''
+      return `sc-button--${size}`
+    })
     return {
-      customWidth
+      customWidth,
+      buttonSize
     }
   }
 })
@@ -56,6 +62,12 @@ export default defineComponent({
   color: $charcoal;
   padding: 10px 20px;
   font-size: 16px;
+  cursor: pointer;
+  // Size
+  &--small {
+   font-size: 14px; 
+   padding: 5px 8px;
+  }
   &:hover,
   &:active {
     color: white;
@@ -71,6 +83,7 @@ export default defineComponent({
       border-color: $auburn;
     }
   }
+  // Width
   &--full {
     width: 100%;
   }
