@@ -34,13 +34,14 @@ export default defineComponent({
   transition: all 275ms;
   padding: 8px 10px;
   margin-bottom: 5px;
-  border-radius: 3px;
+  border-radius: 6px;
+  font-family: Avenir, Helvetica, Arial, sans-serif;
   &--error {
     background-color: $old-oak;
     color: white;
   }
   &--success {
-    background-color: green;
+    background-color: #59ac59;
     color: white;
   }
   &--warning {

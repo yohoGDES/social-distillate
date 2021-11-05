@@ -1,13 +1,15 @@
 <template>
   <div>
-    <h2>Edit Beverage</h2>
-    <pre>
-    beverage:
-      {{ beverage }}
-    </pre>
-    <a href="" @click.prevent="getBeverage">Get it</a>
+    <router-link to="/beverage/list">Back to Beverages</router-link>
+    <h2>
+      Edit Beverage
+      <code-pill :value="beverage.objectId" />
+    </h2>
     <form action.prevent="">
-      Beverage ID: {{ beverage.objectId }}
+      <sc-form-row>
+        <sc-form-label>Name</sc-form-label>
+        <sc-text v-model="beverage.name" />
+      </sc-form-row>
       <sc-form-row>
         <sc-form-label>Category</sc-form-label>
         <sc-form-description>
@@ -17,10 +19,6 @@
           :options="bevCategories"
           v-model="beverage.category"
         ></sc-dropdown>
-      </sc-form-row>
-      <sc-form-row>
-        <sc-form-label>Name</sc-form-label>
-        <sc-text v-model="beverage.name" />
       </sc-form-row>
       <div class="spirit-values" v-if="beverage.category === 'spirit'">
         <sc-form-row>
@@ -104,28 +102,30 @@
         <sc-form-row>
           <sc-form-label>Colored</sc-form-label>
           <sc-form-description>Was color added?</sc-form-description>
-          Unknown | Colored | Uncolored
-          <!-- <sc-text v-model="beverage.colored" /> -->
+          <sc-radio
+            :options="['Colored', 'Uncolored']"
+            v-model="beverage.colored"
+          />
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Chill-Filtered</sc-form-label>
           <sc-form-description>Was this chill-filtered?</sc-form-description>
-          Unknown | Chill-Filtered | Non-Chill Filtered
-          <!-- <sc-text v-model="beverage.colored" /> -->
+          <sc-radio
+            :options="['Chill-Filtered', 'Non-Chill Filtered']"
+            v-model="beverage.chillFiltered"
+          />
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Single Cask</sc-form-label>
           <sc-form-description
             >Is this a single cask release?</sc-form-description
           >
-          Unknown | Yes | No
-          <!-- <sc-text v-model="beverage.colored" /> -->
+          <sc-radio :options="['Yes', 'No']" v-model="beverage.singleCask" />
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Cask Strength</sc-form-label>
           <sc-form-description>Is this cask strength?</sc-form-description>
-          Unknown | Yes | No
-          <!-- <sc-text v-model="beverage.colored" /> -->
+          <sc-radio :options="['Yes', 'No']" v-model="beverage.caskStrength" />
         </sc-form-row>
         <!-- TODO: (Enhancement) Add photo upload capability -->
       </div>
@@ -146,14 +146,6 @@ import {
 } from '../../../cloud/src/model/beverage'
 import { useRoute } from 'vue-router'
 
-// id: string
-// name: string
-// description: string
-// country: string
-// region: string
-// type: BeverageType,
-// updatedAt: Date
-// createdAt: Date
 export default defineComponent({
   name: 'beverage-edit',
   setup(_, context) {
@@ -372,20 +364,20 @@ export default defineComponent({
       'Zero Proof'
     ]
     const saveBeverage = async () => {
-      // @FIXME do not use BeverageModel here
       const result = await beverageStore.saveBeverage(beverage.value)
       if (result) {
-        console.log(result)
         beverage.value.objectId = result.objectId
       }
     }
     const getBeverage = async (id: string) => {
+      if (!id) return
       const result = await beverageStore.getBeverage(id)
       beverage.value = result
     }
 
     onMounted(async () => {
-      await getBeverage(route.params.id as string)
+      if (route.params.id !== 'new')
+        await getBeverage(route.params.id as string)
     })
     return {
       beverage,

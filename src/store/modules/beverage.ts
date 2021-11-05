@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import { BeverageModel } from '../../../cloud/src/model/beverage'
 import { api } from '@/utilities/api'
 import { http } from '@/utilities/http'
+import { useAlertStore } from '@/store/modules/alerts'
 export const useBeverageStore = defineStore('beverage', {
   state: () => {
     return {}
@@ -16,6 +17,7 @@ export const useBeverageStore = defineStore('beverage', {
       }
     },
     async saveBeverage(beverage: any) {
+      const alertStore = useAlertStore()
       try {
         if (beverage.objectId) {
           const toSave = beverage
@@ -26,8 +28,10 @@ export const useBeverageStore = defineStore('beverage', {
           const { data } = await http.post(`/Beverage`, beverage)
           return data
         }
+        alertStore.alertSuccess('🎉 Beverage saved! 🎉')
       } catch (error) {
         console.log('Error saving beverage: ', error)
+        alertStore.alertError('Failed to save Beverage 😬')
       }
     },
     async getBeverages() {
