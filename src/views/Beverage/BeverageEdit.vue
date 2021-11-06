@@ -5,6 +5,9 @@
       Edit Beverage
       <code-pill :value="beverage.objectId" />
     </h2>
+    <router-link v-if="!isNewBeverage" :to="`/beverage/${beverage.objectId}`"
+      >view</router-link
+    >
     <form action.prevent="">
       <sc-form-row>
         <sc-form-label>Name</sc-form-label>
@@ -70,7 +73,7 @@
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Stated Age</sc-form-label>
-          <sc-text v-model="beverage.bottled" />
+          <sc-text v-model="beverage.statedAge" />
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Cask Number</sc-form-label>
@@ -85,7 +88,6 @@
               useGrouping: true
             }"
           />
-          <!-- <sc-text v-model="beverage.retailPrice" /> -->
         </sc-form-row>
         <sc-form-row>
           <sc-form-label>Region</sc-form-label>
@@ -156,6 +158,9 @@ export default defineComponent({
       category: 'spirit',
       type: 'whiskey'
     })
+
+    const isNewBeverage = computed(() => route.params.id === 'new')
+
     const bevCategories = Object.values(BeverageCategories).map((v) => {
       return {
         label: v.charAt(0).toUpperCase() + v.slice(1),
@@ -384,7 +389,8 @@ export default defineComponent({
       spiritTypes,
       activeSubTypes,
       saveBeverage,
-      getBeverage
+      getBeverage,
+      isNewBeverage
     }
   }
 })
