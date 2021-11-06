@@ -4,7 +4,8 @@
   <user-bar></user-bar>
   <div id="nav">
     <router-link to="/">Home</router-link> |
-    <router-link to="/rate">Rate</router-link>
+    <router-link to="/rate">Rate</router-link> |
+    <router-link to="/beverages">Beverages</router-link>
   </div>
   <router-view />
 </template>

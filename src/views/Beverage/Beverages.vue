@@ -1,8 +1,10 @@
 <template>
   <div>
     <h2>Beverage List</h2>
-    <sc-button @clicked="newBeverage()" size="small">Add Beverage</sc-button>
-    <br><br>
+    <div>
+      <sc-button @clicked="newBeverage()" size="small">Add Beverage</sc-button>
+    </div>
+    <hr>
     <div class="beverage-list">
       <div
         class="beverage-list__row"
@@ -10,9 +12,12 @@
         :key="beverage.objectId"
       >
         <div class="beverage-list__col">
-          <router-link :to="`/beverage/edit/${beverage.objectId}`">
+          <router-link :to="`/beverage/${beverage.objectId}`">
             {{ beverage.name }}
           </router-link> <code-pill :value="beverage.objectId" />
+          <router-link :to="`/beverage/edit/${beverage.objectId}`"
+            >Edit</router-link
+          >
         </div>
       </div>
     </div>

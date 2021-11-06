@@ -1,6 +1,6 @@
 <template>
   <div>
-    <router-link to="/beverage/list">Back to Beverages</router-link>
+    <router-link to="/beverages">Back to Beverages</router-link>
     <h2>
       Edit Beverage
       <code-pill :value="beverage.objectId" />
@@ -151,7 +151,6 @@ export default defineComponent({
   setup(_, context) {
     const beverageStore = useBeverageStore()
     const route = useRoute()
-    const test = ref()
     const beverage = ref({
       objectId: null,
       category: 'spirit',
@@ -385,9 +384,7 @@ export default defineComponent({
       spiritTypes,
       activeSubTypes,
       saveBeverage,
-      test,
       getBeverage
-      // newBev
     }
   }
 })

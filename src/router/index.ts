@@ -4,7 +4,8 @@ import Rate from '../views/Rate.vue'
 import Login from '../views/Login.vue'
 import Error from '../views/Error.vue'
 import BeverageEdit from '../views/Beverage/BeverageEdit.vue'
-import BeverageList from '../views/Beverage/BeverageList.vue'
+import Beverages from '../views/Beverage/Beverages.vue'
+import Beverage from '../views/Beverage/Beverage.vue'
 
 import { useUserStore } from '@/store/modules/user'
 import { useAlertStore } from '@/store/modules/alerts'
@@ -42,9 +43,17 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/beverage/list',
-    name: 'BeverageList',
-    component: BeverageList,
+    path: '/beverages',
+    name: 'Beverages',
+    component: Beverages,
+    meta: {
+      authRequired: true
+    }
+  },
+  {
+    path: '/beverage/:id',
+    name: 'Beverage',
+    component: Beverage,
     meta: {
       authRequired: true
     }
