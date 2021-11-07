@@ -7,6 +7,7 @@
     <router-link to="/rate">Rate</router-link> |
     <router-link to="/beverages">Beverages</router-link>
   </div>
+  <hr>
   <router-view />
 </template>
 

@@ -10,22 +10,24 @@ Hosts can choose from pre-entered bottles or enter a new one on the fly.
 Only the host and admin will be able to see blind tastings.
 The host controls the flow in the app. Once next dram is selected, users will receive the next scoring sheet.
 -->
-<pre>
-  {{ currentUser }}
-</pre>
-<button @click.prevent="getUserGroups">get</button>
+<!-- <button @click.prevent="getGroupMembers(tastingDetails.host)">get</button> -->
   <form>
     <sc-form-row>
       <sc-form-label>Host</sc-form-label>
       <div v-if="tastingDetails.host">
         <user-badge :user="tastingDetails.host" display="pill" />
-        |
-        <sc-button size="small" @click.prevent="tastingDetails.host = null"
+        <sc-button
+          v-if="!isEmpty(tastingDetails.host)"
+          size="small"
+          @click.prevent="removeHost()"
           >Remove</sc-button
         >
       </div>
-      <sc-button size="small" @click.prevent="assignHost(currentUser)"
-        >Add Me as Host</sc-button
+      <sc-button
+        v-if="isEmpty(tastingDetails.host)"
+        size="small"
+        @click.prevent="assignHost(currentUser)"
+        >Add Myself as Host</sc-button
       >
     </sc-form-row>
     <sc-form-row>
@@ -36,13 +38,14 @@ The host controls the flow in the app. Once next dram is selected, users will re
     <sc-form-row>
       <sc-form-label>Group</sc-form-label>
       <!-- TODO: Grab RVA Whiskey group relation and make pointer -->
-      <!-- Type ahead search, default to RVA Whiskey for now -->
+      <!-- TODO: Add type ahead search, use dropdown for now -->
+      <sc-dropdown v-model="tastingDetails.group" :options="userGroups" />
     </sc-form-row>
     <sc-form-row>
       <sc-form-label>Use My Hosting Location</sc-form-label>
       <sc-radio v-model="useSavedLocation" :options="[true, false]" />
       <div v-if="useSavedLocation">
-        {{ currentUser.attributes.hostingLocation }}
+        {{ tastingDetails.location }}
       </div>
       <div v-else>
         Other location input
@@ -63,7 +66,8 @@ The host controls the flow in the app. Once next dram is selected, users will re
     <sc-form-row v-if="tastingDetails.blind">
       <sc-form-label>Reveal Bottle Details Sequentially?</sc-form-label>
       <sc-form-description
-        >Do you want to show the details of each beverage after each round?</sc-form-description
+        >Do you want to show the details of each beverage after each
+        round?</sc-form-description
       >
       <sc-radio
         v-model="tastingDetails.revealSequentially"
@@ -100,34 +104,44 @@ The host controls the flow in the app. Once next dram is selected, users will re
     </sc-form-row>
     <sc-form-row>
       <sc-form-label>Invite Guests</sc-form-label>
-      <sc-form-description>Send invitations to all guests via email.</sc-form-description>
-      Need multi-select for members (users). May wait on this for the first tasting depending on how much time is left.
+      <sc-form-description
+        >Who do you want to invite to this tasting? Group members can also sign
+        up later.</sc-form-description
+      >
+      <div v-for="member in groupMembers" :key="member.index">
+        <input type="checkbox" :value="member.id" name="" :id="member.id" />
+        <label :for="member.id"> {{ member.name }}</label>
+      </div>
     </sc-form-row>
   </form>
 </template>
 <script lang="ts">
-import { computed, defineComponent, onMounted, ref, watchEffect } from 'vue'
+import {
+  computed,
+  defineComponent,
+  onMounted,
+  ref,
+  watch,
+  watchEffect
+} from 'vue'
 import { useUserStore } from '@/store/modules/user'
 import { useGroupStore } from '@/store/modules/group'
 import { setPointer, UserDetails } from '@/utilities/api'
+import { isEmpty, cloneDeep } from 'lodash'
 import { TastingDetails } from '@/types'
 import userBadge from '@/components/user/user-badge.vue'
-import ScFormDescription from '@/components/forms/sc-form-description.vue'
 
 export default defineComponent({
-  components: { userBadge, ScFormDescription },
+  components: { userBadge },
   name: 'tasting-edit',
   setup() {
     const userStore = useUserStore()
     const groupStore = useGroupStore()
-    const currentUser = computed(() => userStore.currentUser)
-    // TODO: Get members of group to use in dropdown
-    const useSavedLocation = ref(true)
-    const tastingLocation = computed(() => 'Location!')
+
     const tastingDetails = ref({
       host: {},
       coHost: [],
-      group: {},
+      group: '',
       location: '',
       date: '',
       blind: false,
@@ -137,33 +151,95 @@ export default defineComponent({
       guests: []
     })
 
+    const currentUser = computed(() => userStore.currentUser)
+
+    const useSavedLocation = ref(true)
+    const tastingLocation = computed(() => 'Location!')
+
+
     // const saveTasting = async () => {}
     // const getTasting = async () => {}
 
     const assignHost = (user: UserDetails) => {
       tastingDetails.value.host = user
+      tastingDetails.value.location = user.attributes.hostingLocation
+      tastingDetails.value.group = (
+        userGroups.value[0] as { label: string; value: string }
+      )?.value
+      // console.log()
     }
+
+    const removeHost = () => {
+      tastingDetails.value.host = {}
+      tastingDetails.value.group = ''
+      tastingDetails.value.location = ''
+      groupMembers.value = []
+    }
+    // Set host to current user on mount
+    watchEffect(() => {
+      tastingDetails.value.host = currentUser.value || {}
+    })
 
     const userGroups = ref([])
     const getUserGroups = async () => {
       if (!currentUser.value) return
-      // TODO: This is not working.. my query is wrong
-      userGroups.value = await groupStore.getUserGroups(
+      const result = await groupStore.getUserGroups(
         currentUser.value.id as string
       )
+
+      const groups = result.map((g: any) => {
+        return {
+          label: g.name,
+          value: g.objectId
+        }
+      })
+
+      userGroups.value = groups
+      if (isEmpty(tastingDetails.value.group)) {
+        tastingDetails.value.group = groups[0].value
+      }
     }
-    // onMounted(() => {})
+
+    // Watch tastingDetails.group and fetch group members as it changes
+    watch(
+      () => cloneDeep(tastingDetails.value),
+      async (val, oldVal) => {
+        if (val.group !== oldVal.group && val.group !== '') {
+          await getGroupMembers()
+        }
+      }
+    )
+
+    onMounted(async () => {
+      await getUserGroups()
+    })
+
+    const groupMembers = ref([])
+    const getGroupMembers = async () => {
+      const members = await groupStore.getGroupMembers(
+        tastingDetails.value.group as string
+      )
+      groupMembers.value = members.map((member: any) => {
+        return {
+          name: member.username,
+          id: member.objectId
+        }
+      })
+    }
 
 
-    watchEffect(() => (tastingDetails.value.host = currentUser.value || {}))
     return {
+      isEmpty,
       assignHost,
+      removeHost,
       currentUser,
       getUserGroups,
       userGroups,
       tastingDetails,
       useSavedLocation,
-      tastingLocation
+      tastingLocation,
+      getGroupMembers,
+      groupMembers,
     }
   }
 })

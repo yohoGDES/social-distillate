@@ -1,4 +1,5 @@
 import Parse from 'parse'
+import { http } from './http'
 
 const serverUrl = 'https://parseapi.back4app.com'
 const appId = 'NgDawUcAizSiYxhLwSYeg0SRhrLeFrgvFt2Zp3hI'
@@ -11,7 +12,7 @@ export type ParsePointer = {
 }
 
 export type ParseNewRelation = {
-  __op: string,
+  __op: string
   objects: ParsePointer[]
 }
 
@@ -41,6 +42,26 @@ export function setRelation(id: string, className: string): ParseNewRelation {
     __op: 'AddRelation',
     objects: [{ ...setPointer(id, className) }]
   }
+}
+
+export async function queryRelation(
+  id: string,
+  columnName: string,
+  targetClassName: string,
+  queryAgainst: string
+) {
+  const query = encodeURI(
+    `where={"${columnName}":{"__type":"Pointer","className":"${targetClassName}","objectId":"${id}"}}`
+  )
+  const { data } = await http.get(`/${queryAgainst}?${query}`)
+  return data.results
+}
+
+export async function query(query: string, className: string) {
+  const { data } = await http.get(
+    `/${className}?${encodeURI(`where={${query}}`)}`
+  )
+  return data.results
 }
 
 export { Parse as api }

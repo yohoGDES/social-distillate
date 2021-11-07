@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { http } from '@/utilities/http'
+import { api, query, queryRelation } from '@/utilities/api'
 
 const ClassPath = 'Group'
 
@@ -25,20 +26,28 @@ export const useGroupStore = defineStore('group', {
       }
     },
     /**
-     * Retrieve ratings belonging to a beverage
-     * @param id : ID of Beverage to retrieve ratings for
-     * @returns Object with results array of ratings (rating[])
+     * Retrieve Groups belonging to a User
+     * @param id : ID of User to retrieve ratings for
+     * @returns Object with results array of groups (group[])
      * helpful: https://dashboard.back4app.com/apidocs/NgDawUcAizSiYxhLwSYeg0SRhrLeFrgvFt2Zp3hI?shell#queries
      */
     async getUserGroups(id: string) {
       try {
-        const query = encodeURI(
-          `where={"user":{"__type":"Pointer","className":"_User","objectId":"${id}"}}`
-        )
-        const { data } = await http.get(`/Group?${query}`)
-        return data.results
+        const result = await queryRelation(id, 'members', '_User', 'Group')
+        return result
       } catch (error) {
         console.log('Error retrieving user groups: ', error)
+      }
+    },
+    async getGroupMembers(groupId: string) {
+      try {
+        const result = await query(
+          `"$relatedTo": {"object": {"__type":"Pointer","className": "Group","objectId": "${groupId}"},"key": "members"}`,
+          '_User'
+        )
+        return result
+      } catch (error) {
+        console.log('Error getting group members', error)
       }
     }
   }
