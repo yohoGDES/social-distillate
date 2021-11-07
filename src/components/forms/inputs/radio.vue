@@ -1,11 +1,17 @@
 <template>
-  <div v-for="option in options" :key="option.index">
-    <input type="radio" name="" id="" :value="option" v-model="proxyValue" />
-    <label>{{ option }}</label>
+  <div v-for="(option, idx) in options" :key="option.index">
+    <input
+      type="radio"
+      :id="getOptionId(option, idx)"
+      :value="option"
+      v-model="proxyValue"
+    />
+    <label :for="getOptionId(option, idx)">{{ option }}</label>
   </div>
 </template>
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
+import { kebabCase } from 'lodash'
 import { makeId } from '@/utilities'
 export default defineComponent({
   name: 'sc-radio',
@@ -14,7 +20,7 @@ export default defineComponent({
       type: Array
     },
     modelValue: {
-      type: [String, Object]
+      type: [String, Object, Boolean]
     }
   },
   emits: ['update:modelValue'],
@@ -27,8 +33,11 @@ export default defineComponent({
         emit('update:modelValue', value)
       }
     })
+    const getOptionId = (option: string, index: number) =>
+      `${index}-${kebabCase(option)}`
     return {
-      proxyValue
+      proxyValue,
+      getOptionId
     }
   },
 })

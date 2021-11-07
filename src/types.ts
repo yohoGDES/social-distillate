@@ -1,4 +1,4 @@
-import { ParsePointer, ParseNewRelation } from "./utilities/api"
+import { ParsePointer, ParseNewRelation } from './utilities/api'
 
 export type Flavor = {
   key: string
@@ -38,10 +38,23 @@ export type Beverage = {
   caskStrength: string
 }
 
-export interface Rating extends TastingNotes {
+export type Rating = TastingNotes & {
   objectId: string
   createdBy: ParsePointer
   createdAt: Date
   updatedAt: Date
   beverage: ParsePointer
+}
+
+export type TastingDetails = {
+  host: ParsePointer
+  coHost: ParsePointer[]
+  group: ParseNewRelation
+  location: string
+  date: Date
+  blind: boolean
+  revealBottleDetailsSequentially: boolean
+  showProgressBar: boolean
+  beverages: ParsePointer[]
+  guests: ParsePointer[]
 }

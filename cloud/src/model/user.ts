@@ -2,7 +2,9 @@
 import Parse from 'parse'
 import { BaseUser, BaseUserAttributes } from './base'
 
-export interface User extends BaseUserAttributes {}
+export interface User extends BaseUserAttributes {
+  objectId?: string
+}
 
 export interface UserModel extends User {}
 export class UserModel extends BaseUser<User> {}

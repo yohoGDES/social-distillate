@@ -29,6 +29,7 @@ export interface BaseUserAttributes {
     username: string
     password: string
     email: string
+    objectId?: string
 }
 
 export abstract class BaseUser<T> extends User {

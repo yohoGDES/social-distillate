@@ -15,6 +15,14 @@ export type ParseNewRelation = {
   objects: ParsePointer[]
 }
 
+export type UserDetails = {
+  _localId: string
+  _objCount: number
+  className: string
+  id: string
+  attributes: any
+}
+
 export function initApi(): void {
   Parse.serverURL = serverUrl
   Parse.initialize(appId, jsKey)
