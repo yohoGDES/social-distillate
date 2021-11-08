@@ -2,7 +2,9 @@
   <div>
     <router-link to="/beverages">Back to Beverages</router-link>
     <h2>
-      Edit Beverage
+      <template v-if="isNewBeverage">New </template>
+      <template v-else>Edit </template>
+      Beverage
       <code-pill :value="beverage.objectId" />
     </h2>
     <router-link v-if="!isNewBeverage" :to="`/beverage/${beverage.objectId}`"
