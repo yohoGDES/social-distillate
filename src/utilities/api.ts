@@ -43,6 +43,17 @@ export function setRelation(id: string, className: string): ParseNewRelation {
     objects: [{ ...setPointer(id, className) }]
   }
 }
+export function setRelations(
+  ids: string[],
+  className: string
+): ParseNewRelation {
+  return {
+    __op: 'AddRelation',
+    objects: ids.map((id: string) => {
+      return { ...setPointer(id, className) }
+    })
+  }
+}
 
 export async function queryRelation(
   id: string,

@@ -116,39 +116,10 @@ The host controls the flow in the app. Once next dram is selected, users will re
       <sc-form-description
         >Select the beverages that will be featured in this tasting and drag them into the order that they will be presented.</sc-form-description
       >
-      <div class="reference-list">
-        <draggable
-          v-model="tastingDetails.beverages"
-          group="name"
-          handle=".handle"
-          @start="drag = true"
-          @end="drag = false"
-          item-key="objectId"
-        >
-          <template #item="{ element, index }">
-            <div class="reference-list__item handle">
-              {{ index + 1 }}. {{ element.name }}
-              <div class="reference-list__item-actions">
-                <div class="reference-list__item-action">
-                  <a
-                    :href="`/beverage/edit/${element.objectId}`"
-                    target="_blank"
-                  >
-                    <Icon icon="ic:outline-remove-red-eye" />
-                  </a>
-                </div>
-                <div class="reference-list__item-action">
-                  <button @click.prevent="removeBeverage(element.objectId)">
-                    <Icon icon="ic:outline-close" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </template>
-        </draggable>
-        <div v-if="tastingDetails.beverages.length <= 0">
-          You haven't selected any beverages.
-        </div>
+      <!-- TODO: BREAK THIS OUT INTO A COMPONENT -->
+      <reference-list v-model="tastingDetails.beverages" />
+      <div v-if="tastingDetails.beverages.length <= 0">
+        You haven't selected any beverages.
       </div>
       <drawer-modal
         title="Select Beverages"
@@ -185,9 +156,18 @@ The host controls the flow in the app. Once next dram is selected, users will re
         up later.</sc-form-description
       >
       <div v-for="member in groupMembers" :key="member.index">
-        <input type="checkbox" :value="member.id" name="" :id="member.id" />
+        <input
+          type="checkbox"
+          :value="member.id"
+          name=""
+          :id="member.id"
+          v-model="tastingDetails.guests"
+        />
         <label :for="member.id"> {{ member.name }}</label>
       </div>
+    </sc-form-row>
+    <sc-form-row>
+      <sc-button display="full" @click.prevent="saveTasting">Save</sc-button>
     </sc-form-row>
   </form>
 </template>
@@ -203,18 +183,18 @@ import {
 import { useUserStore } from '@/store/modules/user'
 import { useGroupStore } from '@/store/modules/group'
 import { useBeverageStore } from '@/store/modules/beverage'
-import { setPointer, UserDetails } from '@/utilities/api'
+import { setRelation, setRelations, UserDetails } from '@/utilities/api'
 import { isEmpty, cloneDeep } from 'lodash'
 import { TastingDetails } from '@/types'
 import userBadge from '@/components/user/user-badge.vue'
-import draggable from 'vuedraggable'
+
 import drawerModal from '@/components/modals/drawer-modal.vue'
 import { Icon } from '@iconify/vue'
-import outlineRemoveRedEye from '@iconify-icons/ic/outline-remove-red-eye'
 import outlineClose from '@iconify-icons/ic/outline-close'
+import referenceList from '@/components/reference-list/reference-list.vue'
 
 export default defineComponent({
-  components: { userBadge, draggable, drawerModal, Icon },
+  components: { userBadge, drawerModal, Icon, referenceList },
   name: 'tasting-edit',
   setup() {
     const userStore = useUserStore()
@@ -222,22 +202,47 @@ export default defineComponent({
     const beverageStore = useBeverageStore()
 
     const icons = {
-      outlineRemoveRedEye,
       outlineClose
     }
     const tastingDetails = ref({
       name: '',
       host: {},
       coHost: [],
+      type: 'tasting',
       group: '',
       location: '',
       date: '',
+      description: '',
       blind: false,
       revealSequentially: false,
       showProgressBar: false,
       beverages: [],
       guests: []
     })
+
+    const saveTasting = async () => {
+      const details = tastingDetails.value
+      const payload = {
+        name: details.name,
+        host: setRelation((details.host as UserDetails).id, '_User'),
+        group: setRelation(details.group, 'Group'),
+        location: details.location,
+        date: details.date,
+        description: details.description,
+        blind: details.blind,
+        revealSequentially: details.revealSequentially,
+        showProgressBar: details.showProgressBar,
+        beverages: setRelations(
+          details.beverages.map((beverage: any) => beverage.objectId),
+          'Beverage'
+        ),
+        guests: setRelations(details.guests, '_User')
+      }
+      console.log(payload)
+    }
+    const getTasting = async () => {
+      // hi
+    }
 
     const beverages = ref([])
     const showBeverages = ref(false)
@@ -248,8 +253,6 @@ export default defineComponent({
     const useSavedLocation = ref(true)
     const tastingLocation = computed(() => 'Location!')
 
-    // const saveTasting = async () => {}
-    // const getTasting = async () => {}
 
     const assignHost = (user: UserDetails) => {
       tastingDetails.value.host = user
@@ -335,7 +338,9 @@ export default defineComponent({
       beverages,
       toggleBeverages,
       showBeverages,
-      icons
+      icons,
+      saveTasting,
+      getTasting
     }
   }
 })
@@ -360,63 +365,6 @@ export default defineComponent({
   svg {
     width: 100%;
     height: auto;
-  }
-}
-.handle {
-  cursor: grab;
-  &:active {
-    cursor: grabbing;
-  }
-}
-.reference-list {
-  margin-bottom: 12px;
-}
-.reference-list__item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 6px 12px;
-  border: 1px solid #c7c7c7;
-  margin-bottom: 3px;
-  border-radius: 5px;
-}
-.reference-list__item-actions {
-  display: flex;
-}
-.reference-list__item-action {
-  margin-left: 4px;
-  width: 18px;
-  height: 18px;
-  cursor: pointer;
-  &:first-child {
-    margin-left: 0px;
-  }
-  svg {
-    width: 100%;
-    height: auto;
-  }
-  button {
-    cursor: pointer;
-    border: none;
-    background: none;
-    padding: 0;
-    width: 100%;
-    height: 100%;
-    color: $charcoal;
-    &:hover {
-      color: $mahogany;
-    }
-  }
-  a {
-    display: block;
-    text-decoration: none;
-    color: $charcoal;
-    &:visited {
-      color: $charcoal;
-    }
-    &:hover {
-      color: $mahogany;
-    }
   }
 }
 </style>

@@ -6,7 +6,7 @@
     <router-link to="/">Home</router-link> |
     <router-link to="/rate">Rate</router-link> |
     <router-link to="/beverages">Beverages</router-link> |
-    <router-link to="/events/tastings/new">Create Event</router-link>
+    <router-link to="/events/tastings/edit/new">Create Event</router-link>
   </div>
   <hr>
   <router-view />
