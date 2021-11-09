@@ -22,7 +22,18 @@ The host controls the flow in the app. Once next dram is selected, users will re
       <sc-form-description>What is the name of this event?</sc-form-description>
       <sc-text required v-model="tastingDetails.name" />
     </sc-form-row>
-    
+    <sc-form-row>
+      <sc-form-label>Date</sc-form-label>
+      <sc-form-description
+        >When will the tasting be hosted?</sc-form-description
+      >
+      <input type="datetime-local" v-model="tastingDetails.date" name="" id="" />
+    </sc-form-row>
+    <sc-form-row>
+      <sc-form-label>Description</sc-form-label>
+      <sc-form-description>Provide some details about this event.</sc-form-description>
+      <sc-textarea v-model="tastingDetails.description" />
+    </sc-form-row>
     <sc-form-row>
       <sc-form-label>Host *</sc-form-label>
       <sc-form-description>Who is the host?</sc-form-description>
@@ -35,12 +46,6 @@ The host controls the flow in the app. Once next dram is selected, users will re
         >
           <Icon icon="ic:outline-close" />
         </button>
-        <!-- <sc-button
-          
-          size="small"
-          
-          >Remove</sc-button
-        > -->
       </div>
       <sc-button
         v-if="isEmpty(tastingDetails.host)"
@@ -49,17 +54,13 @@ The host controls the flow in the app. Once next dram is selected, users will re
         >Add Myself as Host</sc-button
       >
     </sc-form-row>
-    <sc-form-row>
-      <sc-form-label>Co-Hosts</sc-form-label>
       <!-- Need multiselect component -->
+    <!-- <sc-form-row>
+      <sc-form-label>Co-Hosts</sc-form-label>
       <sc-form-description>Post MVP</sc-form-description>
-    </sc-form-row>
-    <sc-form-row>
-      <sc-form-label>Description</sc-form-label>
-      <sc-form-description>Provide some details about this event.</sc-form-description>
-      <sc-textarea v-model="tastingDetails.description" />
-    </sc-form-row>
-    <sc-form-row>
+    </sc-form-row> -->
+    
+    <sc-form-row v-if="!isEmpty(tastingDetails.host)">
       <sc-form-label>Group *</sc-form-label>
       <sc-form-description>Select a group.</sc-form-description>
       <!-- TODO: Grab RVA Whiskey group relation and make pointer -->
@@ -70,7 +71,7 @@ The host controls the flow in the app. Once next dram is selected, users will re
         required
       />
     </sc-form-row>
-    <sc-form-row>
+    <sc-form-row v-if="!isEmpty(tastingDetails.host)">
       <sc-form-label>Use My Hosting Location</sc-form-label>
       <sc-radio v-model="useSavedLocation" :options="[true, false]" />
       <div v-if="useSavedLocation">
@@ -81,12 +82,22 @@ The host controls the flow in the app. Once next dram is selected, users will re
         <sc-text v-model="tastingDetails.location" />
       </div>
     </sc-form-row>
-    <sc-form-row>
-      <sc-form-label>Date</sc-form-label>
+    <sc-form-row v-if="!isEmpty(tastingDetails.host)">
+      <sc-form-label>Invite Guests</sc-form-label>
       <sc-form-description
-        >When will the tasting be hosted?</sc-form-description
+        >Who do you want to invite to this tasting? Group members can also sign
+        up later.</sc-form-description
       >
-      <input type="datetime-local" v-model="tastingDetails.date" name="" id="" />
+      <div v-for="member in groupMembers" :key="member.index">
+        <input
+          type="checkbox"
+          :value="member.id"
+          name=""
+          :id="member.id"
+          v-model="tastingDetails.guests"
+        />
+        <label :for="member.id"> {{ member.name }}</label>
+      </div>
     </sc-form-row>
     <sc-form-row>
       <sc-form-label>Blind Tasting</sc-form-label>
@@ -160,23 +171,7 @@ The host controls the flow in the app. Once next dram is selected, users will re
         >Add New Beverage</a
       >
     </sc-form-row>
-    <sc-form-row>
-      <sc-form-label>Invite Guests</sc-form-label>
-      <sc-form-description
-        >Who do you want to invite to this tasting? Group members can also sign
-        up later.</sc-form-description
-      >
-      <div v-for="member in groupMembers" :key="member.index">
-        <input
-          type="checkbox"
-          :value="member.id"
-          name=""
-          :id="member.id"
-          v-model="tastingDetails.guests"
-        />
-        <label :for="member.id"> {{ member.name }}</label>
-      </div>
-    </sc-form-row>
+    
     <sc-form-row>
       <sc-button display="full" rank="primary" @click.prevent="saveTasting">
         <template v-if="isNew">Create Tasting</template>
