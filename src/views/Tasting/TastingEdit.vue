@@ -11,12 +11,18 @@ Only the host and admin will be able to see blind tastings.
 The host controls the flow in the app. Once next dram is selected, users will receive the next scoring sheet.
 -->
   <!-- <button @click.prevent="getGroupMembers(tastingDetails.host)">get</button> -->
+  <h2>
+    <template v-if="isNew">Create </template>
+    <template v-else>Edit </template>
+    Tasting
+  </h2>
   <form>
     <sc-form-row>
       <sc-form-label>Name *</sc-form-label>
       <sc-form-description>What is the name of this event?</sc-form-description>
       <sc-text required v-model="tastingDetails.name" />
     </sc-form-row>
+    
     <sc-form-row>
       <sc-form-label>Host *</sc-form-label>
       <sc-form-description>Who is the host?</sc-form-description>
@@ -49,6 +55,11 @@ The host controls the flow in the app. Once next dram is selected, users will re
       <sc-form-description>Post MVP</sc-form-description>
     </sc-form-row>
     <sc-form-row>
+      <sc-form-label>Description</sc-form-label>
+      <sc-form-description>Provide some details about this event.</sc-form-description>
+      <sc-textarea v-model="tastingDetails.description" />
+    </sc-form-row>
+    <sc-form-row>
       <sc-form-label>Group *</sc-form-label>
       <sc-form-description>Select a group.</sc-form-description>
       <!-- TODO: Grab RVA Whiskey group relation and make pointer -->
@@ -75,7 +86,7 @@ The host controls the flow in the app. Once next dram is selected, users will re
       <sc-form-description
         >When will the tasting be hosted?</sc-form-description
       >
-      <input type="date" v-model="tastingDetails.date" name="" id="" />
+      <input type="datetime-local" v-model="tastingDetails.date" name="" id="" />
     </sc-form-row>
     <sc-form-row>
       <sc-form-label>Blind Tasting</sc-form-label>
@@ -167,7 +178,10 @@ The host controls the flow in the app. Once next dram is selected, users will re
       </div>
     </sc-form-row>
     <sc-form-row>
-      <sc-button display="full" @click.prevent="saveTasting">Save</sc-button>
+      <sc-button display="full" rank="primary" @click.prevent="saveTasting">
+        <template v-if="isNew">Create Tasting</template>
+        <template v-else>Save </template>
+      </sc-button>
     </sc-form-row>
   </form>
 </template>
@@ -183,27 +197,35 @@ import {
 import { useUserStore } from '@/store/modules/user'
 import { useGroupStore } from '@/store/modules/group'
 import { useBeverageStore } from '@/store/modules/beverage'
+import { useEventStore } from '@/store/modules/events'
 import { setRelation, setRelations, UserDetails } from '@/utilities/api'
 import { isEmpty, cloneDeep } from 'lodash'
-import { TastingDetails } from '@/types'
+import { Beverage, TastingDetails } from '@/types'
 import userBadge from '@/components/user/user-badge.vue'
+import { useRoute } from 'vue-router'
 
 import drawerModal from '@/components/modals/drawer-modal.vue'
 import { Icon } from '@iconify/vue'
 import outlineClose from '@iconify-icons/ic/outline-close'
 import referenceList from '@/components/reference-list/reference-list.vue'
+import ScFormDescription from '@/components/forms/sc-form-description.vue'
 
 export default defineComponent({
-  components: { userBadge, drawerModal, Icon, referenceList },
+  components: { userBadge, drawerModal, Icon, referenceList, ScFormDescription },
   name: 'tasting-edit',
   setup() {
     const userStore = useUserStore()
     const groupStore = useGroupStore()
     const beverageStore = useBeverageStore()
+    const eventStore = useEventStore()
+    const route = useRoute()
 
     const icons = {
       outlineClose
     }
+
+    const isNew = computed(() => route.params.id === 'new')
+
     const tastingDetails = ref({
       name: '',
       host: {},
@@ -211,7 +233,7 @@ export default defineComponent({
       type: 'tasting',
       group: '',
       location: '',
-      date: '',
+      date: undefined,
       description: '',
       blind: false,
       revealSequentially: false,
@@ -220,25 +242,30 @@ export default defineComponent({
       guests: []
     })
 
-    const saveTasting = async () => {
-      const details = tastingDetails.value
-      const payload = {
-        name: details.name,
-        host: setRelation((details.host as UserDetails).id, '_User'),
-        group: setRelation(details.group, 'Group'),
-        location: details.location,
-        date: details.date,
-        description: details.description,
-        blind: details.blind,
-        revealSequentially: details.revealSequentially,
-        showProgressBar: details.showProgressBar,
+    const mapEvent = (payload: any) => {
+      return {
+        name: payload.name,
+        host: setRelation((payload.host as UserDetails).id, '_User'),
+        group: setRelation(payload.group, 'Group'),
+        location: payload.location,
+        date: payload.date,
+        type: payload.type,
+        description: payload.description,
+        blind: payload.blind,
+        revealSequentially: payload.revealSequentially,
+        showProgressBar: payload.showProgressBar,
         beverages: setRelations(
-          details.beverages.map((beverage: any) => beverage.objectId),
+          payload.beverages.map((beverage: Beverage) => beverage.objectId),
           'Beverage'
         ),
-        guests: setRelations(details.guests, '_User')
+        guests: setRelations(payload.guests, '_User')
       }
-      console.log(payload)
+    }
+    const saveTasting = async () => {
+      const event = mapEvent(tastingDetails.value)
+      const result = await eventStore.saveEvent(event)
+      console.log(result)
+      
     }
     const getTasting = async () => {
       // hi
@@ -325,6 +352,7 @@ export default defineComponent({
 
     return {
       isEmpty,
+      isNew,
       assignHost,
       removeHost,
       currentUser,

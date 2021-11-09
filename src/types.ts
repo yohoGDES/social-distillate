@@ -36,6 +36,7 @@ export type Beverage = {
   chillFiltered: string
   singleCask: string
   caskStrength: string
+  objectId: string
 }
 
 export type Rating = TastingNotes & {

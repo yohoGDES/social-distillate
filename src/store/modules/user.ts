@@ -21,6 +21,9 @@ export const useUserStore = defineStore('user', {
       } else {
         return false
       }
+    },
+    sessionToken: (state) => {
+      return state.currentUser?.getSessionToken()
     }
   },
   actions: {
