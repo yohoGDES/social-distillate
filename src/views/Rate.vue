@@ -85,7 +85,6 @@
       >
         Done
       </sc-button>
-      <a href="" @click.prevent="getRatings()">Get Ratings</a>
     </sc-form-row>
   </form>
 </template>
@@ -93,9 +92,9 @@
 import colors from '@/components/forms/inputs/rate/colors.vue'
 import notes from '@/components/forms/inputs/rate/notes.vue'
 import flavorWheel from '@/components/flavor-wheel/flavor-wheel.vue'
-import { computed, defineComponent, onMounted, reactive, ref } from 'vue'
+import { computed, defineComponent, reactive } from 'vue'
 import { TastingNotes } from '@/types'
-import { api, setPointer, setRelation } from '@/utilities/api'
+import { setPointer, setRelation } from '@/utilities/api'
 
 import { useRatingStore } from '@/store/modules/rate'
 import { useUserStore } from '@/store/modules/user'
@@ -213,30 +212,20 @@ export default defineComponent({
        */
       //   const Rating = new api.Object('Rating')
       const user = userStore.currentUser as UserModel
-      //   Rating.set('createdBy', user)
-      //  const relation = Rating.relation('beverage')
-      //  const bev = new api.Object('Beverage')
-      //  const bevQuery = new api.Query('Beverage')
-      //  const result = await bevQuery.get('LLUBGjqOxx')
-      //  relation.add(result)
-      //  console.log(result)
-      //  relation.add()
-      // await Rating.save()
-
+      
+      // TODO: Get the beverage from a meta value
       const rating = {
         createdBy: setPointer(user.id as string, '_User'),
         beverage: setRelation('LLUBGjqOxx', 'Beverage'),
         ...review
       }
-      // const beverage = beverageStore.getBeverage('LLUBGjqOxx')
       const result = await ratingStore.saveRating(rating)
       console.log('result', result)
     }
     return {
       review,
       ratingScale,
-      submitReview,
-      getRatings
+      submitReview
     }
   }
 })

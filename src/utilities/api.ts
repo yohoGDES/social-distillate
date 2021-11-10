@@ -75,4 +75,113 @@ export async function query(query: string, className: string) {
   return data.results
 }
 
+export async function getRelation(
+  id: string,
+  key: string,
+  relatedClass: string,
+  className: string,
+) {
+  return await query(
+    `"$relatedTo": {"object": {"__type":"Pointer","className": "${className}","objectId": "${id}"},"key": "${key}"}`,
+    relatedClass
+  )
+}
+
+export function getClassRelationObjects(payload: any) {
+  return Object.entries(payload)
+    .filter(
+      (e: any) =>
+        typeof e[1] === 'object' && e[1]?.__type === 'Relation'
+    )
+    .map((i) => {
+      return { key: i[0], value: i[1] }
+    })
+}
+
+// 
+/**
+ * getClassRelationObjects
+ * TODO: This needs a test
+ * 
+const fixture = {
+  objectId: 'ZYLzIyxJZ9',
+  name: 'test event',
+  location: '',
+  date: '2021-11-08T12:48',
+  description: '',
+  blind: false,
+  revealSequentially: false,
+  showProgressBar: false,
+  createdAt: '2021-11-09T03:49:02.802Z',
+  updatedAt: '2021-11-09T03:49:02.802Z',
+  host: { __type: 'Relation', className: '_User' },
+  coHost: { __type: 'Relation', className: '_User' },
+  group: { __type: 'Relation', className: 'Group' },
+  beverages: { __type: 'Relation', className: 'Beverage' },
+  guests: { __type: 'Relation', className: '_User' }
+}
+
+const resultFixture = [
+  {
+    "key": "host",
+    "value": {
+      "__type": "Relation",
+      "className": "_User"
+    }
+  },
+  {
+    "key": "coHost",
+    "value": {
+      "__type": "Relation",
+      "className": "_User"
+    }
+  },
+  {
+    "key": "group",
+    "value": {
+      "__type": "Relation",
+      "className": "Group"
+    }
+  },
+  {
+    "key": "beverages",
+    "value": {
+      "__type": "Relation",
+      "className": "Beverage"
+    }
+  },
+  {
+    "key": "guests",
+    "value": {
+      "__type": "Relation",
+      "className": "_User"
+    }
+  }
+]
+ */
+
+export type RelationObject = {
+  key: string
+  value: {
+    __type: string
+    className: string
+  }
+}
+
+export async function resolveRelationalChildren(payload: any, classObjectId: string, baseClass: string) {
+  return await Promise.all(
+    getClassRelationObjects(payload).map(async (relation: any) => {
+      return {
+        key: relation.key,
+        value: await getRelation(
+          classObjectId,
+          relation.key,
+          (relation.value as { __type: string; className: string }).className,
+          baseClass
+        )
+      }
+    })
+  )
+}
+
 export { Parse as api }

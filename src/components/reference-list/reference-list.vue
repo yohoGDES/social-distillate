@@ -18,7 +18,7 @@
               </a>
             </div>
             <div class="reference-list__item-action">
-              <button @click.prevent="removeBeverage(element.objectId)">
+              <button @click.prevent="remove(index)">
                 <Icon icon="ic:outline-close" />
               </button>
             </div>
@@ -42,7 +42,7 @@ export default defineComponent({
       type: Array
     }
   },
-  emits: ['update:modelValue'],
+  emits: ['update:modelValue', 'update:remove'],
   setup(props, { emit }) {
     const proxyValue = computed({
       get: () => {
@@ -52,8 +52,12 @@ export default defineComponent({
         emit('update:modelValue', val)
       }
     })
+    const remove = (idx: number) => {
+      proxyValue.value?.splice(idx, 1)
+    }
     return {
       proxyValue,
+      remove,
       icons: {
         outlineRemoveRedEye,
         outlineClose

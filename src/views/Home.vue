@@ -4,9 +4,7 @@
   <ul>
     <li>
       General UI
-      <ul>
-        <li>Alert component</li>
-      </ul>
+      <ul></ul>
     </li>
     <li>
       Users
@@ -26,15 +24,12 @@
     <li>
       Tasting
       <ul>
-        <li>Create tasting (bind to group)</li>
         <li>Tasting View (uses the /Rate view)</li>
       </ul>
     </li>
     <li>
       Beverage
       <ul>
-        <li>Create Beverage</li>
-        <li>Attach Beverage to Tasting</li>
         <li>Attach rating to Beverage</li>
       </ul>
     </li>

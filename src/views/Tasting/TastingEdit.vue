@@ -1,16 +1,16 @@
 <template>
   <!-- 
-  Users can create events
-Users can assign themselves as hosts and add co-hosts
+  X Users can create events
+X Users can assign themselves as hosts and add co-hosts
 Users can create two event types: Tasting or Special Event
-Hosts can select their saved location or enter a different hosting location
-Hosts can choose for the tasting to be blind.
-If a tasting is blind, the host can choose whether to reveal after each dram or at the end.
-Hosts can choose from pre-entered bottles or enter a new one on the fly.
-Only the host and admin will be able to see blind tastings.
+X Hosts can select their saved location or enter a different hosting location
+X Hosts can choose for the tasting to be blind.
+X If a tasting is blind, the host can choose whether to reveal after each dram or at the end.
+X Hosts can choose from pre-entered bottles or enter a new one on the fly. 
+  TODO: post-mvp add a popup to add new bottles
+? Only the host and admin will be able to see blind tastings.
 The host controls the flow in the app. Once next dram is selected, users will receive the next scoring sheet.
 -->
-  <!-- <button @click.prevent="getGroupMembers(tastingDetails.host)">get</button> -->
   <h2>
     <template v-if="isNew">Create </template>
     <template v-else>Edit </template>
@@ -138,7 +138,6 @@ The host controls the flow in the app. Once next dram is selected, users will re
       <sc-form-description
         >Select the beverages that will be featured in this tasting and drag them into the order that they will be presented.</sc-form-description
       >
-      <!-- TODO: BREAK THIS OUT INTO A COMPONENT -->
       <reference-list v-model="tastingDetails.beverages" />
       <div v-if="tastingDetails.beverages.length <= 0">
         You haven't selected any beverages.
@@ -197,7 +196,7 @@ import { setRelation, setRelations, UserDetails } from '@/utilities/api'
 import { isEmpty, cloneDeep } from 'lodash'
 import { Beverage, TastingDetails } from '@/types'
 import userBadge from '@/components/user/user-badge.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 import drawerModal from '@/components/modals/drawer-modal.vue'
 import { Icon } from '@iconify/vue'
@@ -214,6 +213,7 @@ export default defineComponent({
     const beverageStore = useBeverageStore()
     const eventStore = useEventStore()
     const route = useRoute()
+    const router = useRouter()
 
     const icons = {
       outlineClose
@@ -238,10 +238,11 @@ export default defineComponent({
     })
 
     const mapEvent = (payload: any) => {
-      return {
+      let result = {}
+      if (!isNew.value) Object.assign(result, { objectId: route.params.id })
+
+      const data = {
         name: payload.name,
-        host: setRelation((payload.host as UserDetails).id, '_User'),
-        group: setRelation(payload.group, 'Group'),
         location: payload.location,
         date: payload.date,
         type: payload.type,
@@ -249,21 +250,54 @@ export default defineComponent({
         blind: payload.blind,
         revealSequentially: payload.revealSequentially,
         showProgressBar: payload.showProgressBar,
-        beverages: setRelations(
-          payload.beverages.map((beverage: Beverage) => beverage.objectId),
-          'Beverage'
-        ),
-        guests: setRelations(payload.guests, '_User')
       }
+
+      if (payload.beverages.length > 0) {
+        Object.assign(result, { beverages: setRelations(
+            payload.beverages.map((beverage: Beverage) => beverage.objectId),
+            'Beverage'
+          )
+        })
+      }
+      if (!isEmpty(payload.guests)) {
+        Object.assign(result, { guests: setRelations(payload.guests, '_User') })
+      }
+      if (!isEmpty(payload.host)) {
+        Object.assign(result, {
+          host: setRelation((payload.host as UserDetails).id, '_User')
+        })
+      }
+      if (!isEmpty(payload.group)) {
+        Object.assign(result, { group: setRelation(payload.group, 'Group') })
+      }
+
+      return {...result, ...data}
     }
     const saveTasting = async () => {
-      const event = mapEvent(tastingDetails.value)
-      const result = await eventStore.saveEvent(event)
-      console.log(result)
+      const result = await eventStore.saveEvent(mapEvent(tastingDetails.value))
+      if (result) {
+        router.push(`/events/tastings/edit/${result.objectId}`)
+      }
       
     }
     const getTasting = async () => {
-      // hi
+      const result = await eventStore.getEvent(route.params.id as string)
+      console.log('result to set', result)
+      tastingDetails.value = result
+
+      if(!result.location) {
+        tastingDetails.value.location = result.host[0].hostingLocation
+      }
+
+      // TODO: This is stupid. Look into changing the dropdown component to accept props instead of forcing a contract.
+      const mappedGroup = mapGroups(result.group)[0]
+      if (mappedGroup) {
+        tastingDetails.value.group =
+          userGroups.value.find(
+            (g: { label: string; value: string }) =>
+              g.value === mappedGroup.value
+          ) || ''
+      }
     }
 
     const beverages = ref([])
@@ -277,8 +311,9 @@ export default defineComponent({
 
 
     const assignHost = (user: UserDetails) => {
+      console.log('user to assign', user)
       tastingDetails.value.host = user
-      tastingDetails.value.location = user.attributes.hostingLocation
+      tastingDetails.value.location = user.attributes.hostingLocation 
       tastingDetails.value.group = (
         userGroups.value[0] as { label: string; value: string }
       )?.value
@@ -297,18 +332,21 @@ export default defineComponent({
     })
 
     const userGroups = ref([])
+    const mapGroups = (groups: Array<any>): any => {
+      return groups.map((g: any) => {
+        return {
+          label: g.name,
+          value: g.objectId
+        }
+      })
+    }
     const getUserGroups = async () => {
       if (!currentUser.value) return
       const result = await groupStore.getUserGroups(
         currentUser.value.id as string
       )
 
-      const groups = result.map((g: any) => {
-        return {
-          label: g.name,
-          value: g.objectId
-        }
-      })
+      const groups = mapGroups(result)
 
       userGroups.value = groups
       if (isEmpty(tastingDetails.value.group)) {
@@ -326,11 +364,15 @@ export default defineComponent({
       }
     )
 
-    onMounted(async () => {
+    const setupTasting = async () => {
+      if (!isNew.value) {
+        await getTasting()
+      }
       await getUserGroups()
       const { results } = await beverageStore.getBeverages()
       beverages.value = results
-    })
+
+    }
 
     const groupMembers = ref([])
     const getGroupMembers = async () => {
@@ -344,6 +386,10 @@ export default defineComponent({
         }
       })
     }
+
+    onMounted(async () => {
+      await setupTasting()
+    })
 
     return {
       isEmpty,

@@ -3,6 +3,22 @@ import { BeverageModel } from '../../../cloud/src/model/beverage'
 import { api } from '@/utilities/api'
 import { http } from '@/utilities/http'
 import { useAlertStore } from '@/store/modules/alerts'
+import { capitalizeFirstLetter } from '@/utilities'
+
+const getBeverageEmoji = (type: string) => {
+  switch (type) {
+    case 'wine':
+      return '🍷'
+      break;
+    case 'spirit':
+      return '🥃'
+    case 'beer':
+      return '🍻'
+    default:
+      return '🎉'
+  }
+}
+
 export const useBeverageStore = defineStore('beverage', {
   state: () => {
     return {}
@@ -18,6 +34,8 @@ export const useBeverageStore = defineStore('beverage', {
     },
     async saveBeverage(beverage: any) {
       const alertStore = useAlertStore()
+      console.log(beverage)
+      const emoji = getBeverageEmoji(beverage.category)
       try {
         if (beverage.objectId) {
           const toSave = beverage
@@ -28,7 +46,10 @@ export const useBeverageStore = defineStore('beverage', {
           const { data } = await http.post(`/Beverage`, beverage)
           return data
         }
-        alertStore.alertSuccess('🎉 Beverage saved! 🎉')
+
+        alertStore.alertSuccess(
+          `${capitalizeFirstLetter(beverage.category)} saved! ${emoji}`
+        )
       } catch (error) {
         console.log('Error saving beverage: ', error)
         alertStore.alertError('Failed to save Beverage 😬')

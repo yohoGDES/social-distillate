@@ -27,4 +27,11 @@ The host controls the flow in the app. Once next dram is selected, users will re
   - Rating component (separate this into a new component)
   - Tasting Progress Bar (1 of 3 bottles)
 
+
+host
+  coHost
+  group
+  location
+  date
+  blind
 </template>
