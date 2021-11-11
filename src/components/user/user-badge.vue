@@ -9,6 +9,7 @@
 </template>
 <script lang="ts">
 import { computed, defineComponent } from 'vue'
+// import personCircle from '@iconify-icons/bi/person-circle';
 export default defineComponent({
   name: 'user-badge',
   props: {
@@ -32,8 +33,8 @@ export default defineComponent({
 
     const imageUrl = computed(() => {
       const user = props.user
-      const fallbackImage = 'fallback'
-      const userImage = user.profileImage?.url()
+      const fallbackImage = undefined
+      const userImage = user?.profileImage?.url || user.profileImage?.url()
       return userImage ? userImage : fallbackImage
     })
 
@@ -69,5 +70,6 @@ export default defineComponent({
   background-size: contain;
   background-position: center;
   margin-right: 6px;
+  background-color: $charcoal;
 }
 </style>

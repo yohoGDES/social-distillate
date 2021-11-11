@@ -27,27 +27,33 @@ export const useEventStore = defineStore('events', {
       }
     },
     async saveEvent(payload: any) {
-      const alertStore = useAlertStore()
-      try {
-        console.log(payload.objectId)
-        if (payload.objectId) {
-          delete payload.createdAt
-          delete payload.updatedAt
-          const { data } = await http.put(`/${ClassPath}/${payload.objectId}`, payload)
-          alertStore.alertSuccess('🎉 Event saved! 🎉')
-          console.log('updated', data)
-        } else {
-          const { data } = await http.post(`/${ClassPath}`, payload)
-          alertStore.alertSuccess('🎉 Event saved! 🎉')
-          return data
-        }
-        // return data
-      } catch (error) {
-        alertStore.alertError('Failed to save Event 😬')
+      if (payload.objectId) {
+        delete payload.createdAt
+        delete payload.updatedAt
+        const { data } = await http.put(
+          `/${ClassPath}/${payload.objectId}`,
+          payload
+        )
+        console.log('updated', data)
+      } else {
+        const { data } = await http.post(`/${ClassPath}`, payload)
+        return data
       }
+    },
+    async getEvents() {
+      const { data } = await http.get(`/${ClassPath}`)
+      return data
+    },
+    async getEventBeverageRatings(beverageId: string, eventId: string) {
+      // https://parseapi.back4app.com/classes/Rating?where={"$or":[{"beverage":{"__type":"Pointer","className":"Beverage","objectId":"LLUBGjqOxx"}}, {"tastingId":{"__type":"Pointer","className":"Event","objectId":"hfG2XaMarX"}}]}
+      const { data } = await http.get(
+        `/Rating?where={"$or":[{"beverage":{"__type":"Pointer","className":"Beverage","objectId":"${beverageId}"}}, {"tastingId":{"__type":"Pointer","className":"Event","objectId":"${eventId}"}}]}`
+      )
+      console.log(data)
     }
   }
 })
+
 
 
 /**

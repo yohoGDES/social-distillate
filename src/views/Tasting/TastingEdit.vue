@@ -191,6 +191,7 @@ import {
 import { useUserStore } from '@/store/modules/user'
 import { useGroupStore } from '@/store/modules/group'
 import { useBeverageStore } from '@/store/modules/beverage'
+import { useAlertStore } from '@/store/modules/alerts'
 import { useEventStore } from '@/store/modules/events'
 import { setRelation, setRelations, UserDetails } from '@/utilities/api'
 import { isEmpty, cloneDeep } from 'lodash'
@@ -212,6 +213,7 @@ export default defineComponent({
     const groupStore = useGroupStore()
     const beverageStore = useBeverageStore()
     const eventStore = useEventStore()
+    const alertStore = useAlertStore()
     const route = useRoute()
     const router = useRouter()
 
@@ -274,11 +276,16 @@ export default defineComponent({
       return {...result, ...data}
     }
     const saveTasting = async () => {
-      const result = await eventStore.saveEvent(mapEvent(tastingDetails.value))
-      if (result) {
-        router.push(`/events/tastings/edit/${result.objectId}`)
+      try {
+        const result = await eventStore.saveEvent(mapEvent(tastingDetails.value))
+        if (result) {
+          router.push(`/events/tastings/edit/${result.objectId}`)
+        }
+        alertStore.alertSuccess('🎉 Event saved! 🎉')
+      } catch (e) {
+        alertStore.alertError('Failed to save Event 😬')
+        console.log('Error saving tasting: ', e)
       }
-      
     }
     const getTasting = async () => {
       const result = await eventStore.getEvent(route.params.id as string)

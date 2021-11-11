@@ -1,5 +1,6 @@
 import Parse from 'parse'
 import { http } from './http'
+export * from './liveQuery'
 
 const serverUrl = 'https://parseapi.back4app.com'
 const appId = 'NgDawUcAizSiYxhLwSYeg0SRhrLeFrgvFt2Zp3hI'
@@ -92,7 +93,7 @@ export function getClassRelationObjects(payload: any) {
     .filter(
       (e: any) =>
         typeof e[1] === 'object' && e[1]?.__type === 'Relation'
-    )
+    ) 
     .map((i) => {
       return { key: i[0], value: i[1] }
     })
@@ -183,5 +184,14 @@ export async function resolveRelationalChildren(payload: any, classObjectId: str
     })
   )
 }
+
+
+// new Parse.LiveQuerySubscription
+// const client = new Parse.Li({
+//   applicationId: 'Your app Id here',
+//   serverURL: 'wss://' + 'Your domain here', // Example: 'wss://livequerytutorial.back4app.io'
+//   javascriptKey: 'Your JavaScript key here'
+// });
+// client.open();
 
 export { Parse as api }

@@ -3,7 +3,7 @@
     <h2>Sign Up</h2>
     <form @submit.prevent="register()" class="register-form">
       <sc-form-row>
-        <sc-form-label label="Username" />
+        <sc-form-label>Username</sc-form-label>
         <sc-form-description></sc-form-description>
         <input
           type="text"
@@ -14,7 +14,7 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-form-label label="Email" />
+        <sc-form-label>Email</sc-form-label>
         <sc-form-description></sc-form-description>
         <input
           type="email"
@@ -25,7 +25,7 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-form-label label="Password" />
+        <sc-form-label>Password</sc-form-label>
         <sc-form-description></sc-form-description>
         <input
           type="password"
@@ -36,7 +36,7 @@
         />
       </sc-form-row>
       <sc-form-row>
-        <sc-form-label label="Confirm Password" />
+        <sc-form-label>Confirm Password</sc-form-label>
         <sc-form-description></sc-form-description>
         <input
           type="password"
@@ -59,6 +59,7 @@ import { User } from '../../../../cloud/src/model/user'
 
 import { useUserStore } from '@/store/modules/user'
 import { useAlertStore, MessageType, AlertType } from '@/store/modules/alerts'
+import { useRouter } from 'vue-router'
 
 type UserRegistration = User & {
   confirmPassword: string
@@ -67,9 +68,9 @@ type UserRegistration = User & {
 export default defineComponent({
   name: 'register-form',
   setup() {
-
     const userStore = useUserStore()
     const alertStore = useAlertStore()
+    const router = useRouter()
 
     const userRegistration: UserRegistration = reactive({
       username: '',
@@ -100,10 +101,12 @@ export default defineComponent({
       }
       const { username, email, password } = userRegistration
       await userStore.registerUser({
-          username,
-          email,
-          password
-        })
+        username,
+        email,
+        password
+      })
+      alertStore.alertSuccess('You have successfully registered!')
+      router.push('/')
     }
     return {
       userRegistration,

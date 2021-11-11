@@ -1,11 +1,11 @@
 <template>
-  <div>
-    <div v-if="currentUser">
+  <div class="user-bar">
+    <template v-if="currentUser">
       <user-badge :user="currentUser" /> | (<a href="" @click.prevent="logout()">Logout</a>)
-    </div>
-    <div v-else>
+    </template>
+    <template v-else>
       <router-link to="/login">Login</router-link>
-    </div>
+    </template>
   </div>
 </template>
 <script lang="ts">
@@ -38,3 +38,15 @@ export default defineComponent({
   }
 })
 </script>
+<style lang="scss">
+.user-bar {
+  display: flex;
+  align-items: center;
+  a {
+    color: $charcoal;
+    &:hover {
+      color: $mahogany;
+    }
+  }
+}
+</style>

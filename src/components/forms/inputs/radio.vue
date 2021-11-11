@@ -33,8 +33,9 @@ export default defineComponent({
         emit('update:modelValue', value)
       }
     })
+    const uuid = computed(() => makeId())
     const getOptionId = (option: string, index: number) =>
-      `${index}-${kebabCase(option)}`
+      `${index}-${uuid.value}-${kebabCase(option)}`
     return {
       proxyValue,
       getOptionId
