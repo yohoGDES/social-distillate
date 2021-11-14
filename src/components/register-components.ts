@@ -11,6 +11,7 @@ import scDescription from '@/components/forms/sc-form-description.vue'
 
 // Form Inputs
 import scText from '@/components/forms/inputs/text.vue'
+import scTextarea from '@/components/forms/inputs/textarea.vue'
 import scButton from '@/components/forms/inputs/button.vue'
 import scRadio from '@/components/forms/inputs/radio.vue'
 import dropdown from '@/components/forms/inputs/dropdown.vue'
@@ -23,6 +24,7 @@ export const registerComponents = (app: App): void => {
   app.component(`code-pill`, codePill)
   app.component(`${ns}-dropdown`, dropdown)
   app.component(`${ns}-text`, scText)
+  app.component(`${ns}-textarea`, scTextarea)
   app.component(`${ns}-radio`, scRadio)
   app.component(`${ns}-currency`, currency)
   app.component(`${ns}-form-row`, scFormRow)

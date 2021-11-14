@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import { api } from '@/utilities/api'
+import { api, UserDetails } from '@/utilities/api'
 import { User, UserModel } from '../../../cloud/src/model/user'
 import { useAlertStore } from '@/store/modules/alerts'
 
 // User store will contain specific actions and details about the current user
 export const useUserStore = defineStore('user', {
   state: () => {
-    return <{ currentUser: User | undefined }>{
+    return {
       currentUser: api.User.current<UserModel>()
     }
   },
@@ -21,6 +21,9 @@ export const useUserStore = defineStore('user', {
       } else {
         return false
       }
+    },
+    sessionToken: (state) => {
+      return state.currentUser?.getSessionToken()
     }
   },
   actions: {

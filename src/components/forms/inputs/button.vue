@@ -55,7 +55,8 @@ export default defineComponent({
 })
 </script>
 <style lang="scss" scope>
-.sc-button {
+.sc-button,
+a.sc-button {
   display: inline-block;
   background: none;
   border: 1px solid $charcoal;
@@ -63,10 +64,11 @@ export default defineComponent({
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
+  text-decoration: none;
   // Size
   &--small {
-   font-size: 14px; 
-   padding: 5px 8px;
+    font-size: 14px;
+    padding: 5px 8px;
   }
   &:hover,
   &:active {

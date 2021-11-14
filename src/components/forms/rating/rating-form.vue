@@ -1,13 +1,4 @@
 <template>
-  <!-- TODO: Add controls and state of the tasting -->
-  <!--
-    TODO:
-      Should the Rate view contain tasting info?
-      Or should it be an embedded component? -->
-  <h2>Review #1</h2>
-  <!-- TODO: actually put some shit here. model out what should be on this page -->
-  <div>Information about this tasting is hidden until the host reveals.</div>
-  <hr />
   <form>
     <sc-form-row>
       <sc-form-label>Color</sc-form-label>
@@ -100,6 +91,7 @@ import { useRatingStore } from '@/store/modules/rate'
 import { useUserStore } from '@/store/modules/user'
 import { UserModel } from 'cloud/src/model/user'
 import { useBeverageStore } from '@/store/modules/beverage'
+import { useRoute } from 'vue-router'
 
 export default defineComponent({
   name: 'Rate',
@@ -108,11 +100,21 @@ export default defineComponent({
     colors,
     flavorWheel
   },
-  setup() {
+  props: {
+    beverageId: {
+      type: String
+    },
+    tastingId: {
+      type: String
+    }
+  },
+  emits: ['rating-complete'],
+  setup(props, { emit }) {
     const userStore = useUserStore()
     const ratingStore = useRatingStore()
     const beverageStore = useBeverageStore()
     const ratingScale = computed(() => [...Array(101).keys()].slice().reverse())
+    const route = useRoute()
 
     // TODO: Make setting up flavorProfiles dynamic based on a variable. We will want to load different sets of profiles for wine vs whiskey vs gin etc
     const review: TastingNotes = reactive({
@@ -196,36 +198,36 @@ export default defineComponent({
         }
       ]
     })
-    const getRatings = async () => {
-      await beverageStore.getBeverageRatings('LLUBGjqOxx')
-    }
+
+    const beverageRelationId = computed(() => {
+      return props.beverageId ? props.beverageId : route.params.id as string
+    })
+    const testIt = () => emit('rating-complete', props.beverageId)
+    // const getBeverage = async () => {}
     const submitReview = async () => {
-      console.log(review)
-      /**
-       * TODO:
-       * Set the relationship between
-       * Event (Tasting) - Class
-       *  - Beverages - column (array, less than 100)
-       *   - Beverage - Class - getRatings ('LLUBGjqOxx')
-       *     - Rating - Class (pointer, beverage has many ratings)
-       *      - User - Class (pointer, user has many ratings)
-       */
-      //   const Rating = new api.Object('Rating')
       const user = userStore.currentUser as UserModel
+      console.log('beverage ID', props.beverageId)
       
       // TODO: Get the beverage from a meta value
       const rating = {
         createdBy: setPointer(user.id as string, '_User'),
-        beverage: setRelation('LLUBGjqOxx', 'Beverage'),
+        beverage: setRelation(beverageRelationId.value, 'Beverage'),
         ...review
+      }
+      if (props.tastingId) {
+        Object.assign(rating, {
+          tastingId: setPointer(props.tastingId, 'Event')
+        })
       }
       const result = await ratingStore.saveRating(rating)
       console.log('result', result)
+      emit('rating-complete', props.beverageId)
     }
     return {
       review,
       ratingScale,
-      submitReview
+      submitReview,
+      testIt
     }
   }
 })

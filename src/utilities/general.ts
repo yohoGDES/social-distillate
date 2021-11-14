@@ -18,3 +18,8 @@ export function toggleBodyClass(valueToCheck: boolean, name: string): void {
   const bodyClass = document.getElementsByTagName('body')[0].classList
   valueToCheck ? bodyClass.add(name) : bodyClass.remove(name)
 }
+
+
+export function capitalizeFirstLetter(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1)
+}
