@@ -92,16 +92,16 @@ host
     </div>
 
     <div style="text-align:center;" v-if="tasting.eventStage === 'welcome'">
-      <h2>{{tasting.name}}</h2>
-      <div>{{ tasting.group[0].name}}</div>
-      <em>{{ new Date(tasting.date).toDateString() }}</em>
-      <div>{{ tasting.location }}
+      <h2 v-if="tasting.name">{{tasting.name}}</h2>
+      <div v-if="tasting.group.length > 0">{{ tasting.group[0].name}}</div>
+      <div><em v-if="tasting.date">{{ new Date(tasting.date).toDateString() }}</em></div>
+      <div v-if="tasting.location">{{ tasting.location }}
         <br>
         <br>
         <strong>Hosted By</strong>
       </div>
-      <user-badge style="margin:8px auto 8px;" :user="tasting.host[0]" />
-      <p v-html="tasting.description"></p>
+      <user-badge v-if="tasting.host.length > 0" style="margin:8px auto 8px;" :user="tasting.host[0]" />
+      <p v-if="tasting.description" v-html="tasting.description"></p>
 
       <p style="font-size: 22px; color: #3c3c3c;">Please wait for the host to start the event.</p>
     </div>

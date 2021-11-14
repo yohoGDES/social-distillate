@@ -76,14 +76,6 @@
       >
         Done
       </sc-button>
-      <sc-button
-        rank="primary"
-        width="full"
-        type="button"
-        @clicked="testIt"
-      >
-        TEST
-      </sc-button>
     </sc-form-row>
   </form>
 </template>

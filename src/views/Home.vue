@@ -1,20 +1,10 @@
 <template>
   <div class="home">
-    <p style="text-align:center;">
-      Welcome to The Social Cask! This is the first trial run of this app to use
-      in tasting events and other applications. It is in alpha and ugly as shit
-      - I built it in less than a month so bare with me. Please sign up then
-      enter the tasting while we wait for John to kick things off. All feedback
-      welcome!
-    </p>
-    <p style="font-size:22px; text-align: center;">🚨 <br> Please do not visit any other pages than the tastings below. It would spoil tonight's tasting. This will change later <br> 🚨</p>
-
     <h3 style="text-align:center;">Available Tastings</h3>
     <div class="event-row" v-for="tasting in events" :key="tasting.index">
       <div class="event-row__logo">
-        <img :src="tasting.group[0].logo.url" />
+        <img :src="tasting.group[0]?.logo?.url" />
       </div>
-      <!-- {{tasting}} -->
       <div>
         <strong>{{ tasting.name }}</strong> <br>
         {{ new Date(tasting.date).toDateString() }} <br>

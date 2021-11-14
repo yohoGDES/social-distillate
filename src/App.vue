@@ -1,7 +1,8 @@
 <template>
   <div class="header">
     <div class="header-logo">
-      <img src="./assets/the-social-cask-logo-v1.svg" />
+      <router-link to="/"><img src="./assets/the-social-cask-logo-v1.svg" /></router-link>
+      
     </div>
     <user-bar></user-bar>
 

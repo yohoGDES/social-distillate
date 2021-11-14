@@ -1,7 +1,7 @@
 <template>
   <div class="user-bar">
     <template v-if="currentUser">
-      <user-badge :user="currentUser" /> | (<a href="" @click.prevent="logout()">Logout</a>)
+      <user-badge style="margin-right:3px;" :user="currentUser" /> (<a href="" @click.prevent="logout()">Logout</a>)
     </template>
     <template v-else>
       <router-link to="/login">Login</router-link>
