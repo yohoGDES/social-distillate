@@ -12,12 +12,6 @@
       >
       <router-link
         class="main-menu__link"
-        to="/rate"
-        @click="toggleMenuActive()"
-        >Rate</router-link
-      >
-      <router-link
-        class="main-menu__link"
         @click="toggleMenuActive()"
         to="/beverages"
         >Beverages</router-link
