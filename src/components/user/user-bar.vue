@@ -1,7 +1,15 @@
 <template>
-  <div class="user-bar">
+  <div
+    class="user-bar"
+    :class="{ 'user-bar--dark-mode': colorMode === 'dark' }"
+  >
     <template v-if="currentUser">
-      <user-badge style="margin-right:3px;" :user="currentUser" /> (<a href="" @click.prevent="logout()">Logout</a>)
+      <user-badge
+        :colorMode="colorMode"
+        style="margin-right: 3px"
+        :user="currentUser"
+      />
+      (<a href="" class="user-bar__logout" @click.prevent="logout()">Logout</a>)
     </template>
     <template v-else>
       <router-link to="/login">Login</router-link>
@@ -16,6 +24,13 @@ import { useRouter } from 'vue-router'
 export default defineComponent({
   name: 'user-bar',
   components: { userBadge },
+  props: {
+    colorMode: {
+      type: String,
+      description: 'display as light or dark',
+      default: 'light'
+    }
+  },
   setup() {
     const userStore = useUserStore()
     const router = useRouter()
@@ -46,6 +61,14 @@ export default defineComponent({
     color: $charcoal;
     &:hover {
       color: $mahogany;
+    }
+  }
+  &--dark-mode {
+    a {
+      color: $mahogany;
+      &:hover {
+        color:lightgray;
+      }
     }
   }
 }

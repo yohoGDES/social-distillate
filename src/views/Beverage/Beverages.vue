@@ -15,9 +15,10 @@
           <router-link :to="`/beverage/${beverage.objectId}`">
             {{ beverage.name }}
           </router-link> <code-pill :value="beverage.objectId" />
-          <router-link :to="`/beverage/edit/${beverage.objectId}`"
+          <router-link :to="`/beverage/${beverage.objectId}/edit`"
             >Edit</router-link
-          >
+          > | 
+          <router-link :to="`/beverage/${beverage.objectId}/rate`">Rate</router-link>
         </div>
       </div>
     </div>

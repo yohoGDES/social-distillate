@@ -1,32 +1,26 @@
 <template>
   <div class="header">
     <div class="header-logo">
-      <router-link to="/"><img src="./assets/the-social-cask-logo-v1.svg" /></router-link>
-      
+      <router-link to="/"
+        ><img src="./assets/the-social-cask-logo-v1.svg"
+      /></router-link>
     </div>
-    <user-bar></user-bar>
-
+    <main-menu />
   </div>
-  <alerts></alerts>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <!-- <router-link to="/rate">Rate</router-link> | -->
-    <router-link to="/beverages">Beverages</router-link> |
-    <router-link to="/events/tastings/edit/new">Create Event</router-link>
-  </div>
-  <hr>
+  <alerts />
+  <hr />
   <router-view />
 </template>
 
 <script lang="ts">
-import userBar from '@/components/user/user-bar.vue'
+
+import mainMenu from '@/components/navigation/main-menu.vue'
 export default {
   components: {
-    userBar
+    mainMenu
   }
 }
 </script>
-
 
 <style lang="scss">
 .header {
@@ -60,17 +54,5 @@ body {
 }
 * {
   box-sizing: border-box;
-}
-#nav {
-  // padding: 30px;
-  margin-bottom: 15px;
-  a {
-    font-weight: bold;
-    color: $charcoal;
-
-    &.router-link-exact-active {
-      color: $tawny;
-    }
-  }
 }
 </style>

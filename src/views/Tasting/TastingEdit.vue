@@ -165,7 +165,7 @@ The host controls the flow in the app. Once next dram is selected, users will re
       </sc-button>
       <a
         class="sc-button sc-button--small"
-        href="/beverage/edit/new"
+        href="/beverage/new/edit"
         target="_blank"
         >Add New Beverage</a
       >

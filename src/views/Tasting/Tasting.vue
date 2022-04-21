@@ -128,7 +128,7 @@ host
             v-if="!completedRatings.includes(beverage.objectId)"
           />
           <div style="font-size:22px; text-align:center;" v-else>
-            Nice! 🥃 <br> Now let's wait for these other assholes to finish. <h1>👉👌 👀</h1></div>
+            Nice! 🥃 <br> Now let's wait for everyone else to finish. <h1>👀</h1></div>
         </template>
       </div>
       <!-- <div

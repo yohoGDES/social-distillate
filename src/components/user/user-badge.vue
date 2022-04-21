@@ -21,6 +21,11 @@ export default defineComponent({
       type: String,
       description:
         'default displays a standard view. `pill` creates a background and rounded edge appearance.'
+    },
+    colorMode: {
+      type: String,
+      description: 'display in light or dark mode',
+      default: 'light'
     }
   },
   setup(props) {
@@ -39,7 +44,9 @@ export default defineComponent({
     })
 
     const displayStyle = computed(() => {
-      return props.display === 'pill' ? 'user-badge--pill' : ''
+      const display = props.display === 'pill' ? 'user-badge--pill' : ''
+      const mode = props.colorMode === 'dark' ? 'user-badge--dark-mode' : ''
+      return `${display} ${mode}`
     })
     return {
       displayName,
@@ -60,6 +67,9 @@ export default defineComponent({
     background: lighten($charcoal, 65%);
     padding: 4px 10px 4px 4px;
     border-radius: 20px;
+  }
+  &--dark-mode {
+    color: $clear;
   }
 }
 .user-badge__image {

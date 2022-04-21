@@ -1,11 +1,14 @@
 <template>
   <div class="drawer-modal" :class="{ 'drawer-modal--active': active }">
     <div class="drawer-modal__content">
-      <h3>{{ title }}</h3>
+      <div>
+        <h3>{{ title }}</h3>
+        <button @click.prevent="toggleDrawer()">Close</button>
+      </div>
       <slot></slot>
     </div>
 
-    <div class="drawer-modal__actions">
+    <div class="drawer-modal__actions" v-if="showActions">
       <button
         class="drawer-modal__action"
         type="button"
@@ -47,6 +50,10 @@ export default defineComponent({
     },
     active: {
       type: Boolean
+    },
+    showActions: {
+      type: Boolean,
+      default: true
     }
   },
   setup(props, context) {

@@ -29,7 +29,7 @@ const routes: Array<RouteRecordRaw> = [
     component: Error
   },
   {
-    path: '/rate',
+    path: '/beverage/:id/rate',
     name: 'Rate',
     component: Rate,
     meta: {
@@ -37,7 +37,7 @@ const routes: Array<RouteRecordRaw> = [
     }
   },
   {
-    path: '/beverage/edit/:id',
+    path: '/beverage/:id/edit',
     name: 'BeverageEdit',
     component: BeverageEdit,
     meta: {

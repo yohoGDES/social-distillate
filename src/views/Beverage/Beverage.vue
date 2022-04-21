@@ -6,62 +6,22 @@
       <code-pill :value="beverage.objectId" />
     </h2>
     <span
-      ><router-link :to="`/beverage/edit/${beverage.objectId}`"
+      ><router-link :to="`/beverage/${beverage.objectId}/edit`"
         >edit</router-link
       ></span
-    >
+    > | 
+    <span>
+      <router-link :to="`/beverage/${beverage.objectId}/rate`"
+        >rate</router-link
+      >
+    </span>
     <div>
       <h3>Information</h3>
-      <div v-if="beverage.category">
-        <strong>category</strong> {{ beverage.category }}
-      </div>
-      <div v-if="beverage.type"><strong>type</strong> {{ beverage.type }}</div>
-      <div v-if="beverage.subType">
-        <strong>subType</strong> {{ beverage.subType }}
-      </div>
-      <div v-if="beverage.distillery">
-        <strong>distillery</strong> {{ beverage.distillery }}
-      </div>
-      <div v-if="beverage.brand">
-        <strong>brand</strong> {{ beverage.brand }}
-      </div>
-      <div v-if="beverage.proof">
-        <strong>proof</strong> {{ beverage.proof }}
-      </div>
-      <div v-if="beverage.numberOfBottles">
-        <strong>numberOfBottles</strong> {{ beverage.numberOfBottles }}
-      </div>
-      <div v-if="beverage.vintage">
-        <strong>vintage</strong> {{ beverage.vintage }}
-      </div>
-      <div v-if="beverage.bottled">
-        <strong>bottled</strong> {{ beverage.bottled }}
-      </div>
-      <div v-if="beverage.statedAge">
-        <strong>statedAge</strong> {{ beverage.statedAge }}
-      </div>
-      <div v-if="beverage.caskNumber">
-        <strong>caskNumber</strong> {{ beverage.caskNumber }}
-      </div>
-      <div v-if="beverage.retailPrice">
-        <strong>retailPrice</strong> {{ beverage.retailPrice }}
-      </div>
-      <div v-if="beverage.region">
-        <strong>region</strong> {{ beverage.region }}
-      </div>
-      <div v-if="beverage.cask"><strong>cask</strong> {{ beverage.cask }}</div>
-      <div v-if="beverage.colored">
-        <strong>colored</strong> {{ beverage.colored }}
-      </div>
-      <div v-if="beverage.chillFiltered">
-        <strong>chillFiltered</strong> {{ beverage.chillFiltered }}
-      </div>
-      <div v-if="beverage.singleCask">
-        <strong>singleCask</strong> {{ beverage.singleCask }}
-      </div>
-      <div v-if="beverage.caskStrength">
-        <strong>caskStrength</strong> {{ beverage.caskStrength }}
-      </div>
+      <beverage-info
+        :beverage="beverage"
+        :hideName="true"
+        :showInfoToggle="true"
+      />
     </div>
     <div>
       <h3>Ratings ({{ ratingsCount }})</h3>
@@ -84,11 +44,12 @@ import { computed, defineComponent, onMounted, ref } from 'vue'
 import { useBeverageStore } from '@/store/modules/beverage'
 import { useRoute } from 'vue-router'
 import { Rating } from '@/types'
+import beverageInfo from '@/components/beverage-info/beverage-info.vue'
 import flavorWheelChart from '@/components/flavor-wheel/flavor-wheel-chart.vue'
 
 export default defineComponent({
   name: 'beverage',
-  components: { flavorWheelChart },
+  components: { beverageInfo, flavorWheelChart },
   setup() {
     const beverageStore = useBeverageStore()
     const route = useRoute()

@@ -200,7 +200,7 @@ export default defineComponent({
     })
 
     const beverageRelationId = computed(() => {
-      return props.beverageId ? props.beverageId : route.params.id as string
+      return props.beverageId ? props.beverageId : (route.params.id as string)
     })
     const testIt = () => emit('rating-complete', props.beverageId)
     // const getBeverage = async () => {}

@@ -9,11 +9,12 @@
       item-key="objectId"
     >
       <template #item="{ element, index }">
-        <div class="reference-list__item handle">
+        <div class="reference-list__item">
           {{ index + 1 }}. {{ element.name }}
           <div class="reference-list__item-actions">
+            <div class="reference-list__item-action handle">=</div>
             <div class="reference-list__item-action">
-              <a :href="`/beverage/edit/${element.objectId}`" target="_blank">
+              <a :href="`${origin}/beverage/${element.objectId}/edit`" target="_blank">
                 <Icon icon="ic:outline-remove-red-eye" />
               </a>
             </div>
@@ -55,9 +56,11 @@ export default defineComponent({
     const remove = (idx: number) => {
       proxyValue.value?.splice(idx, 1)
     }
+    const origin = computed(() => window.location.origin)
     return {
       proxyValue,
       remove,
+      origin,
       icons: {
         outlineRemoveRedEye,
         outlineClose
